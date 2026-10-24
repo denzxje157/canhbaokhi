@@ -1,3 +1,23 @@
+# Office & Reports
+*.docx
+*.pdf
+*.pptx
+*.xlsx
+*.zip
+
+# Build & Generator Scripts
+*.py
+*.bat
+....txt
+*.io
+*.io.txt
+*.glb
+v2_page_*.png
+test_esp32*
+BaoCao_KHKT_CanhBaoKhi_THCS.html
+code.html
+nhatki.md
+
 # Temporary & Build Files
 *.tmp
 *.log

@@ -33,42 +33,55 @@ Dự án gồm **3 Khối Chính** phối hợp chặt chẽ với nhau:
 
 ---
 
-## 🚀 Hướng Dẫn Chạy Sơ Đồ Đi Dây Kỹ Thuật 3D
+## 🚀 Trải Nghiệm Sơ Đồ Đi Dây Kỹ Thuật (Web App)
 
-1. **Khởi động nhanh**:
-   - Nhấp đúp vào tệp [`Mo_Phong_3D.bat`](Mo_Phong_3D.bat).
-   - Hoặc mở trực tiếp [`mo_phong_3d_noi_day/index.html`](mo_phong_3d_noi_day/index.html) bằng bất kỳ trình duyệt web nào (Chrome, Edge, Firefox).
+1. **Khởi động**:
+   - Mở trực tiếp file [`index.html`](index.html) bằng trình duyệt web bất kỳ (Chrome, Edge, Safari, Firefox).
+   - Hoặc bật GitHub Pages trên nhánh `main` để truy cập trực tuyến trên điện thoại và máy tính.
 
-2. **Các tính năng nổi bật của bản mô phỏng**:
-   - **Sơ đồ đi dây chuẩn công nghiệp**: Đường dây Manhattan vuông vức, không bị chéo góc, không che chữ.
+2. **Các tính năng nổi bật**:
+   - **UX/UI chuẩn Mobile App**: Tích hợp Bottom Navigation Bar 5 tab, Slide-over Drawer, Bottom Sheet kéo vuốt và nút thao tác nhanh FAB.
+   - **100% Đường Dây Trực Quan**: 43 dây nối màu sắc chuẩn kỹ thuật, hiển thị sắc nét tức thì.
    - **Mô phỏng âm thanh còi hú thực tế (Web Audio API)**:
      - *Mức An Toàn*: Đèn xanh sáng, không có còi.
      - *Mức Cảnh Báo*: Đèn vàng sáng, còi chíp bíp ngắt quãng.
      - *Mức Nguy Hiểm*: Đèn đỏ chớp giật liên tục, còi hú dồn dập, còi rung lắc trực quan.
-     - Nút bật/tắt âm thanh còi tiện lợi ngay trên thanh điều khiển.
-   - **Bộ lọc mạch nhanh**: Bật sáng 100% toàn bộ 43 đường dây hoặc lọc riêng từng module.
-   - **Cẩm nang Lớp 9**: Giải thích nguyên lý đấu nối bằng ngôn ngữ hình tượng học sinh dễ hiểu nhất để tự tin trả lời Ban giám khảo.
+     - Tùy chọn Bật/Tắt âm thanh còi ngay trên thanh công cụ.
+   - **Cẩm nang Lớp 9**: Giải thích nguyên lý đấu nối bằng câu chuyện "Hai người thám hiểm hầm tối" dễ hiểu nhất cho học sinh và phụ huynh.
    - **Hiệu năng 60 FPS mượt mà**: Tối ưu hóa GPU phần cứng, không giật lag khi xoay chuyển phóng to thu nhỏ.
 
 ---
 
-## 📂 Cấu Trúc Thư Mục
+## 📂 Cấu Trúc Mã Nguồn
 
 ```
 canhbaokhi/
-├── mo_phong_3d_noi_day/           # Ứng dụng Web Mô phỏng Đi Dây & Giám sát SCADA
-│   ├── index.html                 # Giao diện chính Sơ đồ Đi Dây Kỹ Thuật
-│   ├── wokwi-elements.bundle.js   # Bộ thư viện linh kiện Wokwi 3D
-│   └── images/                    # Hình ảnh cảm biến thực tế
-├── Mo_Phong_3D.bat                # Phím tắt 1-click mở mô phỏng trên Windows
-├── code.ino                       # Mã nguồn nhúng Arduino C++ cho ESP32
-├── Bai_Thuyet_Trinh_Canh_Bao_Khi_Doc_THCS.pptx   # Slide thuyết trình KHKT
-├── BaoCao_KHKT_CanhBaoKhi_THCS.pdf              # Bản báo cáo nghiên cứu hoàn chỉnh
-├── So_Nhat_Ky_Nghien_Cuu_Canh_Bao_Khi_Doc.pdf   # Sổ nhật ký nghiên cứu
-├── Kich_Ban_Thuyet_Trinh_Lop9_Canh_Bao_Khi_Doc.pdf # Kịch bản trả lời giám khảo
-└── README.md                      # Tài liệu dự án
+├── index.html                 # Ứng dụng Web Sơ đồ Đi Dây Kỹ Thuật & Giám sát SCADA (Chạy trực tiếp)
+├── wokwi-elements.bundle.js   # Bộ thư viện linh kiện Wokwi 3D
+├── code.ino                   # Mã nguồn nhúng Arduino C++ cho ESP32
+├── images/                    # Hình ảnh sơ đồ mạch & cảm biến thực tế
+│   ├── board_esp32.png
+│   ├── sensor_o2.png
+│   ├── sensor_mq7.png
+│   ├── sensor_mq4.png
+│   ├── sensor_dht22.png
+│   ├── hinh1_so_do_khoi_tong_the.png
+│   ├── hinh2_phan_tang_khi_va_dau_do.png
+│   ├── hinh2_so_do_mach_dien.png
+│   ├── hinh3_luu_do_thuat_toan.png
+│   ├── hinh3_so_do_mach_dien.png
+│   ├── hinh4_luu_do_thuat_toan.png
+│   ├── hinh4_phan_tang_khi_va_dau_do.png
+│   └── hinh5_giao_dien_web_scada.png
+├── mo_phong_3d_noi_day/       # Thư mục phụ hỗ trợ tương thích đường dẫn cũ
+│   ├── index.html
+│   ├── wokwi-elements.bundle.js
+│   ├── esp32_glb_data.js
+│   └── images/
+├── .gitignore
+└── README.md                  # Hướng dẫn dự án
 ```
 
 ---
 
-*Tác giả & Bản quyền nghiên cứu: Dự án Khoa Học Kỹ Thuật Học Sinh THCS - 2026*
+*Tác giả & Bản quyền: Dự án Khoa Học Kỹ Thuật Học Sinh THCS - 2026*

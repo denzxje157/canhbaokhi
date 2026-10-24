@@ -1,0 +1,3546 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0284c7">
+  <title>Sơ Đồ Đi Dây Kỹ Thuật - Hệ Thống Cảnh Báo Sớm Khí Độc</title>
+  <!-- Wokwi Elements Official Web Components -->
+  <script src="wokwi-elements.bundle.js"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      /* CHẾ ĐỘ SÁNG (MẶC ĐỊNH - BẢN VẼ KỸ THUẬT SẠCH SẼ, ĐỠ AI) */
+      --bg: #f8fafc;
+      --grid-dot: rgba(100, 116, 139, 0.22);
+      --mat-bg: rgba(255, 255, 255, 0.95);
+      --mat-border: #cbd5e1;
+      --mat-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+      --card-bg: #ffffff;
+      --card-border: #cbd5e1;
+      --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --panel-bg: rgba(255, 255, 255, 0.97);
+      --panel-border: #cbd5e1;
+      --row-bg: #f1f5f9;
+      --row-border: #e2e8f0;
+      --bus-vcc-bg: #fee2e2;
+      --bus-vcc-border: #dc2626;
+      --bus-vcc-text: #991b1b;
+      --bus-gnd-bg: #dcfce7;
+      --bus-gnd-border: #16a34a;
+      --bus-gnd-text: #166534;
+      --btn-bg: #ffffff;
+      --btn-border: #cbd5e1;
+      --btn-text: #1e293b;
+      
+      /* MÀU DÂY KỸ THUẬT TIÊU CHUẨN */
+      --w-vcc: #dc2626;
+      --w-gnd: #16a34a;
+      --w-i2c-sda: #2563eb;
+      --w-i2c-scl: #0284c7;
+      --w-mq7: #ea580c;
+      --w-mq4: #d97706;
+      --w-dht: #9333ea;
+      --w-rs485-a: #0284c7;
+      --w-rs485-b: #1d4ed8;
+      --w-uart: #7c3aed;
+      --w-buzz: #dc2626;
+      --w-led-r: #dc2626;
+      --w-led-y: #d97706;
+      --w-led-g: #16a34a;
+    }
+
+    /* CHẾ ĐỘ TỐI (DARK TECH) */
+    body.dark-mode {
+      --bg: #070b14;
+      --grid-dot: rgba(56, 189, 248, 0.12);
+      --mat-bg: rgba(15, 23, 42, 0.88);
+      --mat-border: rgba(56, 189, 248, 0.25);
+      --mat-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+      --card-bg: rgba(18, 26, 44, 0.95);
+      --card-border: rgba(56, 189, 248, 0.22);
+      --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --panel-bg: rgba(15, 23, 42, 0.95);
+      --panel-border: rgba(56, 189, 248, 0.28);
+      --row-bg: rgba(30, 41, 59, 0.6);
+      --row-border: rgba(51, 65, 85, 0.5);
+      --bus-vcc-bg: rgba(239, 68, 68, 0.2);
+      --bus-vcc-border: #ef4444;
+      --bus-vcc-text: #fca5a5;
+      --bus-gnd-bg: rgba(34, 197, 94, 0.2);
+      --bus-gnd-border: #22c55e;
+      --bus-gnd-text: #86efac;
+      --btn-bg: rgba(30, 41, 59, 0.85);
+      --btn-border: #475569;
+      --btn-text: #f8fafc;
+      
+      --w-vcc: #ff3838;
+      --w-gnd: #2ed573;
+      --w-i2c-sda: #00f2fe;
+      --w-i2c-scl: #38bdf8;
+      --w-mq7: #ff9f1a;
+      --w-mq4: #ffc048;
+      --w-dht: #c56cf0;
+      --w-rs485-a: #00f2fe;
+      --w-rs485-b: #38bdf8;
+      --w-uart: #c56cf0;
+      --w-buzz: #ff3838;
+      --w-led-r: #ff3838;
+      --w-led-y: #ffc048;
+      --w-led-g: #2ed573;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      max-width: 100vw;
+      max-height: 100vh;
+      position: fixed;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    /* TOP HEADER */
+    header {
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      right: 20px;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .header-title {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(18px);
+      padding: 10px 22px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      pointer-events: auto;
+    }
+
+    .header-title h1 {
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    body.dark-mode .header-title h1 {
+      color: #38bdf8;
+    }
+
+    .header-title p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    /* BUTTONS */
+    .btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--btn-text);
+      padding: 9px 15px;
+      border-radius: 9px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(12px);
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .btn:hover {
+      border-color: #0284c7;
+      transform: translateY(-1.5px);
+    }
+
+    .btn-theme {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0369a1;
+      font-weight: 700;
+    }
+    .btn-theme:hover {
+      background: #0369a1;
+    }
+
+    .btn-power {
+      background: #e2e8f0;
+      border-color: #cbd5e1;
+      color: #334155;
+    }
+    body.dark-mode .btn-power {
+      background: #1e293b;
+      border-color: #475569;
+      color: #f8fafc;
+    }
+
+    .btn-power.active {
+      background: #16a34a !important;
+      border-color: #15803d !important;
+      color: #fff !important;
+      box-shadow: 0 0 16px rgba(22, 163, 74, 0.45);
+    }
+
+    /* FILTER BAR TRUNG TÂM */
+    .filter-bar {
+      position: absolute;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 45;
+      display: flex;
+      gap: 6px;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      padding: 6px 14px;
+      border-radius: 24px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+      width: max-content;
+      max-width: calc(100vw - 32px);
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 5px 11px;
+      border-radius: 7px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+    body.dark-mode .filter-btn:hover {
+      background: #334155;
+      color: #f8fafc;
+    }
+
+    .filter-btn.active {
+      background: #0284c7;
+      color: #fff;
+      border-color: #0369a1;
+    }
+
+    /* WORKSPACE STAGE */
+    #workspace-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      cursor: grab;
+      background: 
+        radial-gradient(circle at 50% 50%, var(--bg) 0%, var(--bg) 100%),
+        radial-gradient(var(--grid-dot) 1.5px, transparent 1.5px);
+      background-size: 100% 100%, 28px 28px;
+    }
+
+    #workspace-container:active {
+      cursor: grabbing;
+    }
+
+    #pan-zoom-stage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2900px;
+      height: 1800px;
+      transform-origin: 0 0;
+      transition: none; /* KHÔNG DÙNG CSS TRANSITION ĐỂ TRÁNH NHẢY GIẬT */
+      will-change: transform;
+    }
+
+    /* SVG WIRING OVERLAY */
+    #wiring-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* BENCH MAT PLATFORMS */
+    .bench-mat {
+      position: absolute;
+      border-radius: 16px;
+      border: 2px solid var(--mat-border);
+      background: var(--mat-bg);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--mat-shadow);
+      z-index: 2;
+    }
+
+    .bench-mat-title {
+      position: absolute;
+      top: 16px;
+      left: 22px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #0369a1;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    body.dark-mode .bench-mat-title {
+      color: #38bdf8;
+    }
+
+    .bench-mat-badge {
+      font-size: 0.72rem;
+      padding: 3px 9px;
+      border-radius: 5px;
+      background: #e0f2fe;
+      border: 1px solid #7dd3fc;
+      color: #0284c7;
+      font-weight: 700;
+    }
+    body.dark-mode .bench-mat-badge {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.35);
+      color: #7dd3fc;
+    }
+
+    /* ELECTRONIC MODULE CARDS */
+    .comp-card {
+      position: absolute;
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: var(--card-shadow);
+      cursor: pointer;
+      transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .comp-card:hover {
+      border-color: #0284c7;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .comp-card.active {
+      border-color: var(--active-color, #0284c7) !important;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25), 0 10px 28px rgba(0,0,0,0.12) !important;
+    }
+
+    .comp-card-hdr {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .comp-card-repo {
+      font-size: 0.68rem;
+      color: #0284c7;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      padding: 3px 8px;
+      border-radius: 5px;
+      margin-top: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    body.dark-mode .comp-card-repo {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.25);
+      color: #38bdf8;
+    }
+    .comp-card-repo:hover {
+      background: #0284c7;
+      color: #fff;
+    }
+
+    .real-photo-box {
+      width: 140px;
+      height: 140px;
+      border-radius: 9px;
+      overflow: hidden;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    body.dark-mode .real-photo-box {
+      background: #020617;
+      border-color: #1e293b;
+    }
+
+    .real-photo-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* CONNECTION TERMINAL PORTS (KHÔNG BỊ CHE KHUẤT, RÕ RÀNG) */
+    .terminal-header {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--row-border);
+    }
+
+    .terminal-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      padding: 5px 8px;
+      background: var(--row-bg);
+      border-radius: 6px;
+      border: 1px solid var(--row-border);
+      gap: 8px;
+      position: relative;
+    }
+
+    .terminal-row span:not(.port-dot) {
+      white-space: nowrap;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .port-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #94a3b8;
+      border: 2px solid #ffffff;
+      display: inline-block;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      transition: transform 0.2s, box-shadow 0.2s;
+      flex-shrink: 0;
+    }
+
+    .comp-card.active .port-dot {
+      transform: scale(1.35);
+      box-shadow: 0 0 0 2px #0284c7;
+    }
+
+    .port-dot.p-red { background: #dc2626; }
+    .port-dot.p-green { background: #16a34a; }
+    .port-dot.p-blue { background: #2563eb; }
+    .port-dot.p-cyan { background: #0284c7; }
+    .port-dot.p-orange { background: #ea580c; }
+    .port-dot.p-amber { background: #d97706; }
+    .port-dot.p-purple { background: #9333ea; }
+
+    /* INDUSTRIAL POWER RAILS (MÁNG NGUỒN KÉP VCC & MASS GND) */
+    .bus-rail-column {
+      position: absolute;
+      top: 60px;
+      bottom: 40px;
+      width: 46px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      z-index: 4;
+    }
+
+    .bus-rail-vcc {
+      left: 325px;
+      background: var(--bus-vcc-bg);
+      border: 2px solid var(--bus-vcc-border);
+    }
+
+    .bus-rail-gnd {
+      left: 390px;
+      background: var(--bus-gnd-bg);
+      border: 2px solid var(--bus-gnd-border);
+    }
+
+    .bus-rail-label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      font-family: monospace;
+      padding: 8px 0;
+    }
+
+    .bus-rail-vcc .bus-rail-label { color: var(--bus-vcc-text); }
+    .bus-rail-gnd .bus-rail-label { color: var(--bus-gnd-text); }
+
+    .bus-tap-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      margin: 4px 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    /* SIDEBARS */
+    .sidebar-left {
+      position: absolute;
+      top: 85px;
+      left: 20px;
+      bottom: 25px;
+      width: 285px;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 14px;
+      backdrop-filter: blur(16px);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .sidebar-right {
+      position: absolute;
+      top: 85px;
+      right: 20px;
+      bottom: 25px;
+      width: 440px;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 14px;
+      backdrop-filter: blur(16px);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .panel-hdr {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--panel-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 0.86rem;
+      color: #0284c7;
+      background: var(--row-bg);
+    }
+
+    .component-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .group-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 10px 6px 4px 6px;
+    }
+
+    .comp-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--row-bg);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .comp-item:hover {
+      border-color: #0284c7;
+      background: #e2e8f0;
+    }
+    body.dark-mode .comp-item:hover {
+      background: #334155;
+    }
+
+    .comp-item.active {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.18);
+    }
+    body.dark-mode .comp-item.active {
+      background: rgba(56, 189, 248, 0.2);
+    }
+
+    .comp-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      background: #f1f5f9;
+      color: #0284c7;
+      border: 1px solid #cbd5e1;
+    }
+
+    .comp-info { flex: 1; min-width: 0; }
+    .comp-name { font-size: 0.8rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .comp-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 1px; }
+
+    /* DETAIL PANEL */
+    .detail-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .comp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 14px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      background: #e0f2fe;
+      color: #0284c7;
+      border: 1px solid #7dd3fc;
+      margin-bottom: 8px;
+    }
+
+    .comp-title-large {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .repo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      color: #0284c7;
+      text-decoration: none;
+      margin: 8px 0 12px 0;
+      font-weight: 600;
+      transition: all 0.18s;
+    }
+    body.dark-mode .repo-pill {
+      background: #1e293b;
+      border-color: #334155;
+      color: #38bdf8;
+    }
+    .repo-pill:hover {
+      background: #0284c7;
+      color: #fff;
+    }
+
+    .pin-mapping-box {
+      margin-top: 10px;
+      background: var(--row-bg);
+      border: 1px solid var(--row-border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .pin-mapping-box h4 {
+      font-size: 0.82rem;
+      color: #0284c7;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+    }
+
+    .pin-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--row-border);
+      font-size: 0.8rem;
+    }
+    .pin-row:last-child { border-bottom: none; }
+
+    .pin-from { color: var(--text); font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .pin-arrow { color: var(--text-muted); font-size: 0.72rem; }
+    .pin-to {
+      color: #0284c7;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-weight: 700;
+      background: #e0f2fe;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid #7dd3fc;
+    }
+    body.dark-mode .pin-to {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+    }
+
+    .code-snippet-box {
+      margin-top: 12px;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 9px;
+      padding: 10px 12px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 0.74rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      line-height: 1.45;
+    }
+
+    .explanation-card {
+      margin-top: 14px;
+      background: var(--row-bg);
+      border: 1px solid var(--row-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .explanation-card h4 {
+      font-size: 0.84rem;
+      color: #d97706;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+    }
+
+    .explanation-card p {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .highlight-tip {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: #fef3c7;
+      border-left: 3px solid #d97706;
+      font-size: 0.76rem;
+      color: #92400e;
+      line-height: 1.4;
+    }
+    body.dark-mode .highlight-tip {
+      background: rgba(245, 158, 11, 0.12);
+      color: #fde68a;
+    }
+
+    .physicsTip {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: #dcfce7;
+      border-left: 3px solid #16a34a;
+      font-size: 0.76rem;
+      color: #166534;
+      line-height: 1.4;
+    }
+    body.dark-mode .physicsTip {
+      background: rgba(16, 185, 129, 0.12);
+      color: #a7f3d0;
+    }
+
+    /* BOTTOM BAR */
+    .bottom-bar {
+      position: absolute;
+      bottom: 25px;
+      left: 320px;
+      right: 480px;
+      height: 56px;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      backdrop-filter: blur(16px);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .flow-status { display: flex; align-items: center; gap: 12px; }
+    .status-dot { width: 11px; height: 11px; border-radius: 50%; background: #94a3b8; }
+    .status-dot.active { background: #16a34a; box-shadow: 0 0 10px rgba(22, 163, 74, 0.7); }
+
+    .sim-levels { display: flex; gap: 8px; }
+    .btn-level {
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      border-radius: 7px;
+      border: 1px solid var(--btn-border);
+      background: var(--btn-bg);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.15s;
+    }
+
+    .btn-level.active-safe { background: #16a34a; border-color: #15803d; color: #fff; }
+    .btn-level.active-warn { background: #d97706; border-color: #b45309; color: #fff; }
+    .btn-level.active-dang { background: #dc2626; border-color: #b91c1c; color: #fff; }
+
+    /* HIỆU ỨNG RUNG VÀ CHỚP CÒI BÁO ĐỘNG */
+    @keyframes buzzVibrate {
+      0% { transform: scale(0.85) translate(0, 0); filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.9)); }
+      25% { transform: scale(0.88) translate(-2px, 1px); }
+      50% { transform: scale(0.85) translate(2px, -1px); filter: drop-shadow(0 0 16px rgba(220, 38, 38, 1)); }
+      75% { transform: scale(0.88) translate(-1px, -1px); }
+      100% { transform: scale(0.85) translate(0, 0); filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.9)); }
+    }
+    .buzzing {
+      animation: buzzVibrate 0.12s infinite ease-in-out !important;
+    }
+  
+    /* MODAL GIẢI THÍCH DỄ HIỂU LỚP 9 */
+    .guide-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+
+    .guide-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .guide-modal-content {
+      width: 92%;
+      max-width: 900px;
+      max-height: 88vh;
+      background: var(--card-bg, #ffffff);
+      border: 2px solid #0284c7;
+      border-radius: 18px;
+      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.92) translateY(20px); }
+      100% { transform: scale(1) translateY(0); }
+    }
+
+    .guide-modal-header {
+      padding: 16px 22px;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .guide-modal-header h2 {
+      font-size: 1.08rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .guide-modal-close {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .guide-modal-close:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .guide-modal-body {
+      padding: 22px 26px;
+      overflow-y: auto;
+      line-height: 1.65;
+      font-size: 0.86rem;
+      color: var(--text, #0f172a);
+    }
+
+    .guide-section {
+      background: var(--row-bg, #f1f5f9);
+      border: 1px solid var(--row-border, #cbd5e1);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+    }
+
+    .guide-section h3 {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: #0284c7;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    body.dark-mode .guide-section h3 {
+      color: #38bdf8;
+    }
+
+    .guide-callout {
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin: 10px 0;
+      font-size: 0.82rem;
+    }
+
+    .guide-callout-green {
+      background: #dcfce7;
+      border-left: 4px solid #16a34a;
+      color: #166534;
+    }
+    body.dark-mode .guide-callout-green {
+      background: rgba(22, 163, 74, 0.15);
+      color: #86efac;
+    }
+
+    .guide-callout-orange {
+      background: #ffedd5;
+      border-left: 4px solid #ea580c;
+      color: #9a3412;
+    }
+    body.dark-mode .guide-callout-orange {
+      background: rgba(234, 88, 12, 0.15);
+      color: #fdba74;
+    }
+
+    .guide-callout-red {
+      background: #fee2e2;
+      border-left: 4px solid #dc2626;
+      color: #991b1b;
+    }
+    body.dark-mode .guide-callout-red {
+      background: rgba(220, 38, 38, 0.15);
+      color: #fca5a5;
+    }
+
+    .guide-step-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .guide-step-card {
+      background: var(--card-bg, #ffffff);
+      border: 1px solid var(--row-border, #cbd5e1);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .guide-step-card h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+  
+    /* PHẦN GIẢI THÍCH THỰC TẾ TRONG EXPLANATION-CARD (DỄ HIỂU LỚP 9) */
+    .explanation-card {
+      margin-top: 14px;
+      background: var(--row-bg);
+      border: 1.5px solid var(--row-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .why-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #ea580c;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+    }
+    body.dark-mode .why-title {
+      color: #ff9f1a;
+    }
+
+    .why-desc {
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .flow-steps-box {
+      background: var(--card-bg);
+      border: 1px solid var(--row-border);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .flow-steps-hdr {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #0284c7;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    body.dark-mode .flow-steps-hdr {
+      color: #38bdf8;
+    }
+
+    .flow-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--row-border);
+    }
+    .flow-step-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .step-badge {
+      background: #0284c7;
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+  
+    /* ==========================================================================
+       UX/UI HOÀN HẢO & TỐI ƯU HÓA RESPONSIVE MOBILE, LAPTOP, TABLET
+       ========================================================================== */
+    
+    /* NÚT THU GỌN BẢNG ĐIỀU KHIỂN */
+    .panel-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .panel-close-btn:hover {
+      background: var(--row-border);
+      color: var(--text);
+    }
+
+    /* THANH KÉO DÀNH CHO BOTTOM SHEET MOBILE */
+    .sheet-handle-bar {
+      display: none;
+      width: 44px;
+      height: 5px;
+      border-radius: 3px;
+      background: var(--mat-border);
+      margin: 8px auto 4px auto;
+    }
+
+    /* NÚT ĐIỀU KHIỂN ZOOM NHANH TRÊN MÀN HÌNH */
+    .canvas-quick-controls {
+      position: absolute;
+      bottom: 25px;
+      right: 25px;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      padding: 5px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      backdrop-filter: blur(12px);
+    }
+    .quick-zoom-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .quick-zoom-btn:hover {
+      background: #0284c7;
+      color: #fff;
+      border-color: #0369a1;
+    }
+
+    /* BACKDROP PHỦ MỜ KHI MỞ DRAWER TRÊN MOBILE */
+    .mobile-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      z-index: 85;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    .mobile-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* TIÊU ĐỀ THƯƠNG HIỆU GỌN GÀNG */
+    .brand-box {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    body.dark-mode .brand-title {
+      color: #38bdf8;
+    }
+    .brand-sub {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    /* HIỆU ỨNG THU GỌN SIDEBAR MƯỢT MÀ (CHỈ TRÊN DESKTOP) */
+    .sidebar-left, .sidebar-right {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+    }
+    @media (min-width: 901px) {
+      .sidebar-left.collapsed {
+        transform: translateX(-310px) !important;
+        pointer-events: none !important;
+        opacity: 0 !important;
+      }
+      .sidebar-right.collapsed {
+        transform: translateX(460px) !important;
+        pointer-events: none !important;
+        opacity: 0 !important;
+      }
+    }
+
+    /* ĐỊNH DẠNG FILTER BAR KHÔNG BAO GIỜ BỊ ĐÈ */
+    .filter-bar {
+      top: 72px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      max-width: calc(100vw - 32px) !important;
+      overflow-x: auto !important;
+      white-space: nowrap !important;
+      scrollbar-width: none !important;
+      border-radius: 30px !important;
+      padding: 5px 12px !important;
+      z-index: 45 !important;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+
+    /* ĐỊNH DẠNG BOTTOM BAR TRUNG TÂM */
+    .bottom-bar {
+      bottom: 20px !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+      max-width: 90vw !important;
+      z-index: 45 !important;
+    }
+
+    /* ==========================================================================
+       MEDIA QUERIES CHO MÀN HÌNH LAPTOP VÀ IPAD (DƯỚI 1280px)
+       ========================================================================== */
+    @media (max-width: 1280px) {
+      .sidebar-right {
+        width: 360px !important;
+      }
+      .sidebar-left {
+        width: 260px !important;
+      }
+      .hide-md {
+        display: none !important;
+      }
+      .bottom-bar {
+        min-width: auto !important;
+        width: 92vw !important;
+      }
+    }
+
+    /* ==========================================================================
+       THANH ĐIỀU HƯỚNG DƯỚI ĐÁY DÀNH CHO MOBILE (BOTTOM NAVIGATION BAR)
+       ========================================================================== */
+    .mobile-nav-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--panel-bg);
+      border-top: 1px solid var(--panel-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 95;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-tab {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 5px 1px;
+      transition: all 0.18s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-tab span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      font-size: 0.64rem;
+    }
+
+    .nav-tab i {
+      font-size: 1.05rem;
+      transition: transform 0.18s ease, color 0.18s ease;
+    }
+
+    .nav-tab.active {
+      color: #0284c7;
+    }
+
+    body.dark-mode .nav-tab.active {
+      color: #38bdf8;
+    }
+
+    .nav-tab.active i {
+      transform: translateY(-2px) scale(1.12);
+    }
+
+    .show-mobile { display: none; }
+
+    /* ==========================================================================
+       MEDIA QUERIES TỐI ƯU HÓA HOÀN TOÀN CHO MOBILE & TABLET (DƯỚI 900px)
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .hide-mobile { display: none !important; }
+      .show-mobile { display: inline !important; }
+
+      .mobile-nav-bar {
+        display: flex !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      /* HEADER GỌN GÀNG TRÊN ĐIỆN THOẠI */
+      header {
+        top: 6px !important;
+        left: 6px !important;
+        right: 6px !important;
+        width: auto !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+      }
+      .header-title {
+        padding: 5px 10px !important;
+        border-radius: 18px !important;
+        flex-shrink: 0 !important;
+      }
+      .brand-title {
+        font-size: 0.78rem !important;
+        white-space: nowrap !important;
+      }
+      .brand-sub {
+        display: none !important;
+      }
+      .header-actions {
+        display: flex !important;
+        gap: 5px !important;
+        flex-shrink: 0 !important;
+        align-items: center !important;
+      }
+      /* Ẩn các nút dài trên header mobile vì đã có Bottom Navigation */
+      #btn-toggle-left, #btn-toggle-right, #btn-open-guide, .hide-sm {
+        display: none !important;
+      }
+      .btn {
+        padding: 5px 8px !important;
+        font-size: 0.72rem !important;
+        border-radius: 16px !important;
+        gap: 4px !important;
+        height: 32px !important;
+      }
+
+      /* FILTER BAR CO DÃN NẰM DƯỚI HEADER */
+      .filter-bar {
+        top: 52px !important;
+        left: 8px !important;
+        right: 8px !important;
+        transform: none !important;
+        margin: 0 auto !important;
+        padding: 4px 10px !important;
+        font-size: 0.7rem !important;
+        width: max-content !important;
+        max-width: calc(100% - 16px) !important;
+        height: 38px !important;
+        box-sizing: border-box !important;
+      }
+
+      /* SIDEBAR TRÁI: MOBILE DRAWER TRƯỢT TỪ BÊN TRÁI */
+      .sidebar-left,
+      .sidebar-left.collapsed {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: 85vw !important;
+        max-width: 320px !important;
+        border-radius: 0 20px 20px 0 !important;
+        z-index: 100 !important;
+        box-shadow: 10px 0 40px rgba(0,0,0,0.4) !important;
+        transform: translateX(-105%) !important;
+        opacity: 1 !important;
+        pointer-events: none !important;
+      }
+      .sidebar-left.mobile-open {
+        transform: translateX(0) !important;
+        pointer-events: auto !important;
+      }
+
+      /* SIDEBAR PHẢI: BOTTOM SHEET TRƯỢT TỪ DƯỚI LÊN (CHUẨN APP DI ĐỘNG NATIVE) */
+      .sidebar-right,
+      .sidebar-right.collapsed {
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        top: auto !important;
+        width: 100% !important;
+        height: 75vh !important;
+        max-height: 80vh !important;
+        border-radius: 24px 24px 0 0 !important;
+        z-index: 100 !important;
+        box-shadow: 0 -10px 45px rgba(0,0,0,0.4) !important;
+        transform: translateY(105%) !important;
+        opacity: 1 !important;
+        pointer-events: none !important;
+      }
+      .sidebar-right.mobile-open {
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+      }
+      .sheet-handle-bar {
+        display: block !important;
+      }
+
+      /* FLOATING SIMULATION BAR NẰM TRÊN BOTTOM NAVIGATION BAR */
+      .bottom-bar {
+        position: fixed !important;
+        bottom: 68px !important;
+        left: 8px !important;
+        right: 8px !important;
+        transform: none !important;
+        margin: 0 auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: 440px !important;
+        height: 44px !important;
+        border-radius: 22px !important;
+        padding: 0 6px !important;
+        z-index: 85 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.18) !important;
+        box-sizing: border-box !important;
+      }
+      .flow-status {
+        display: none !important;
+      }
+      .sim-levels {
+        display: flex !important;
+        width: 100% !important;
+        justify-content: space-between !important;
+        gap: 4px !important;
+      }
+      .btn-level {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        padding: 5px 3px !important;
+        font-size: 0.65rem !important;
+        border-radius: 14px !important;
+        white-space: nowrap !important;
+        text-align: center !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+      }
+
+      /* NÚT ZOOM FLOATING TRÊN MOBILE */
+      .canvas-quick-controls {
+        bottom: 122px !important;
+        right: 12px !important;
+        z-index: 80 !important;
+      }
+    }
+
+  </style>
+</head>
+<body class="light-mode">
+
+  <!-- TOP HEADER -->
+    <!-- TOP HEADER ĐỒNG BỘ THÔNG MINH -->
+  <header>
+    <div class="header-title">
+      <div class="brand-box">
+        <div class="brand-title">
+          <i class="fa-solid fa-microchip"></i> <span class="hide-mobile">SƠ ĐỒ ĐI DÂY KỸ THUẬT</span><span class="show-mobile">SƠ ĐỒ ĐI DÂY</span>
+        </div>
+        <div class="brand-sub">Hệ Thống Cảnh Báo Sớm Khí Độc Trong Không Gian Kín</div>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <!-- Nút Bật / Tắt Nguồn Pin -->
+      <button class="btn btn-power" id="btn-power" title="Bật Nguồn Hệ Thống">
+        <i class="fa-solid fa-power-off"></i> <span id="power-text">5.2V</span>
+      </button>
+
+      <!-- Nút đổi nền Sáng / Tối -->
+      <button class="btn btn-theme" id="btn-theme-toggle" title="Chuyển Sáng / Tối">
+        <i class="fa-solid fa-sun"></i> <span class="hide-md" id="theme-text">Sáng</span>
+      </button>
+
+      <!-- Nút Reset Vị Trí Căn Giữa -->
+      <button class="btn" id="btn-reset-view" title="Căn chỉnh toàn cảnh">
+        <i class="fa-solid fa-arrows-rotate"></i> <span class="hide-md">Căn Giữa</span>
+      </button>
+
+      <!-- Nút mở danh sách thiết bị (Desktop) -->
+      <button class="btn hide-sm" id="btn-toggle-left" title="Danh Sách 13 Thiết Bị">
+        <i class="fa-solid fa-bars-staggered"></i> Thiết Bị (13)
+      </button>
+
+      <!-- Nút mở cẩm nang dễ hiểu lớp 9 (Desktop) -->
+      <button class="btn btn-guide hide-sm" id="btn-open-guide" style="background: #16a34a; color: #ffffff; border-color: #15803d; font-weight: 700;">
+        <i class="fa-solid fa-book-open-reader"></i> Giải Thích Lớp 9
+      </button>
+
+      <!-- Nút mở bảng chi tiết bên phải (Desktop) -->
+      <button class="btn hide-sm" id="btn-toggle-right" title="Xem Chi Tiết & Quy Trình">
+        <i class="fa-solid fa-circle-info"></i> Chi Tiết
+      </button>
+    </div>
+  </header>
+
+  <!-- BỘ LỌC TỪNG CỤM DÂY NHANH -->
+  <div class="filter-bar">
+    <span style="font-size: 0.74rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-right: 4px;">
+      <i class="fa-solid fa-diagram-project"></i> Lọc Mạch:
+    </span>
+    <button class="filter-btn active" data-filter="all" onclick="filterCircuit('all', this)"><i class="fa-solid fa-network-wired"></i> Tất Cả (Hiện Hết Dây)</button>
+    <button class="filter-btn" data-filter="battery_pack" onclick="filterCircuit('battery_pack', this)"><span class="port-dot p-green"></span> Pin 12V & Giảm Áp</button>
+    <button class="filter-btn" data-filter="o2_sensor" onclick="filterCircuit('o2_sensor', this)"><span class="port-dot p-blue"></span> Oxy (I2C + Nguồn)</button>
+    <button class="filter-btn" data-filter="mq7_sensor" onclick="filterCircuit('mq7_sensor', this)"><span class="port-dot p-orange"></span> MQ-7 (CO)</button>
+    <button class="filter-btn" data-filter="mq4_sensor" onclick="filterCircuit('mq4_sensor', this)"><span class="port-dot p-amber"></span> MQ-4 (Metan)</button>
+    <button class="filter-btn" data-filter="dht22_sensor" onclick="filterCircuit('dht22_sensor', this)"><span class="port-dot p-purple"></span> DHT22 (Nhiệt/Ẩm)</button>
+    <button class="filter-btn" data-filter="cable_cat5e" onclick="filterCircuit('cable_cat5e', this)"><span class="port-dot p-orange"></span> Cáp Cat5e 3-3-2</button>
+    <button class="filter-btn" data-filter="alarm_system" onclick="filterCircuit('alarm_system', this)"><span class="port-dot p-red"></span> Còi & LED</button>
+  </div>
+
+  <!-- SIDEBAR TRÁI: DANH SÁCH THIẾT BỊ -->
+  <div class="sidebar-left" id="sidebar-left">
+    <div class="panel-hdr">
+      <span><i class="fa-solid fa-layer-group"></i> THIẾT BỊ HỆ THỐNG</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 0.72rem; color: var(--text-muted);">13 Module</span>
+        <button class="panel-close-btn" id="btn-close-left" title="Đóng bảng"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="component-list" id="comp-list"></div>
+  </div>
+
+  
+  <!-- MODAL GIẢI THÍCH DỄ HIỂU LỚP 9 (TẠI SAO PHẢI NỐI DÂY NHƯ VẬY?) -->
+  <div id="guide-modal" class="guide-modal-overlay">
+    <div class="guide-modal-content">
+      <div class="guide-modal-header">
+        <h2><i class="fa-solid fa-graduation-cap"></i> GIẢI THÍCH SƠ ĐỒ ĐI DÂY THỰC TẾ (DỄ HIỂU CHO HỌC SINH LỚP 9)</h2>
+        <button class="guide-modal-close" id="btn-close-guide" title="Đóng">&times;</button>
+      </div>
+      <div class="guide-modal-body">
+        
+        <!-- PHẦN 1: CÂU CHUYỆN HAI NGƯỜI THÁM HIỂM -->
+        <div class="guide-section">
+          <h3><i class="fa-solid fa-compass"></i> 1. CÂU CHUYỆN: "HAI NGƯỜI THÁM HIỂM HẦM TỐI"</h3>
+          <p>Để hiểu toàn bộ dự án mà không cần nhớ những từ kỹ thuật đau đầu, các em hãy tưởng tượng hệ thống gồm <b>2 người đồng đội</b> phối hợp cùng nhau:</p>
+          <div class="guide-step-grid">
+            <div class="guide-step-card">
+              <h4><i class="fa-solid fa-robot" style="color: #16a34a;"></i> Chú lính tí hon (ESP32 dưới đáy)</h4>
+              <p style="font-size: 0.78rem; color: var(--text-muted);">Được thả xuống hầm sâu đầy bùn rác tăm tối. Mang theo 4 chiếc "mũi ngửi" (cảm biến) để liên tục hít thở và đo nồng độ khí độc.</p>
+            </div>
+            <div class="guide-step-card">
+              <h4><i class="fa-solid fa-user-shield" style="color: #2563eb;"></i> Đội trưởng chỉ huy (ESP32 trên bờ)</h4>
+              <p style="font-size: 0.78rem; color: var(--text-muted);">Đứng an toàn trên mặt đất. Nhìn số liệu trên màn hình, phát Wi-Fi cho điện thoại mọi người cùng xem và sẵn sàng bấm còi hú báo động.</p>
+            </div>
+            <div class="guide-step-card">
+              <h4><i class="fa-solid fa-ethernet" style="color: #ea580c;"></i> Dây cáp mạng Cat5e (20 - 30 mét)</h4>
+              <p style="font-size: 0.78rem; color: var(--text-muted);">Sợi dây liên lạc nối giữa 2 người: vừa tiếp tế điện từ trên bờ xuống, vừa truyền tin tức từ dưới đáy phóng lên.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHẦN 2: TẠI SAO CẦN 3 SỢI DÂY -->
+        <div class="guide-section">
+          <h3><i class="fa-solid fa-plug"></i> 2. TẠI SAO MỌI CẢM BIẾN LUÔN CẦN 3 SỢI DÂY?</h3>
+          <p>Nhiều bạn thắc mắc: <i>"Tại sao mỗi cảm biến lại cắm tới 3 sợi dây rườm rà thế?"</i> Rất đơn giản, nó giống hệt chiếc điện thoại của các em:</p>
+          <ul style="margin-left: 20px; margin-top: 6px; font-size: 0.82rem;">
+            <li><b>Dây VCC (Đỏ - Cực Dương):</b> Giống như cắm sạc pin, đây là đường <b>cấp điện 5V</b> để nuôi cảm biến sống và nung nóng lõi đo.</li>
+            <li><b>Dây GND (Xanh lá - Cực Âm/Mass):</b> Đường dây khép kín mạch điện để dòng điện chạy về nguồn (theo bài dòng điện Vật lý 7 và 9).</li>
+            <li><b>Dây Tín Hiệu (Data / Analog):</b> Đây là <b>"chiếc micro nói chuyện"</b>. Sau khi ngửi thấy khí, cảm biến dùng sợi dây này để báo số liệu về cho ESP32.</li>
+          </ul>
+        </div>
+
+        <!-- PHẦN 3: 4 CHIẾC MŨI NGỬI NÓI CHUYỆN NHƯ THẾ NÀO -->
+        <div class="guide-section">
+          <h3><i class="fa-solid fa-lungs"></i> 3. 4 CHIẾC "MŨI NGỬI" NÓI CHUYỆN VỚI ESP32 DƯỚI ĐÁY NHƯ THẾ NÀO?</h3>
+          <div class="guide-step-grid">
+            <div class="guide-step-card">
+              <h4 style="color: #ea580c;"><i class="fa-solid fa-skull-crossbones"></i> Khí CO (MQ-7) & Gas (MQ-4)</h4>
+              <p style="font-size: 0.78rem;">Dùng chân <b>A0 (Analog)</b> cắm vào chân <b>GPIO 34 và GPIO 35</b>. Chân A0 giống một cái đồng hồ đo: khí độc càng đậm đặc thì điện áp phát ra càng cao. ESP32 chỉ cần đo độ mạnh yếu của điện áp là biết ngay có bao nhiêu phần triệu (ppm) khí độc.</p>
+            </div>
+            <div class="guide-step-card">
+              <h4 style="color: #0284c7;"><i class="fa-solid fa-lungs"></i> Cảm biến Oxy (DFRobot)</h4>
+              <p style="font-size: 0.78rem;">Dùng 2 dây <b>SDA (Dữ liệu)</b> và <b>SCL (Nhịp đồng hồ)</b> cắm vào <b>GPIO 21 và GPIO 22</b>. Giống như hai người gõ nhịp: một dây gõ "tíc tắc", dây kia đọc to: <i>"Oxy đang là 20.9%!"</i>, siêu chuẩn xác.</p>
+            </div>
+            <div class="guide-step-card">
+              <h4 style="color: #9333ea;"><i class="fa-solid fa-temperature-half"></i> Nhiệt Ẩm (DHT22)</h4>
+              <p style="font-size: 0.78rem;">Dùng chân <b>DATA</b> cắm vào <b>GPIO 4</b>. Cống rãnh rất ẩm ướt làm cảm biến khí dễ bị báo sai. DHT22 báo nhiệt độ và độ ẩm về để ESP32 "bù trừ sai số", không bao giờ báo động giả.</p>
+            </div>
+            <div class="guide-step-card">
+              <h4 style="color: #16a34a;"><i class="fa-solid fa-envelope-open-text"></i> Bức thư báo cáo (Gói JSON)</h4>
+              <p style="font-size: 0.78rem;">ESP32 dưới đáy gom cả 5 con số vào 1 dòng chữ báo cáo: <code>{"o2":20.9, "co":0, "ch4":0, "t":28, "h":80}</code> rồi gửi qua chip phát loa <b>MAX485</b> phóng lên mặt đất.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHẦN 4: BÍ MẬT CÁP CAT5E & VẬT LÝ 9 -->
+        <div class="guide-section">
+          <h3><i class="fa-solid fa-bolt"></i> 4. SÁNG KIẾN VẬT LÝ 9: TẠI SAO CHẬP CỤM DÂY 3 - 3 - 2?</h3>
+          <div class="guide-callout guide-callout-green">
+            <b>Công thức Điện trở dây dẫn (Vật lý lớp 9):</b> \( R = 
+ho \cdot rac{l}{S} \)
+          </div>
+          <p style="font-size: 0.8rem; margin-top: 6px;">
+            Sợi dây cáp mạng Cat5e có lõi đồng rất mảnh (tiết diện \(S\) nhỏ xíu). Dây dài tới 20 mét thì điện trở \(R\) rất lớn. Các cảm biến nung nhiệt dưới đáy ăn dòng điện rất khỏe. Nếu chỉ dùng 1 sợi dây nhỏ xíu, điện sẽ bị rơi rớt dọc đường (sụt áp): trên bờ cấp 5V nhưng xuống đáy chỉ còn 3.5V làm cảm biến chết ngất!
+          </p>
+          <div class="guide-callout guide-callout-orange">
+            <b>Giải pháp sáng kiến của nhóm:</b>
+            <ul style="margin-left: 20px; margin-top: 4px;">
+              <li><b>Chập 3 sợi làm 1 đường Dương (+5.2V):</b> Tiết diện \(S\) tăng gấp 3 &rarr; Điện trở \(R\) <b>giảm 3 lần</b>!</li>
+              <li><b>Chập 3 sợi làm 1 đường Mass (GND):</b> Đường về của dòng điện cũng giảm điện trở 3 lần!</li>
+              <li><b>2 sợi còn lại (Cặp xoắn A & B):</b> Dùng truyền tín hiệu vi sai RS-485 chống mọi sóng nhiễu sấm sét, độ ẩm.</li>
+              <li><b>Chỉnh nguồn LM2596 lên 5.2V:</b> Bù trừ đúng 0.2V rơi rớt dọc đường cáp 20m &rarr; Xuống tới đáy hầm điện áp luôn chuẩn đét <b>5.0V</b> tròn trịa!</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- PHẦN 5: TRÊN MẶT ĐẤT LÀM GÌ ĐỂ CỨU MẠNG NGƯỜI -->
+        <div class="guide-section">
+          <h3><i class="fa-solid fa-bullhorn" style="color: #dc2626;"></i> 5. TRÊN MẶT ĐẤT, ESP32 MASTER LÀM GÌ ĐỂ CỨU MẠNG NGƯỜI?</h3>
+          <p>Khi chip MAX485 trên bờ đón lấy bức thư gửi từ dưới đáy, nó chuyển vào chân <b>GPIO 16 (RX2)</b> của ESP32 Master trên mặt đất. Đội trưởng Master lập tức làm 3 việc:</p>
+          <ul style="margin-left: 20px; margin-top: 6px; font-size: 0.82rem;">
+            <li><b>Chiếu lên Màn hình OLED (chân 21, 22):</b> Người chỉ huy liếc nhìn là thấy ngay nồng độ Oxy và khí độc.</li>
+            <li><b>Tự phát sóng Wi-Fi:</b> Ai cầm điện thoại lại gần mở trình duyệt là xem được biểu đồ sóng thời gian thực mà <b>hoàn toàn không cần Internet hay 4G</b>.</li>
+            <li><b>Điều khiển Còi Hú và 3 Đèn LED (chân 23, 19, 5, 18):</b>
+              <br>&bull; <span style="color: #16a34a; font-weight: 700;">Đèn Xanh:</span> An toàn, được phép bước xuống.
+              <br>&bull; <span style="color: #d97706; font-weight: 700;">Đèn Vàng:</span> Có dấu hiệu khí lạ, phải bật quạt thông gió.
+              <br>&bull; <span style="color: #dc2626; font-weight: 700;">Đèn Đỏ + Còi Hú Inh Ỏi:</span> Nguy hiểm chết người! Oxy &lt; 18% hoặc có khí độc!
+            </li>
+          </ul>
+
+          <div class="guide-callout guide-callout-red" style="margin-top: 10px;">
+            <b>ĐIỂM CỐT LÕI CỨU SỐNG CON NGƯỜI ("BỨC TƯỜNG ÂM THANH"):</b><br>
+            Máy đo cầm tay hiện nay bắt công nhân phải cầm máy bước xuống hầm mới đo được. Khi người dưới ngất đi, người trên bờ không biết gì sẽ nhảy xuống cứu và chết chùm!
+            <br>&rarr; Hệ thống của nhóm thả xuống đo trước khi con người bước vào. Chiếc còi hú công suất lớn đặt ngay miệng hầm đóng vai trò như một <b>"BỨC TƯỜNG ÂM THANH"</b> đanh thép, cảnh báo trực diện làm người trên bờ giật mình khựng lại, <b>dứt khoát ngăn chặn thảm kịch nhảy xuống cứu mù quáng!</b>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE PAN & ZOOM STAGE -->
+  <div id="workspace-container">
+    <div id="pan-zoom-stage">
+      <!-- SVG WIRING OVERLAY -->
+      <svg id="wiring-svg">
+        <g id="wire-group"></g>
+        <g id="particles-group"></g>
+      </svg>
+
+      <!-- 1. BỆ ĐỠ KHỐI KHÔNG GIAN KÍN (SLAVE) - KHOẢNG CÁCH RỘNG RÃI 1620px -->
+      <div class="bench-mat" style="left: 50px; top: 100px; width: 1100px; height: 1620px;">
+        <div class="bench-mat-title">
+          <i class="fa-solid fa-dungeon"></i> KHỐI DƯỚI ĐÁY KHÔNG GIAN KÍN (SLAVE)
+          <span class="bench-mat-badge">Thu thập 5 thông số khí & Gom gói JSON</span>
+        </div>
+
+        <!-- MÁNG NGUỒN KÉP VCC 5V & MASS GND DỌC BẢN VẼ -->
+        <div class="bus-rail-column bus-rail-vcc">
+          <span class="bus-rail-label"><i class="fa-solid fa-bolt"></i> VCC 5V BUS RAIL</span>
+          <div class="bus-tap-dot p-red" id="port-rail-vcc-o2" title="Cấp 5V cho Oxy"></div>
+          <div class="bus-tap-dot p-red" id="port-rail-vcc-mq7" title="Cấp 5V nung MQ-7"></div>
+          <div class="bus-tap-dot p-red" id="port-rail-vcc-mq4" title="Cấp 5V nung MQ-4"></div>
+          <div class="bus-tap-dot p-red" id="port-rail-vcc-dht22" title="Cấp 5V cho DHT22"></div>
+          <div class="bus-tap-dot p-red" id="port-rail-vcc-feed" title="Nhận 5.2V từ Cáp Cat5e"></div>
+        </div>
+
+        <div class="bus-rail-column bus-rail-gnd">
+          <span class="bus-rail-label"><i class="fa-solid fa-shield"></i> GND MASS RAIL</span>
+          <div class="bus-tap-dot p-green" id="port-rail-gnd-o2" title="Mass Oxy"></div>
+          <div class="bus-tap-dot p-green" id="port-rail-gnd-mq7" title="Mass MQ-7"></div>
+          <div class="bus-tap-dot p-green" id="port-rail-gnd-mq4" title="Mass MQ-4"></div>
+          <div class="bus-tap-dot p-green" id="port-rail-gnd-dht22" title="Mass DHT22"></div>
+          <div class="bus-tap-dot p-green" id="port-rail-gnd-feed" title="Mass chung Cáp Cat5e"></div>
+        </div>
+
+        <!-- CẢM BIẾN OXY DFROBOT (SEN0496 / SEN0322) - TOP: 70px -->
+        <div class="comp-card" id="card-o2_sensor" style="left: 40px; top: 70px; width: 250px;" onclick="selectComponent('o2_sensor')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-lungs" style="color: #0284c7;"></i> Cảm Biến Oxy DFRobot</div>
+          <div class="real-photo-box">
+            <img src="images/sensor_o2.png" alt="DFRobot Gravity O2">
+          </div>
+          <a class="comp-card-repo" href="https://github.com/DFRobot/DFRobot_OxygenSensor" target="_blank"><i class="fa-brands fa-github"></i> DFRobot_OxygenSensor</a>
+          <div class="terminal-header">
+            <div class="terminal-row"><span>SCL (Clock)</span><span class="port-dot p-cyan" id="port-o2-scl"></span></div>
+            <div class="terminal-row"><span>SDA (Data)</span><span class="port-dot p-blue" id="port-o2-sda"></span></div>
+            <div class="terminal-row"><span>VCC (Nguồn)</span><span class="port-dot p-red" id="port-o2-vcc"></span></div>
+            <div class="terminal-row"><span>GND (Mass)</span><span class="port-dot p-green" id="port-o2-gnd"></span></div>
+          </div>
+        </div>
+
+        <!-- CẢM BIẾN KHÍ CO MQ-7 - TOP: 450px (KHOẢNG CÁCH RỘNG RÃI) -->
+        <div class="comp-card" id="card-mq7_sensor" style="left: 40px; top: 450px; width: 250px;" onclick="selectComponent('mq7_sensor')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-skull-crossbones" style="color: #ea580c;"></i> Khí Than CO (MQ-7)</div>
+          <div class="real-photo-box">
+            <img src="images/sensor_mq7.png" alt="Winsen MQ-7">
+          </div>
+          <a class="comp-card-repo" href="https://github.com/miguel5612/MQSensorsLib" target="_blank"><i class="fa-brands fa-github"></i> miguel5612/MQSensorsLib</a>
+          <div class="terminal-header">
+            <div class="terminal-row"><span>A0 (Analog)</span><span class="port-dot p-orange" id="port-mq7-a0"></span></div>
+            <div class="terminal-row"><span>VCC (5V Nung)</span><span class="port-dot p-red" id="port-mq7-vcc"></span></div>
+            <div class="terminal-row"><span>GND (Mass Nung)</span><span class="port-dot p-green" id="port-mq7-gnd"></span></div>
+          </div>
+        </div>
+
+        <!-- CẢM BIẾN KHÍ GAS/METAN MQ-4 - TOP: 830px (KHOẢNG CÁCH RỘNG RÃI) -->
+        <div class="comp-card" id="card-mq4_sensor" style="left: 40px; top: 830px; width: 250px;" onclick="selectComponent('mq4_sensor')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-fire-flame-simple" style="color: #d97706;"></i> Khí Gas Metan (MQ-4)</div>
+          <div class="real-photo-box">
+            <img src="images/sensor_mq4.png" alt="Winsen MQ-4">
+          </div>
+          <a class="comp-card-repo" href="https://github.com/miguel5612/MQSensorsLib" target="_blank"><i class="fa-brands fa-github"></i> miguel5612/MQSensorsLib</a>
+          <div class="terminal-header">
+            <div class="terminal-row"><span>A0 (Analog)</span><span class="port-dot p-amber" id="port-mq4-a0"></span></div>
+            <div class="terminal-row"><span>VCC (5V Nung)</span><span class="port-dot p-red" id="port-mq4-vcc"></span></div>
+            <div class="terminal-row"><span>GND (Mass Nung)</span><span class="port-dot p-green" id="port-mq4-gnd"></span></div>
+          </div>
+        </div>
+
+        <!-- CẢM BIẾN NHIỆT ĐỘ - ĐỘ ẨM DHT22 - TOP: 1210px (KHOẢNG CÁCH RỘNG RÃI) -->
+        <div class="comp-card" id="card-dht22_sensor" style="left: 40px; top: 1210px; width: 250px;" onclick="selectComponent('dht22_sensor')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-temperature-half" style="color: #9333ea;"></i> Nhiệt Ẩm DHT22</div>
+          <div style="transform: scale(0.92); margin: -4px 0;">
+            <wokwi-dht22></wokwi-dht22>
+          </div>
+          <a class="comp-card-repo" href="https://github.com/adafruit/DHT-sensor-library" target="_blank"><i class="fa-brands fa-github"></i> adafruit/DHT-sensor-library</a>
+          <div class="terminal-header">
+            <div class="terminal-row"><span>DATA (1-Wire)</span><span class="port-dot p-purple" id="port-dht22-data"></span></div>
+            <div class="terminal-row"><span>VCC (3.3-5V)</span><span class="port-dot p-red" id="port-dht22-vcc"></span></div>
+            <div class="terminal-row"><span>GND (Mass)</span><span class="port-dot p-green" id="port-dht22-gnd"></span></div>
+          </div>
+        </div>
+
+        <!-- BO MẠCH VI ĐIỀU KHIỂN ESP32 SLAVE (CHÂN TRÁI NHẬN CẢM BIẾN, CHÂN PHẢI XUẤT MAX485) -->
+        <div class="comp-card" id="card-esp32_slave" style="left: 460px; top: 520px; width: 300px;" onclick="selectComponent('esp32_slave')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-microchip" style="color: #16a34a;"></i> ESP32 SLAVE (DƯỚI ĐÁY)</div>
+          <div style="transform: scale(0.96); margin: 6px 0;">
+            <wokwi-esp32-devkit-v1></wokwi-esp32-devkit-v1>
+          </div>
+          <div style="font-size: 0.7rem; color: #0284c7; text-align: center; margin-top: 4px; font-weight: 700;">NodeMCU-32S Dual Core 240MHz</div>
+          
+          <div class="terminal-header">
+            <!-- CHÂN ĐẦU VÀO BÊN TRÁI (TỪ CẢM BIẾN & MÁNG NGUỒN) -->
+            <div class="terminal-row"><span class="port-dot p-blue" id="port-esp32s-d21"></span><span>GPIO 21 (I2C SDA Oxy)</span></div>
+            <div class="terminal-row"><span class="port-dot p-cyan" id="port-esp32s-d22"></span><span>GPIO 22 (I2C SCL Oxy)</span></div>
+            <div class="terminal-row"><span class="port-dot p-orange" id="port-esp32s-gpio35"></span><span>GPIO 35 (ADC1 MQ-7)</span></div>
+            <div class="terminal-row"><span class="port-dot p-amber" id="port-esp32s-gpio34"></span><span>GPIO 34 (ADC1 MQ-4)</span></div>
+            <div class="terminal-row"><span class="port-dot p-purple" id="port-esp32s-d4"></span><span>GPIO 4 (1-Wire DHT22)</span></div>
+            <div class="terminal-row"><span class="port-dot p-red" id="port-esp32s-vin"></span><span>VIN (+5.2V Nguồn Cáp)</span></div>
+            <div class="terminal-row"><span class="port-dot p-green" id="port-esp32s-gnd"></span><span>GND (Mass Chung)</span></div>
+            
+            <!-- CHÂN ĐẦU RA BÊN PHẢI (SANG MAX485 - KHÔNG ĐÈ LÊN CHỮ) -->
+            <div class="terminal-row"><span>UART2 TX2 (GPIO 17)</span><span class="port-dot p-purple" id="port-esp32s-tx2"></span></div>
+            <div class="terminal-row"><span>UART2 RX2 (GPIO 16)</span><span class="port-dot p-purple" id="port-esp32s-rx2"></span></div>
+            <div class="terminal-row"><span>5V Nuôi MAX485</span><span class="port-dot p-red" id="port-esp32s-vcc-out"></span></div>
+            <div class="terminal-row"><span>GND Mass MAX485</span><span class="port-dot p-green" id="port-esp32s-gnd-out"></span></div>
+          </div>
+        </div>
+
+        <!-- MODULE MAX485 SLAVE -->
+        <div class="comp-card" id="card-max485_slave" style="left: 830px; top: 580px; width: 240px;" onclick="selectComponent('max485_slave')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-network-wired" style="color: #9333ea;"></i> MAX485 SLAVE (TX)</div>
+          <div style="background: #0284c7; width: 160px; height: 95px; border-radius: 8px; border: 2px solid #0369a1; display: flex; flex-direction: column; justify-content: space-between; padding: 6px;">
+            <div style="font-size: 0.72rem; font-weight: 800; color: #fff; text-align: center;">MAX485 TRANSMITTER</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="background: #1e293b; width: 55px; height: 35px; border-radius: 4px; border: 1px solid #475569; color: #e2e8f0; font-size: 0.62rem; display: flex; align-items: center; justify-content: center; font-family: monospace;">MAX485</div>
+              <div style="background: #15803d; width: 45px; height: 42px; border-radius: 4px; border: 1px solid #22c55e; display: flex; flex-direction: column; justify-content: space-around; align-items: center; color: #fff; font-size: 0.65rem; font-weight: 800;">
+                <div>A</div><div>B</div>
+              </div>
+            </div>
+            <div style="font-size: 0.6rem; color: #e0f2fe; display: flex; justify-content: space-between; font-family: monospace;">
+              <span>VCC</span><span>GND</span><span>RO</span><span>DI</span>
+            </div>
+          </div>
+          <div class="terminal-header">
+            <div class="terminal-row"><span class="port-dot p-purple" id="port-max485s-di"></span><span>DI (Nhận từ TX2)</span></div>
+            <div class="terminal-row"><span class="port-dot p-purple" id="port-max485s-ro"></span><span>RO (Về RX2)</span></div>
+            <div class="terminal-row"><span class="port-dot p-red" id="port-max485s-vcc"></span><span>VCC (5V)</span></div>
+            <div class="terminal-row"><span class="port-dot p-green" id="port-max485s-gnd"></span><span>GND</span></div>
+            <div class="terminal-row"><span>Chân A (Vi Sai +)</span><span class="port-dot p-cyan" id="port-max485s-a"></span></div>
+            <div class="terminal-row"><span>Chân B (Vi Sai -)</span><span class="port-dot p-blue" id="port-max485s-b"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. CỤM CÁP MẠNG CAT5E (CỤM 3 - 3 - 2) Ở CHÍNH GIỮA -->
+      <div class="comp-card" id="card-cable_cat5e" style="left: 1200px; top: 620px; width: 260px;" onclick="selectComponent('cable_cat5e')">
+        <div class="comp-card-hdr"><i class="fa-solid fa-ethernet" style="color: #ea580c;"></i> Cáp Cat5e (Cụm 3 - 3 - 2)</div>
+        <div style="background: var(--row-bg); border: 1.5px solid var(--row-border); border-radius: 10px; width: 230px; padding: 12px; text-align: left; font-size: 0.72rem; line-height: 1.7;">
+          <div style="color: #dc2626; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
+            <span class="port-dot p-red" id="port-cat5-pwr-left"></span>
+            <span>3 Dây Dương (+5.2V)</span>
+            <span class="port-dot p-red" id="port-cat5-pwr-right"></span>
+          </div>
+          <div style="color: #16a34a; font-weight: 800; display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+            <span class="port-dot p-green" id="port-cat5-gnd-left"></span>
+            <span>3 Dây Mass (GND)</span>
+            <span class="port-dot p-green" id="port-cat5-gnd-right"></span>
+          </div>
+          <div style="color: #0284c7; font-weight: 800; display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+            <span class="port-dot p-cyan" id="port-cat5-rs485-left"></span>
+            <span>2 Dây Vi Sai RS-485</span>
+            <span class="port-dot p-cyan" id="port-cat5-rs485-right"></span>
+          </div>
+        </div>
+        <div style="font-size: 0.68rem; color: #d97706; margin-top: 8px; text-align: center; font-weight: 700;">Vật lý 9: R = &rho;&middot;(l / S) &rarr; Tăng S gấp 3, giảm R 3 lần</div>
+      </div>
+
+      <!-- 3. BỆ ĐỠ KHỐI TRÊN MẶT ĐẤT (MASTER) -->
+      <div class="bench-mat" style="left: 1510px; top: 100px; width: 1140px; height: 1620px;">
+        <div class="bench-mat-title">
+          <i class="fa-solid fa-tower-broadcast"></i> KHỐI TRÊN MẶT ĐẤT (MASTER)
+          <span class="bench-mat-badge">Phân tích nồng độ, Phát Wi-Fi Web Server & Báo động</span>
+        </div>
+
+        <!-- CỤC PIN NGUỒN 3S LI-ION (12V) -->
+        <div class="comp-card" id="card-battery_pack" style="left: 50px; top: 60px; width: 260px;" onclick="selectComponent('battery_pack')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-car-battery" style="color: #16a34a;"></i> Cục Pin Nguồn 3S (12V)</div>
+          <div style="background: linear-gradient(135deg, #15803d, #166534); border: 2px solid #22c55e; border-radius: 10px; padding: 10px; margin: 6px 0; color: #fff; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.25);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 0.74rem; font-weight: 800; letter-spacing: 0.5px;"><i class="fa-solid fa-bolt"></i> 3S 18650 LI-ION</span>
+              <span style="font-size: 0.65rem; background: #22c55e; color: #052e16; padding: 2px 7px; border-radius: 4px; font-weight: 800;">11.1V - 12.6V</span>
+            </div>
+            <!-- Minh hoạ 3 cell 18650 -->
+            <div style="display: flex; gap: 8px; justify-content: center; margin: 8px 0;">
+              <div style="width: 38px; height: 56px; background: #22c55e; border-radius: 4px; border: 1.5px solid #86efac; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: #052e16;">
+                <div style="width: 12px; height: 3px; background: #fff; border-radius: 2px; margin-bottom: 4px;"></div>
+                Cell 1
+              </div>
+              <div style="width: 38px; height: 56px; background: #22c55e; border-radius: 4px; border: 1.5px solid #86efac; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: #052e16;">
+                <div style="width: 12px; height: 3px; background: #fff; border-radius: 2px; margin-bottom: 4px;"></div>
+                Cell 2
+              </div>
+              <div style="width: 38px; height: 56px; background: #22c55e; border-radius: 4px; border: 1.5px solid #86efac; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: #052e16;">
+                <div style="width: 12px; height: 3px; background: #fff; border-radius: 2px; margin-bottom: 4px;"></div>
+                Cell 3
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.64rem; color: #dcfce7; font-weight: 700; border-top: 1px dashed rgba(255,255,255,0.3); padding-top: 4px;">
+              <span>Mạch Sạc Xả BMS</span>
+              <span>2600mAh (~16 Giờ)</span>
+            </div>
+          </div>
+          <div class="terminal-header">
+            <div class="terminal-row"><span class="port-dot p-red" id="port-battery-pos"></span><span>Cực Dương (+12V Xuất Sang LM2596)</span></div>
+            <div class="terminal-row"><span class="port-dot p-green" id="port-battery-neg"></span><span>Cực Âm (- GND Xuất Sang LM2596)</span></div>
+          </div>
+        </div>
+
+        <!-- NGUỒN XUNG HẠ ÁP LM2596 (12V -> 5.2V BUCK) -->
+        <div class="comp-card" id="card-lm2596" style="left: 50px; top: 480px; width: 260px;" onclick="selectComponent('lm2596')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-bolt" style="color: #0284c7;"></i> Nguồn Giảm Áp LM2596 (5.2V)</div>
+          <div style="background: #0284c7; border: 2px solid #0369a1; border-radius: 10px; padding: 8px; margin: 6px 0; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);">
+            <div style="font-size: 0.72rem; color: #fff; font-weight: 800; text-align: center; letter-spacing: 0.5px;">DC-DC BUCK STEP-DOWN</div>
+            <div style="display: flex; justify-content: space-around; align-items: center; margin: 8px 0;">
+              <div style="background: #1e293b; width: 38px; height: 38px; border-radius: 50%; border: 2px solid #d97706; display: flex; align-items: center; justify-content: center; font-size: 0.58rem; color: #ff9f1a; font-weight: 800;" title="Cuộn cảm 47uH băm xung">Cuộn L</div>
+              <div style="background: #2563eb; width: 28px; height: 38px; border-radius: 4px; border: 1px solid #ff9f1a; display: flex; align-items: center; justify-content: center; font-size: 0.56rem; color: #fff; font-weight: 800;" title="Biến trở ốc vi chỉnh 3296 chỉnh 5.2V">3296</div>
+              <div style="background: #334155; width: 34px; height: 38px; border-radius: 50%; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 0.58rem; color: #fff; font-weight: 800;" title="Tụ hoá nhôm lọc nguồn">Tụ C</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: #e0f2fe; font-weight: 800; border-top: 1px dashed rgba(255,255,255,0.3); padding-top: 4px;">
+              <span>IN: 12V (Từ Pin)</span><span style="color: #fef08a;">OUT: 5.2V (Chuẩn Cáp)</span>
+            </div>
+          </div>
+          <div class="terminal-header">
+            <!-- CÁC CỔNG BÊN TRÁI: NHẬN PIN 12V & XUẤT NGUỒN CÁP CAT5E SANG TRÁI -->
+            <div class="terminal-row"><span class="port-dot p-red" id="port-lm2596-in-pos"></span><span>IN+ (Nhận 12V Cực Dương Pin)</span></div>
+            <div class="terminal-row"><span class="port-dot p-green" id="port-lm2596-in-neg"></span><span>IN- (Nhận Mass Cực Âm Pin)</span></div>
+            <div class="terminal-row"><span class="port-dot p-red" id="port-lm2596-out-cat5-pos"></span><span>OUT+ (5.2V Xuất Sang Cáp Cat5e)</span></div>
+            <div class="terminal-row"><span class="port-dot p-green" id="port-lm2596-out-cat5-neg"></span><span>OUT- (Mass Xuất Sang Cáp Cat5e)</span></div>
+            <!-- CÁC CỔNG BÊN PHẢI: XUẤT NGUỒN SANG ESP32 MASTER BÊN PHẢI -->
+            <div class="terminal-row"><span>OUT+ (5.2V Cấp ESP32 Master)</span><span class="port-dot p-red" id="port-lm2596-out-esp-pos"></span></div>
+            <div class="terminal-row"><span>OUT- (Mass Cấp ESP32 Master)</span><span class="port-dot p-green" id="port-lm2596-out-esp-neg"></span></div>
+          </div>
+        </div>
+
+        <!-- MODULE MAX485 MASTER -->
+        <div class="comp-card" id="card-max485_master" style="left: 50px; top: 960px; width: 260px;" onclick="selectComponent('max485_master')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-network-wired" style="color: #9333ea;"></i> MAX485 MASTER (RX)</div>
+          <div style="background: #0284c7; width: 150px; height: 95px; border-radius: 8px; border: 2px solid #0369a1; display: flex; flex-direction: column; justify-content: space-between; padding: 6px;">
+            <div style="font-size: 0.72rem; font-weight: 800; color: #fff; text-align: center;">MAX485 RECEIVER</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="background: #15803d; width: 42px; height: 40px; border-radius: 4px; border: 1px solid #22c55e; display: flex; flex-direction: column; justify-content: space-around; align-items: center; color: #fff; font-size: 0.65rem; font-weight: 800;">
+                <div>A</div><div>B</div>
+              </div>
+              <div style="background: #111827; width: 50px; height: 35px; border-radius: 4px; border: 1px solid #475569; color: #e2e8f0; font-size: 0.62rem; display: flex; align-items: center; justify-content: center; font-family: monospace;">MAX485</div>
+            </div>
+            <div style="font-size: 0.6rem; color: #e0f2fe; display: flex; justify-content: space-between; font-family: monospace;">
+              <span>VCC</span><span>GND</span><span>RO</span><span>DI</span>
+            </div>
+          </div>
+          <div class="terminal-header">
+            <!-- BÊN TRÁI: NHẬN TÍN HIỆU TỪ CÁP CAT5E -->
+            <div class="terminal-row"><span class="port-dot p-cyan" id="port-max485m-a"></span><span>Chân A (Từ Cáp Cat5e)</span></div>
+            <div class="terminal-row"><span class="port-dot p-blue" id="port-max485m-b"></span><span>Chân B (Từ Cáp Cat5e)</span></div>
+            <!-- BÊN PHẢI: XUẤT UART VÀ NHẬN NGUỒN TỪ ESP32 MASTER -->
+            <div class="terminal-row"><span>RO (Chuỗi JSON ra)</span><span class="port-dot p-purple" id="port-max485m-ro"></span></div>
+            <div class="terminal-row"><span>VCC (5V)</span><span class="port-dot p-red" id="port-max485m-vcc"></span></div>
+            <div class="terminal-row"><span>GND</span><span class="port-dot p-green" id="port-max485m-gnd"></span></div>
+          </div>
+        </div>
+
+        <!-- BO MẠCH VI ĐIỀU KHIỂN ESP32 MASTER (CÁC CHÂN TÁCH BIỆT TRÁI - PHẢI, ZERO TRÙNG DÂY) -->
+        <div class="comp-card" id="card-esp32_master" style="left: 410px; top: 540px; width: 300px;" onclick="selectComponent('esp32_master')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-microchip" style="color: #2563eb;"></i> ESP32 MASTER (MẶT ĐẤT)</div>
+          <div style="transform: scale(0.96); margin: 6px 0;">
+            <wokwi-esp32-devkit-v1></wokwi-esp32-devkit-v1>
+          </div>
+          <div style="font-size: 0.7rem; color: #2563eb; text-align: center; margin-top: 4px; font-weight: 700;">Web Server AP + Phân tích Logic</div>
+          
+          <div class="terminal-header">
+            <!-- PHÍA TRÁI: NHẬN DỮ LIỆU VÀ NGUỒN TỪ MAX485 & LM2596 -->
+            <div class="terminal-row"><span class="port-dot p-purple" id="port-esp32m-rx2"></span><span>GPIO 16 (RX2 Nhận JSON)</span></div>
+            <div class="terminal-row"><span class="port-dot p-red" id="port-esp32m-vin-in"></span><span>VIN (5.2V Nguồn Vào)</span></div>
+            <div class="terminal-row"><span class="port-dot p-green" id="port-esp32m-gnd-in"></span><span>GND (Mass Chung Vào)</span></div>
+
+            <!-- PHÍA PHẢI: XUẤT RA OLED VÀ CÒI ĐÈN (ĐƯỜNG DÂY ĐI SANG PHẢI, TUYỆT ĐỐI KHÔNG ĐÈ LÊN CHỮ) -->
+            <div class="terminal-row"><span>GPIO 21 (I2C SDA OLED)</span><span class="port-dot p-blue" id="port-esp32m-d21"></span></div>
+            <div class="terminal-row"><span>GPIO 22 (I2C SCL OLED)</span><span class="port-dot p-cyan" id="port-esp32m-d22"></span></div>
+            <div class="terminal-row"><span>3.3V Cấp OLED</span><span class="port-dot p-red" id="port-esp32m-3v3-out"></span></div>
+            <div class="terminal-row"><span>GND Cấp OLED & Đèn</span><span class="port-dot p-green" id="port-esp32m-gnd-out"></span></div>
+            <div class="terminal-row"><span>GPIO 23 (Còi Buzzer)</span><span class="port-dot p-red" id="port-esp32m-d23"></span></div>
+            <div class="terminal-row"><span>GPIO 19 (LED ĐỎ)</span><span class="port-dot p-red" id="port-esp32m-d19"></span></div>
+            <div class="terminal-row"><span>GPIO 5 (LED VÀNG)</span><span class="port-dot p-amber" id="port-esp32m-d5"></span></div>
+            <div class="terminal-row"><span>GPIO 18 (LED XANH)</span><span class="port-dot p-green" id="port-esp32m-d18"></span></div>
+          </div>
+        </div>
+
+        <!-- MÀN HÌNH OLED 0.96 INCH SSD1306 -->
+        <div class="comp-card" id="card-oled_display" style="left: 820px; top: 240px; width: 260px;" onclick="selectComponent('oled_display')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-tv" style="color: #0284c7;"></i> Màn Hình OLED 0.96" SSD1306</div>
+          <div style="transform: scale(0.92); margin: -4px 0;">
+            <wokwi-ssd1306 id="wokwi-oled"></wokwi-ssd1306>
+          </div>
+          <div class="terminal-header">
+            <div class="terminal-row"><span class="port-dot p-blue" id="port-oled-sda"></span><span>SDA (Data)</span></div>
+            <div class="terminal-row"><span class="port-dot p-cyan" id="port-oled-scl"></span><span>SCL (Clock)</span></div>
+            <div class="terminal-row"><span class="port-dot p-red" id="port-oled-vcc"></span><span>VCC (3.3V)</span></div>
+            <div class="terminal-row"><span class="port-dot p-green" id="port-oled-gnd"></span><span>GND</span></div>
+          </div>
+        </div>
+
+        <!-- CÒI BUZZER VÀ 3 ĐÈN LED BÁO ĐỘNG -->
+        <div class="comp-card" id="card-alarm_system" style="left: 820px; top: 860px; width: 260px;" onclick="selectComponent('alarm_system')">
+          <div class="comp-card-hdr"><i class="fa-solid fa-bullhorn" style="color: #dc2626;"></i> Còi Hú & 3 LED Cảnh Báo</div>
+          <div style="display: flex; gap: 14px; align-items: center; margin: 8px 0;">
+            <wokwi-buzzer id="wokwi-buzz" style="transform: scale(0.85);"></wokwi-buzzer>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <wokwi-led id="wokwi-led-red" color="red"></wokwi-led>
+              <wokwi-led id="wokwi-led-yellow" color="yellow"></wokwi-led>
+              <wokwi-led id="wokwi-led-green" color="green" value="1"></wokwi-led>
+            </div>
+          </div>
+          <div class="terminal-header">
+            <div class="terminal-row"><span class="port-dot p-red" id="port-alarm-buzz"></span><span>Còi Hú (+) &larr; GPIO 23</span></div>
+            <div class="terminal-row"><span class="port-dot p-red" id="port-alarm-red"></span><span>LED ĐỎ (+) &larr; GPIO 19</span></div>
+            <div class="terminal-row"><span class="port-dot p-amber" id="port-alarm-yel"></span><span>LED VÀNG (+) &larr; GPIO 5</span></div>
+            <div class="terminal-row"><span class="port-dot p-green" id="port-alarm-grn"></span><span>LED XANH (+) &larr; GPIO 18</span></div>
+            <div class="terminal-row"><span class="port-dot p-green" id="port-alarm-gnd"></span><span>GND (Mass Chung)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR: MÔ PHỎNG DÒNG ĐIỆN & CẤP ĐỘ KHÍ -->
+  <div class="bottom-bar">
+    <div class="flow-status">
+      <div class="status-dot" id="flow-dot"></div>
+      <div>
+        <div class="status-text" id="flow-status-text" style="font-weight: 700; font-size: 0.8rem;">Nguồn đang tắt (Chưa có dòng điện)</div>
+        <div style="font-size: 0.7rem; color: var(--text-muted);" id="flow-desc">Bấm 'BẬT NGUỒN PIN' để dòng điện và xung tín hiệu RS485 chuyển động</div>
+      </div>
+    </div>
+    <div class="sim-levels">
+      <button class="btn-level active-safe" id="btn-lvl-safe"><i class="fa-solid fa-shield-halved"></i> <span class="hide-mobile">Mức </span>An Toàn</button>
+      <button class="btn-level" id="btn-lvl-warn"><i class="fa-solid fa-triangle-exclamation"></i> <span class="hide-mobile">Mức </span>Cảnh Báo</button>
+      <button class="btn-level" id="btn-lvl-dang"><i class="fa-solid fa-radiation"></i> <span class="hide-mobile">Mức </span>Nguy Hiểm</button>
+      <button class="btn-level" id="btn-sound-toggle" title="Bật/Tắt âm thanh còi chip"><i class="fa-solid fa-volume-high"></i> Còi: BẬT</button>
+    </div>
+  </div>
+
+  <!-- SIDEBAR PHẢI: CHI TIẾT NỐI CHÂN & TẠI SAO NỐI NHƯ VẬY -->
+    <div class="sidebar-right" id="sidebar-right">
+    <div class="sheet-handle-bar"></div>
+    <div class="panel-hdr">
+      <span><i class="fa-solid fa-circle-info"></i> THÔNG TIN KẾT NỐI & CODE THƯ VIỆN</span>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 0.75rem; color: #0284c7; font-weight: 800;" id="detail-category">SLAVE</span>
+        <button class="panel-close-btn" id="btn-close-right" title="Đóng chi tiết"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="detail-body" id="detail-body">
+      <!-- Sẽ render động khi click linh kiện -->
+    </div>
+  </div>
+
+  <!-- BACKDROP PHỦ MỜ CHO MOBILE KHI MỞ MENU/PANEL -->
+  <div class="mobile-backdrop" id="mobile-backdrop"></div>
+
+  <!-- NÚT ZOOM VÀ RESET NHANH TRÊN MÀN HÌNH -->
+  <div class="canvas-quick-controls">
+    <button class="quick-zoom-btn" id="btn-zoom-in" title="Phóng to (+)"><i class="fa-solid fa-plus"></i></button>
+    <button class="quick-zoom-btn" id="btn-zoom-out" title="Thu nhỏ (-)"><i class="fa-solid fa-minus"></i></button>
+    <button class="quick-zoom-btn" id="btn-zoom-fit" title="Vừa màn hình"><i class="fa-solid fa-expand"></i></button>
+  </div>
+
+  <!-- THANH ĐIỀU HƯỚNG DƯỚI ĐÁY CHO MOBILE (BOTTOM NAVIGATION BAR) -->
+  <nav class="mobile-nav-bar" id="mobile-nav-bar">
+    <button class="nav-tab active" id="tab-nav-scheme" onclick="switchMobileTab('scheme')">
+      <i class="fa-solid fa-microchip"></i>
+      <span>Sơ Đồ</span>
+    </button>
+    <button class="nav-tab" id="tab-nav-devices" onclick="switchMobileTab('devices')">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>Thiết Bị</span>
+    </button>
+    <button class="nav-tab" id="tab-nav-filters" onclick="switchMobileTab('filters')">
+      <i class="fa-solid fa-filter"></i>
+      <span>Lọc Mạch</span>
+    </button>
+    <button class="nav-tab" id="tab-nav-details" onclick="switchMobileTab('details')">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Chi Tiết</span>
+    </button>
+    <button class="nav-tab" id="tab-nav-guide" onclick="switchMobileTab('guide')">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <span>Lớp 9</span>
+    </button>
+  </nav>
+
+  <!-- JAVASCRIPT ĐI DÂY KỸ THUẬT VÀ TƯƠNG TÁC -->
+  <script>
+            const COMPONENTS = [
+      {
+        id: "o2_sensor",
+        name: "Cảm Biến Oxygen (O2)",
+        sub: "DFRobot Gravity I2C (SEN0496 / SEN0322)",
+        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        badge: "Chiếc mũi ngửi dưỡng khí Oxy",
+        repo: "DFRobot/DFRobot_OxygenSensor",
+        repoUrl: "https://github.com/DFRobot/DFRobot_OxygenSensor",
+        color: "#0284c7",
+        icon: "fa-lungs",
+        pins: [
+          { from: "SDA (Data)", to: "GPIO 21 (D21)", note: "Dây truyền số nồng độ Oxy" },
+          { from: "SCL (Clock)", to: "GPIO 22 (D22)", note: "Dây gõ nhịp đồng hồ tíc-tắc" },
+          { from: "VCC (Nguồn)", to: "VCC 5V Power Rail", note: "Dây cấp điện 5V nuôi cảm biến" },
+          { from: "GND (Mass)", to: "GND Mass Rail", note: "Dây cực âm khép kín dòng điện" }
+        ],
+        codeSnippet: `// Khởi tạo thư viện DFRobot_OxygenSensor theo chuẩn I2C
+#include "DFRobot_OxygenSensor.h"
+#define Oxygen_IICAddress ADDRESS_3 // 0x73 mặc định
+DFRobot_OxygenSensor oxygen;
+
+void setup() {
+  Wire.begin(21, 22); // SDA=21, SCL=22 phần cứng
+  while(!oxygen.begin(Oxygen_IICAddress)) {
+    Serial.println("I2C Error!"); delay(1000);
+  }
+}
+float readO2() {
+  return oxygen.getOxygenData(10); // Đọc trung bình 10 lần
+}`,
+        why: "TẠI SAO PHẢI NỐI CHÂN SDA VÀO D21, SCL VÀO D22?",
+        whyContent: "Chân SDA là chân tín hiệu (Data), còn chân SCL là chân nhịp đồng hồ. Muốn ESP32 giao tiếp được với cảm biến Oxy thì bắt buộc phải thông qua 2 chân này để 2 con nối vào nhau. Khi cảm biến ngửi thấy nồng độ Oxy trong không khí, nó dùng dây SCL để gõ nhịp và dây SDA để đọc to con số nồng độ Oxy (ví dụ 20.9%) gửi trực tiếp cho ESP32 dưới không gian kín.",
+        step1: "Cảm biến Oxy liên tục đo lượng dưỡng khí dưới đáy hầm, gửi con số phần trăm qua cặp chân SDA và SCL vào cổng GPIO 21 và GPIO 22 của ESP32 dưới đáy.",
+        step2: "ESP32 ở dưới không gian kín nhận được tin, lập tức đóng gói nồng độ Oxy vào bức thư báo cáo (chuỗi JSON), rồi đưa sang chân tín hiệu A và B của cáp Cat5e phóng vọt lên mặt đất.",
+        step3: "ESP32 trên mặt đất nhận được dữ liệu thì đưa lên trang Web xem trên điện thoại, hiện số % Oxy lên màn hình OLED, và nếu thấy Oxy tụt dưới 18% thì lập tức hú còi + chớp đèn đỏ cảnh báo không cho ai bước xuống!",
+        studentTip: "Hãy giải thích với thầy cô: Chân 21 và 22 là cổng I2C phần cứng có sẵn của ESP32, giúp 2 bên nói chuyện ăn ý với nhau cực nhanh (400.000 nhịp/giây) mà không bao giờ bị nghẽn CPU.",
+        physicsTip: "💡 Không khí bình thường có 20.9% Oxy. Nếu dưới hầm tụt xuống < 18.0%, chỉ sau 30-40 giây não bộ sẽ mất ý thức ngất xỉu mà nạn nhân không hề hay biết!"
+      },
+      {
+        id: "mq7_sensor",
+        name: "Cảm Biến Khí Than Độc (CO)",
+        sub: "Winsen MQ-7 (AO Analog Output)",
+        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        badge: "Chiếc mũi ngửi khí than độc CO",
+        repo: "miguel5612/MQSensorsLib",
+        repoUrl: "https://github.com/miguel5612/MQSensorsLib",
+        color: "#ea580c",
+        icon: "fa-skull-crossbones",
+        pins: [
+          { from: "A0 (Analog)", to: "GPIO 35", note: "Chân truyền tín hiệu nồng độ khí CO" },
+          { from: "VCC (5V Nung)", to: "VCC 5V Power Rail", note: "Cấp điện 5V nung nóng lõi cảm biến" },
+          { from: "GND (Mass)", to: "GND Mass Rail", note: "Đường hồi tiếp dòng điện nung lớn" }
+        ],
+        codeSnippet: `// Cấu hình thư viện MQUnifiedsensor cho MQ-7
+#include <MQUnifiedsensor.h>
+#define Pin 35 // ADC1 GPIO 35
+MQUnifiedsensor MQ7("ESP-32", 3.3, 12, Pin, "MQ-7");
+
+void setup() {
+  MQ7.init();
+  MQ7.setRegressionMethod(1); // PPM = a*ratio^b
+  MQ7.setA(99.042); MQ7.setB(-1.518); // Hệ số chuẩn khí CO
+}
+float readCO() {
+  MQ7.update();
+  return MQ7.readSensor();
+}`,
+        why: "TẠI SAO PHẢI NỐI CHÂN TÍN HIỆU A0 VÀO GPIO 35?",
+        whyContent: "Chân A0 là chân tín hiệu (Data). Muốn ESP32 giao tiếp được với MQ-7 thì bắt buộc phải nối qua chân này. Khi cảm biến ngửi thấy khí than độc CO (sinh ra do cháy yếm khí hoặc động cơ nổ), lò nung trong cảm biến sẽ phát ra dòng điện áp tương ứng và gửi qua chân A0 vào cổng GPIO 35 của ESP32 dưới không gian kín để ESP32 đọc được mức độ độc hại.",
+        step1: "Cảm biến MQ-7 phát hiện khí than độc CO, chuyển thành điện áp gửi qua chân tín hiệu A0 vào cổng GPIO 35 của ESP32 dưới đáy hầm.",
+        step2: "ESP32 ở dưới không gian kín nhận được tin thì tính ra có bao nhiêu hạt khí độc (ppm), đóng gói tin vào bức thư JSON rồi đưa sang chân tín hiệu A và B của cáp Cat5e gửi lên mặt đất.",
+        step3: "ESP32 trên mặt đất nhận được dữ liệu thì đưa lên Web xem trên điện thoại, hiện số ppm khí độc lên màn hình OLED, và nếu thấy nồng độ CO vượt ngưỡng nguy hiểm (>= 30 ppm) thì lập tức hú còi inh ỏi + bật đèn đỏ cảnh báo!",
+        studentTip: "Hãy giải thích với thầy cô: GPIO 35 là cổng đo điện áp độc lập (ADC1) của ESP32, không bị nhiễu sóng khi chip phát Wi-Fi/Bluetooth, giúp đo khí than độc chính xác 100%.",
+        physicsTip: "💡 Khí CO chiếm ái lực với hồng cầu gấp 250 lần dưỡng khí Oxy. Mức >= 30 ppm là mức nguy hại, hít phải trong không gian kín sẽ ngấm ngầm làm tế bào chết ngạt!"
+      },
+      {
+        id: "mq4_sensor",
+        name: "Cảm Biến Khí Gas/Metan (CH4)",
+        sub: "Winsen MQ-4 (AO Analog Output)",
+        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        badge: "Chiếc mũi ngửi khí Gas cháy nổ",
+        repo: "miguel5612/MQSensorsLib",
+        repoUrl: "https://github.com/miguel5612/MQSensorsLib",
+        color: "#d97706",
+        icon: "fa-fire-flame-simple",
+        pins: [
+          { from: "A0 (Analog)", to: "GPIO 34", note: "Chân truyền tín hiệu nồng độ khí Gas" },
+          { from: "VCC (5V Nung)", to: "VCC 5V Power Rail", note: "Cấp điện nung nóng sấy nhiệt" },
+          { from: "GND (Mass)", to: "GND Mass Rail", note: "Đường hồi tiếp mass chung" }
+        ],
+        codeSnippet: `// Cấu hình thư viện MQUnifiedsensor cho MQ-4
+#include <MQUnifiedsensor.h>
+#define PinMQ4 34 // ADC1 GPIO 34
+MQUnifiedsensor MQ4("ESP-32", 3.3, 12, PinMQ4, "MQ-4");
+
+void setup() {
+  MQ4.init();
+  MQ4.setRegressionMethod(1);
+  MQ4.setA(1012.7); MQ4.setB(-2.786); // Hệ số khí CH4
+}
+float readCH4_LEL() {
+  MQ4.update();
+  float ppm = MQ4.readSensor();
+  return (ppm / 50000.0) * 100.0; // 50,000 ppm = 100% LEL
+}`,
+        why: "TẠI SAO PHẢI NỐI CHÂN TÍN HIỆU A0 VÀO GPIO 34?",
+        whyContent: "Chân A0 là chân tín hiệu (Data). Muốn ESP32 giao tiếp được với MQ-4 thì phải thông qua chân này để 2 con nối vào nhau. Khi con cảm biến đọc được khí gas Metan bốc lên từ bùn rác dưới cống, nó sẽ gửi tín hiệu điện áp qua chân A0 cho ESP32 dưới không gian kín để ESP32 biết khí gas đang đậm đặc cỡ nào.",
+        step1: "Cảm biến MQ-4 ngửi thấy khí gas Metan bốc lên từ bùn cống, gửi tín hiệu điện áp qua chân A0 vào cổng GPIO 34 của ESP32 dưới đáy hầm.",
+        step2: "ESP32 ở dưới không gian kín nhận được tin thì tính ra nồng độ % cháy nổ (%LEL), đóng gói tin vào bức thư chung rồi gửi qua chân tín hiệu A và B của cáp mạng Cat5e chạy lên mặt đất.",
+        step3: "ESP32 trên mặt đất nhận được dữ liệu thì đưa lên trang Web xem trên điện thoại, hiện % khí gas lên màn hình OLED, và nếu thấy nồng độ đạt ngưỡng nguy hiểm (>= 10% LEL) thì lập tức hú còi báo động + chớp đèn đỏ không cho ai bước xuống!",
+        studentTip: "Hãy giải thích với thầy cô: GPIO 34 thuộc bộ ADC1 độc lập, đo đạc ổn định kể cả khi có dòng nung lớn từ cảm biến khí cháy nổ.",
+        physicsTip: "💡 Khí Metan bốc lên từ hầm phân, bùn cống rác thối. Chỉ cần đạt 5% thể tích là một tia lửa nhỏ từ giày dép hay kim loại va đập cũng có thể gây nổ tung hầm!"
+      },
+      {
+        id: "dht22_sensor",
+        name: "Cảm Biến Nhiệt Độ - Độ Ẩm",
+        sub: "Aosong AM2302 (DHT22)",
+        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        badge: "Nhiệt ẩm kế bù trừ sai số",
+        repo: "adafruit/DHT-sensor-library",
+        repoUrl: "https://github.com/adafruit/DHT-sensor-library",
+        color: "#9333ea",
+        icon: "fa-temperature-half",
+        pins: [
+          { from: "DATA (1-Wire)", to: "GPIO 4 (D4)", note: "Chân truyền tín hiệu nhiệt độ và độ ẩm" },
+          { from: "VCC (Nguồn)", to: "VCC 5V Power Rail", note: "Nguồn nuôi cảm biến" },
+          { from: "GND (Mass)", to: "GND Mass Rail", note: "Chân mass chung" }
+        ],
+        codeSnippet: `// Khởi tạo thư viện Adafruit DHT
+#include "DHT.h"
+#define DHTPIN 4     // Nối vào GPIO 4
+#define DHTTYPE DHT22
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  dht.begin();
+}
+void readEnv(float &temp, float &hum) {
+  hum = dht.readHumidity();
+  temp = dht.readTemperature();
+}`,
+        why: "TẠI SAO PHẢI NỐI CHÂN DATA VÀO GPIO 4?",
+        whyContent: "Chân DATA là chân tín hiệu (Data). Muốn ESP32 giao tiếp được với DHT22 thì phải nối qua chân này. Dưới cống rãnh ngầm độ ẩm lúc nào cũng tới 80-99% và rất nóng làm các cảm biến khí bị sai lệch. Khi DHT22 đọc được nhiệt độ và độ ẩm, nó gửi tín hiệu xung điện qua chân DATA vào chân GPIO 4 để ESP32 dưới không gian kín tự động bù trừ sai số, không bao giờ bị báo động giả.",
+        step1: "Cảm biến DHT22 đo nhiệt độ và độ ẩm dưới cống, gửi tín hiệu xung điện qua chân DATA vào chân GPIO 4 của ESP32 dưới đáy hầm.",
+        step2: "ESP32 ở dưới không gian kín dùng số nhiệt ẩm này để bù sai số cho các cảm biến khí, gom tất cả vào bức thư báo cáo (gói JSON), rồi đóng gói vào chân tín hiệu A và B của cáp mạng Cat5e gửi lên mặt đất.",
+        step3: "ESP32 trên mặt đất nhận được dữ liệu thì đưa lên Web xem trên điện thoại, hiện số độ C và % độ ẩm lên màn hình OLED, và nếu phát hiện có khí độc hoặc thiếu Oxy thì kích hoạt còi hú + đèn đỏ báo động!",
+        studentTip: "Hãy giải thích với thầy cô: Nối DHT22 vào GPIO 4 giúp thuật toán bù trừ nhiệt ẩm môi trường, đảm bảo các số đo PPM khí độc không bao giờ bị báo động nhầm khi trời ẩm ướt.",
+        physicsTip: "💡 Dữ liệu nhiệt ẩm được chớp tắt bằng xung điện siêu ngắn (chỉ 26 đến 70 phần triệu giây) qua đúng 1 sợi dây duy nhất."
+      },
+      {
+        id: "esp32_slave",
+        name: "Vi Điều Khiển Dưới Đáy (Slave)",
+        sub: "ESP32 NodeMCU 30 Chân (Thu thập & Gom gói)",
+        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        badge: "Chú lính trinh sát tí hon dưới đáy",
+        repo: "kike-canaries/canairio_sensorlib",
+        repoUrl: "https://github.com/kike-canaries/canairio_sensorlib",
+        color: "#16a34a",
+        icon: "fa-microchip",
+        pins: [
+          { from: "VIN (Nguồn)", to: "VCC 5V Power Rail", note: "Ăn điện từ cáp nguồn mặt đất cấp xuống" },
+          { from: "GND (Mass)", to: "GND Mass Rail", note: "Đường hồi tiếp mass chung" },
+          { from: "GPIO 17 (TX2)", to: "DI (MAX485 Slave)", note: "Bắn bức thư JSON sang loa phóng MAX485" },
+          { from: "GPIO 16 (RX2)", to: "RO (MAX485 Slave)", note: "Cổng nhận nối tiếp UART2" }
+        ],
+        codeSnippet: `// Đóng gói JSON và gửi qua UART2 RS485
+void sendDataToMaster(float o2, float co, float ch4, float t, float h) {
+  String json = "{\"o2\":" + String(o2,1) + 
+                ",\"co\":" + String(co,1) + 
+                ",\"ch4\":" + String(ch4,1) + 
+                ",\"t\":" + String(t,1) + 
+                ",\"h\":" + String(h,1) + "}\n";
+  Serial2.print(json); // Bắn lên qua MAX485
+}`,
+        why: "CHÚ LÍNH ESP32 DƯỚI ĐÁY ĐÓNG GÓI TIN VÀ GỬI LÊN THẾ NÀO?",
+        whyContent: "Khi 4 con cảm biến đọc được khí gas, khí than, oxy và nhiệt ẩm, chúng gửi tín hiệu về cho ESP32 dưới không gian kín qua các chân Data. Sau khi nhận đủ tin, con ESP32 này sẽ đóng gói tất cả vào một bức thư duy nhất (dạng JSON), rồi đưa sang chân tín hiệu A và B của cáp mạng Cat5e gửi vọt lên cho ESP32 trên mặt đất.",
+        step1: "ESP32 dưới đáy nhận tín hiệu liên tục từ 4 cảm biến Oxy, CO, Metan, Nhiệt độ và Độ ẩm.",
+        step2: "Gom cả 5 con số vào một dòng chữ duy nhất dạng JSON: {\"o2\":20.5, \"co\":0, \"ch4\":0, \"t\":28, \"h\":80} rồi gửi qua cổng UART2 (chân 17) ra chip MAX485.",
+        step3: "Chip MAX485 đóng gói tin vào 2 sợi dây tín hiệu A và B của cáp mạng Cat5e, phóng thẳng qua 20-30m hầm sâu lên cho ESP32 trên mặt đất hiển thị và báo còi đèn!",
+        studentTip: "Hãy giải thích với thầy cô: Dùng cổng UART2 (GPIO 16/17) độc lập để không đè lên cổng nạp USB, giúp vi điều khiển nạp code và chạy thật trơn tru, không bao giờ bị treo.",
+        physicsTip: "💡 ESP32 chạy chip lõi kép 240MHz, đóng gói bức thư 5 tham số chỉ mất chưa đầy 2 phần nghìn giây!"
+      },
+      {
+        id: "max485_slave",
+        name: "Module Chuyển Đổi MAX485 (Slave)",
+        sub: "UART sang Vi Sai RS-485",
+        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        badge: "Chiếc loa phóng thanh chống nhiễu",
+        repo: "HardwareSerial RS-485",
+        repoUrl: "https://github.com/kike-canaries/canairio_sensorlib",
+        color: "#9333ea",
+        icon: "fa-network-wired",
+        pins: [
+          { from: "DI", to: "GPIO 17 (TX2)", note: "Nhận bức thư từ chân TX2 của ESP32" },
+          { from: "RO", to: "GPIO 16 (RX2)", note: "Cổng nối tiếp UART2" },
+          { from: "VCC & GND", to: "5V & GND Out (ESP32)", note: "Nguồn nuôi IC vi sai" },
+          { from: "Chân A & B", to: "Cặp Xoắn Đôi Cáp Cat5e", note: "Hai chân tín hiệu phóng lên mặt đất" }
+        ],
+        codeSnippet: `// Cấu hình cổng Serial2 phần cứng cho MAX485
+void setup() {
+  Serial2.begin(9600, SERIAL_8N1, 16, 17);
+}`,
+        why: "TẠI SAO PHẢI QUA CHIP NÀY ĐỂ ĐÓNG GÓI VÀO CHÂN A VÀ B?",
+        whyContent: "Dây từ dưới hầm lên mặt đất dài tới 20–30 mét, lại ẩm ướt và đầy sóng nhiễu. Nếu ESP32 gửi thẳng tín hiệu dây thường thì lên bờ sẽ bị mất chữ, chập chờn. Chip MAX485 đóng vai trò như 'chiếc loa phóng thanh': nó nhận bức thư từ ESP32 rồi chia thành 2 dòng điện chạy trên 2 chân tín hiệu A và B của cáp Cat5e để gửi lên mặt đất an toàn 100%.",
+        step1: "Nhận bức thư báo cáo từ chân TX2 của ESP32 dưới không gian kín.",
+        step2: "Biến đổi thành 2 dòng điện ngược dấu nhau chạy trên cặp chân tín hiệu A và B của cáp Cat5e.",
+        step3: "Khi có sóng nhiễu đập vào, cả 2 dây cùng bị nhiễu như nhau. Lên mặt đất, 2 dây trừ nhau là triệt tiêu sạch nhiễu, giúp ESP32 trên bờ nhận tin nguyên vẹn để chiếu lên Web và báo còi đèn!",
+        studentTip: "Hãy giải thích với thầy cô: Đây là chuẩn giao tiếp vi sai công nghiệp RS-485, cho phép truyền dữ liệu xa tới 1.200 mét trong môi trường ẩm ướt khắc nghiệt.",
+        physicsTip: "💡 Nguyên lý vi sai: Tín hiệu = Dây A trừ Dây B. Nhiễu đánh vào cả 2 dây như nhau nên khi trừ nhau là nhiễu biến mất hoàn toàn!"
+      },
+      {
+        id: "cable_cat5e",
+        name: "Cáp Mạng Cat5e (Cụm 3 - 3 - 2)",
+        sub: "Chiều dài thực tế 10m - 50m",
+        group: "ĐƯỜNG TRUYỀN VẬT LÝ",
+        badge: "Sáng kiến Vật lý 9 chống sụt áp",
+        repo: "Quy chuẩn bấm dây T568B",
+        repoUrl: "https://github.com",
+        color: "#ea580c",
+        icon: "fa-ethernet",
+        pins: [
+          { from: "3 Dây Dương (+)", to: "Cam, Trắng-Cam, Trắng-Nâu", note: "Chập 3 sợi tăng S gấp 3, giảm R 3 lần" },
+          { from: "3 Dây Mass (GND)", to: "Nâu, Xanh Lá, Trắng-Xanh Lá", note: "Chập 3 sợi giảm điện trở đường về" },
+          { from: "2 Dây Tín Hiệu", to: "Xanh Dương (A) & Trắng-Xanh (B)", note: "Cặp dây tín hiệu đưa tin lên mặt đất" }
+        ],
+        codeSnippet: `// Định luật Ohm & Điện trở dây (Vật lý 9):
+// R = rho * (l / S)
+// Chập 3 sợi làm 1 => S tăng gấp 3 => R giảm 3 lần!
+// Kết hợp nâng nguồn LM2596 lên 5.2V bù sụt áp 0.2V đường dài.`,
+        why: "TẠI SAO LẠI CHẬP CỤM 3 SỢI VÀ CÓ CHÂN TÍN HIỆU A-B?",
+        whyContent: "Cáp mạng có 8 sợi: 3 sợi chập làm cực Dương (+5.2V), 3 sợi chập làm cực Mass (GND), và 2 sợi dùng cho chân tín hiệu A và B. Chập 3 sợi giúp dòng điện xuống đáy không bị rơi rớt (sụt áp), còn 2 sợi A-B đưa dữ liệu từ đáy phóng thẳng lên mặt đất cho ESP32 trên bờ làm việc.",
+        step1: "3 dây dương và 3 dây mass dẫn điện 5.2V từ nguồn LM2596 trên bờ xuống tận đáy nuôi ESP32 và các cảm biến nung nhiệt.",
+        step2: "2 dây tín hiệu xoắn A và B đón lấy dữ liệu từ MAX485 dưới đáy phóng ngược lên trên mặt đất.",
+        step3: "Lên đến miệng hầm, 2 dây A-B cắm vào bộ thu MAX485 Master để chuyển dữ liệu vào ESP32 trên mặt đất hiển thị và báo động.",
+        studentTip: "Hãy tự hào đọc công thức Vật lý 9: R = rho * (l / S). Chập 3 sợi thì diện tích S tăng 3 lần, điện trở R giảm 3 lần! Ban giám khảo sẽ cho điểm tuyệt đối vì áp dụng đúng bài học trong sách giáo khoa.",
+        physicsTip: "💡 Bù sụt áp: LM2596 vặn lên 5.2V, rơi rớt 0.2V dọc đường cáp 20m, xuống đáy vừa vặn đúng chuẩn 5.0V!"
+      },
+      {
+        id: "max485_master",
+        name: "Module Chuyển Đổi MAX485 (Master)",
+        sub: "RS-485 sang UART Vi Điều Khiển",
+        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
+        badge: "Người dịch tin trên mặt đất",
+        repo: "HardwareSerial RS-485",
+        repoUrl: "https://github.com",
+        color: "#9333ea",
+        icon: "fa-network-wired",
+        pins: [
+          { from: "Chân A & B", to: "Nhận từ Cáp Cat5e", note: "Đón nhận 2 luồng xung tín hiệu từ đáy hầm" },
+          { from: "RO", to: "GPIO 16 (RX2 Master)", note: "Đưa chuỗi JSON vào tai ESP32 Master" },
+          { from: "VCC & GND", to: "5V & GND Nguồn", note: "Nguồn nuôi module" }
+        ],
+        codeSnippet: `// Nhận chuỗi JSON từ Slave
+void loop() {
+  if (Serial2.available()) {
+    String json = Serial2.readStringUntil('\n');
+    parseGasData(json); // Giải mã 5 thông số
+  }
+}`,
+        why: "TẠI SAO CẦN CON MAX485 THỨ HAI TRÊN MẶT ĐẤT?",
+        whyContent: "Bức thư từ dưới hầm được phóng lên qua 2 chân tín hiệu A và B. Con chip MAX485 trên mặt đất đóng vai trò như 'người đón thư': nó nhận cặp dây A-B, dịch ngược lại thành dòng chữ ban đầu rồi đẩy qua chân RO vào tai chú lính ESP32 Master trên mặt đất để ESP32 Master xử lý lên Web, OLED và còi đèn.",
+        step1: "Đón nhận 2 luồng tín hiệu A và B chạy từ dưới đáy hầm lên qua cáp mạng Cat5e.",
+        step2: "Dịch ngược tín hiệu vi sai thành chuỗi chữ báo cáo JSON chuẩn và đưa qua chân RO.",
+        step3: "Chân RO cắm thẳng vào chân GPIO 16 (RX2) của ESP32 Master trên mặt đất để bắt đầu kích hoạt Web, OLED và còi báo động!",
+        studentTip: "Hãy giải thích với thầy cô: Cần một cặp MAX485 ở hai đầu - một con đóng gói phát tin ở đáy hầm và một con đón nhận dịch tin trên mặt đất.",
+        physicsTip: "💡 Chuẩn RS-485 cho phép truyền tín hiệu xa tới 1.200 mét với độ bền bỉ chống sét lan truyền cao."
+      },
+      {
+        id: "battery_pack",
+        name: "Cục Pin Nguồn 3S Li-ion (12V)",
+        sub: "Khối Pin 3S 18650 11.1V - 12.6V có mạch bảo vệ BMS",
+        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
+        badge: "Trạm phát điện di động nuôi toàn mạch",
+        repo: "Khối Pin 3S 18650 (Phần Cứng Độc Lập)",
+        repoUrl: "https://github.com",
+        color: "#16a34a",
+        icon: "fa-car-battery",
+        pins: [
+          { from: "Cực Dương (+12V Đỏ)", to: "IN+ (Mạch Giảm Áp LM2596)", note: "Dây điện áp cao 12V từ pin đưa vào hạ áp" },
+          { from: "Cực Âm (- GND Đen)", to: "IN- (Mạch Giảm Áp LM2596)", note: "Dây cực âm khép kín dòng điện nuôi hạ áp" }
+        ],
+        codeSnippet: `// Đo dung lượng pin bằng cầu phân áp điện trở đưa vào ADC:
+// V_pin (12V) -> R1 (100k) -> [GPIO 36 ADC] -> R2 (27k) -> GND
+#define PIN_BATTERY_ADC 36
+float readBatteryVoltage() {
+  int raw = analogRead(PIN_BATTERY_ADC);
+  float v_adc = (raw / 4095.0) * 3.3;
+  float v_battery = v_adc * ((100.0 + 27.0) / 27.0); // Tỉ lệ cầu chia áp
+  return v_battery; // Trả về ví dụ 11.8V
+}`,
+        why: "TẠI SAO PHẢI CẦN CỤC PIN 12V NẰM TRÊN MẶT ĐẤT?",
+        whyContent: "Tại các công trình hố ga, cống ngầm ngoài đường hay hầm lò sâu, tuyệt đối không có ổ cắm điện lưới 220V. Hệ thống phải mang vác cơ động, do đó nhóm dùng Khối Pin 3S 18650 (12V) đặt ngay trên bờ làm 'Trạm năng lượng di động', cấp điện liên tục 24/24 giờ mà không phụ thuộc vào điện lưới.",
+        step1: "Cục Pin 12V nằm trên mặt đất cấp dòng điện khỏe khoắn đi thẳng vào Mạch Giảm Áp LM2596.",
+        step2: "Mạch Giảm Áp hạ từ 12V xuống 5.2V an toàn, rồi bơm dòng điện xuống hầm qua 3 sợi dây Dương và 3 sợi dây Mass của Cáp Cat5e.",
+        step3: "Toàn bộ cảm biến và ESP32 dưới đáy nhận được điện ổn định, chạy bền bỉ 24/7 cảnh báo bảo vệ tính mạng công nhân.",
+        studentTip: "Mẹo trả lời: Pin dùng cell Li-ion 18650 xả dòng cao kèm mạch BMS tự ngắt khi chập điện hoặc pin yếu, đảm bảo an toàn chống cháy nổ tuyệt đối.",
+        physicsTip: "⚡ Dung lượng 3S 2600mAh cấp điện liên tục hơn 16 tiếng cho toàn bộ 5 cảm biến, màn hình, còi báo và sóng Wi-Fi."
+      },
+      {
+        id: "lm2596",
+        name: "Nguồn Giảm Áp DC-DC LM2596 BUCK (5.2V)",
+        sub: "Mạch hạ áp biến tần BUCK hiệu suất cao 92%",
+        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
+        badge: "Chiếc van điều áp bảo vệ chip khỏi cháy nổ",
+        repo: "Texas Instruments LM2596 (Hardware BUCK)",
+        repoUrl: "https://ti.com",
+        color: "#0284c7",
+        icon: "fa-bolt",
+        pins: [
+          { from: "IN+ (Dương 12V)", to: "Cực Dương (+) Cục Pin 3S", note: "Đón dòng 12V vào bộ băm xung" },
+          { from: "IN- (Mass 12V)", to: "Cực Âm (-) Cục Pin 3S", note: "Đường hồi tiếp dòng điện nguồn Pin" },
+          { from: "OUT+ (5.2V Cáp)", to: "3 Dây Dương Cáp Cat5e", note: "Bơm dòng 5.2V xuống tận đáy hầm kín" },
+          { from: "OUT- (Mass Cáp)", to: "3 Dây Mass Cáp Cat5e", note: "Đường về cực âm dòng điện 5.2V" },
+          { from: "OUT+ (5.2V ESP)", to: "Chân VIN (ESP32 Master)", note: "Nuôi bộ não xử lý và trạm phát Wi-Fi" },
+          { from: "OUT- (Mass ESP)", to: "Chân GND (ESP32 Master)", note: "Mass chung hệ thống trên bờ" }
+        ],
+        codeSnippet: `// LM2596 là linh kiện phần cứng hạ áp thuần túy (Hardware BUCK)
+// Không cần nạp code phần mềm, điều chỉnh điện áp bằng ốc vít biến trở 3296:
+// V_in: 7.4V - 12.6V (từ Cục Pin)
+// V_out: Vặn vi chỉnh chốt đúng 5.20V DC đo bằng đồng hồ vạn năng VOM
+// Hiệu suất chuyển đổi: ~92% (Tỏa nhiệt cực thấp, tiết kiệm pin tối đa)`,
+        why: "TẠI SAO KHÔNG CẮM THẲNG PIN 12V VÀO ESP32 MÀ PHẢI QUA NGUỒN GIẢM ÁP?",
+        whyContent: "Vi điều khiển ESP32 và các cảm biến khí chỉ hoạt động ở điện áp 3.3V - 5V. Nếu cắm thẳng điện 12V của Cục Pin vào, chip sẽ nổ cháy khét lẹt ngay lập tức! Mạch hạ áp LM2596 hoạt động như một chiếc 'van điều áp': nó nhận điện áp cao 12V từ Pin rồi hạ xuống 5.2V một cách êm ái, phẳng lặng, bảo vệ linh kiện sống sót 100%.",
+        step1: "Pin 12V bơm dòng điện lớn vào 2 chân IN+ và IN- của mạch giảm áp LM2596.",
+        step2: "Cuộn cảm và tụ điện trên LM2596 băm xung hạ xuống 5.2V chuẩn xác, xuất ra 2 chân OUT+ và OUT-.",
+        step3: "Dòng điện 5.2V chia làm 2 ngả: một ngả nuôi ESP32 Master trên mặt đất, một ngả phóng xuống 20 mét cáp Cat5e nuôi toàn bộ dàn cảm biến dưới đáy hầm.",
+        studentTip: "Mẹo trả lời: Chỉnh ra 5.2V chứ không phải 5.0V là vì áp dụng Vật lý 9 ($R = \\rho \\frac{l}{S}$), dòng điện đi 20 mét cáp sẽ bị sụt áp đúng 0.2V, xuống đáy hầm vừa tròn 5.0V cực chuẩn!",
+        physicsTip: "💡 Công nghệ BUCK xung có hiệu suất tới 92%, không gây nóng ran và lãng phí điện năng như các loại IC tuyến tính cũ (7805)."
+      },
+      {
+        id: "esp32_master",
+        name: "Bộ Não Xử Lý & Web Server (Master)",
+        sub: "Trung Tâm Phân Tích, Báo Động & Web SCADA",
+        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
+        badge: "Đội trưởng chỉ huy trên mặt đất",
+        repo: "kike-canaries/canairio_sensorlib",
+        repoUrl: "https://github.com/kike-canaries/canairio_sensorlib",
+        color: "#2563eb",
+        icon: "fa-microchip",
+        pins: [
+          { from: "GPIO 16 (RX2)", to: "RO (MAX485 Master)", note: "Nhận bức thư dữ liệu từ đáy gửi lên" },
+          { from: "GPIO 21 & 22", to: "OLED SSD1306 (SDA & SCL)", note: "Gửi số liệu ra màn hình OLED" },
+          { from: "GPIO 23", to: "Còi Hú Báo Động (Buzzer)", note: "Hú còi dồn dập khi có khí độc" },
+          { from: "GPIO 19, 5, 18", to: "LED Đỏ - Vàng - Xanh", note: "Báo động 3 cấp độ an toàn" },
+          { from: "VIN & GND", to: "5.2V Nguồn & GND Chung", note: "Nuôi Master từ LM2596" }
+        ],
+        codeSnippet: `// Hàm xử lý còi đèn theo 3 cấp độ an toàn:
+void handleAlarm(float o2, float co, float ch4) {
+  bool isDanger = (o2 < 18.0 || co >= 30.0 || ch4 >= 10.0);
+  bool isWarning = (o2 <= 19.5 || co >= 15.0 || ch4 >= 5.0);
+  if (isDanger) {
+    digitalWrite(19, HIGH); // LED ĐỎ
+    digitalWrite(5, LOW); digitalWrite(18, LOW);
+    digitalWrite(23, (millis()/250)%2); // CÒI HÚ DỒN DẬP
+  } else if (isWarning) {
+    digitalWrite(5, HIGH); // LED VÀNG
+    digitalWrite(19, LOW); digitalWrite(18, LOW);
+    digitalWrite(23, LOW);
+  } else {
+    digitalWrite(18, HIGH); // LED XANH AN TOÀN
+    digitalWrite(19, LOW); digitalWrite(5, LOW);
+    digitalWrite(23, LOW);
+  }
+}`,
+        why: "ESP32 TRÊN MẶT ĐẤT LÀM GÌ ĐỂ LÊN WEB, MÀN HÌNH VÀ BÁO CÒI ĐÈN?",
+        whyContent: "Sau khi ESP32 dưới không gian kín gửi bức thư lên qua 2 chân tín hiệu A và B, con ESP32 Master trên mặt đất nhận được qua chân RX2 (GPIO 16). Nó lập tức làm 3 việc thực tế: 1. Đưa số liệu lên Web Server Wi-Fi; 2. Đưa số liệu ra màn hình OLED để người đứng trên bờ đọc; 3. Nếu phát hiện có khí độc hoặc thiếu Oxy thì kích hoạt còi hú vang trời và bật đèn đỏ báo động!",
+        step1: "Nhận bức thư 5 thông số từ dưới đáy hầm đưa vào chân GPIO 16 (RX2).",
+        step2: "Kiểm tra mức độ an toàn: Oxy có < 18% không, CO có >= 30 ppm không, Gas có >= 10% LEL không.",
+        step3: "Chiếu ngay số lên OLED (chân 21, 22), phát Wi-Fi cho điện thoại xung quanh mở Web xem biểu đồ không cần 4G, và bật còi hú (chân 23) + đèn đỏ (chân 19) báo động khẩn cấp!",
+        studentTip: "Hãy giải thích với thầy cô: ESP32 Master là bộ não trung tâm trên mặt đất, phối hợp cả Web Server không dây, màn hình hiển thị tại chỗ và hệ thống còi đèn đa tầng.",
+        physicsTip: "💡 ESP32 tự tạo trạm phát Wi-Fi Access Point tên 'GIAM_SAT_KHONG_GIAN_KIN' (IP: 192.168.4.1), mở trình duyệt điện thoại là xem được biểu đồ sóng mà hoàn toàn không cần Internet hay 4G!"
+      },
+      {
+        id: "oled_display",
+        name: "Màn Hình OLED 0.96 inch",
+        sub: "Hiển Thị SSD1306 I2C (0x3C)",
+        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
+        badge: "Bảng hiển thị số đo tại chỗ",
+        repo: "adafruit/Adafruit_SSD1306",
+        repoUrl: "https://github.com",
+        color: "#0284c7",
+        icon: "fa-tv",
+        pins: [
+          { from: "SDA (Data)", to: "GPIO 21 (D21 Master)", note: "Chân nhận dữ liệu hiển thị số" },
+          { from: "SCL (Clock)", to: "GPIO 22 (D22 Master)", note: "Chân nhận xung nhịp đồng hồ" },
+          { from: "VCC & GND", to: "3.3V & GND (ESP32 Master)", note: "Nguồn nuôi màn hình" }
+        ],
+        codeSnippet: `// Hiển thị 5 thông số lên OLED SSD1306
+#include <Adafruit_SSD1306.h>
+Adafruit_SSD1306 display(128, 64, &Wire, -1);
+void updateOLED() {
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.printf("O2: %.1f%%  CO:%dppm\n", o2_val, (int)co_val);
+  display.printf("CH4:%.1f%%LEL\n", ch4_val);
+  display.printf("T:%.1fC  H:%.1f%%\n", t_val, h_val);
+  display.display();
+}`,
+        why: "TẠI SAO ESP32 PHẢI NỐI RA MÀN HÌNH OLED?",
+        whyContent: "Khi ESP32 Master trên mặt đất nhận được bức thư từ dưới đáy đưa lên, nó gửi ngay qua 2 chân SDA (GPIO 21) và SCL (GPIO 22) để hiển thị 5 con số lên màn hình OLED. Người chỉ huy đứng trên bờ không cần cầm điện thoại, chỉ cần liếc mắt nhìn vào hộp máy là biết ngay dưới hầm an toàn hay nguy hiểm.",
+        step1: "Nhận tín hiệu hiển thị số từ chân GPIO 21 và GPIO 22 của ESP32 Master trên bờ.",
+        step2: "Màn hình tự phát sáng từng điểm ảnh hiển thị rõ ràng 5 dòng: Oxy (%), Khí than CO (ppm), Khí Gas (%LEL), Nhiệt độ và Độ ẩm.",
+        step3: "Giúp người giám sát tại chỗ nắm bắt tình hình tức khắc mà không bị phụ thuộc vào điện thoại hay kết nối mạng.",
+        studentTip: "Hãy giải thích với thầy cô: Dùng chuẩn I2C chỉ tốn đúng 2 sợi dây nhưng truyền được toàn bộ đồ họa và văn bản với tốc độ cao.",
+        physicsTip: "💡 Công nghệ OLED tự phát sáng từng điểm ảnh (Pixel), ngoài trời nắng gắt vẫn nhìn rất rõ và cực kỳ tiết kiệm điện."
+      },
+      {
+        id: "alarm_system",
+        name: "Hệ Thống Đèn 3 Màu & Còi Hú",
+        sub: "Còi Buzzer & LED Đỏ - Vàng - Xanh",
+        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
+        badge: "Bức tường âm thanh cứu mạng người",
+        repo: "GPIO Digital Output",
+        repoUrl: "https://github.com",
+        color: "#dc2626",
+        icon: "fa-bullhorn",
+        pins: [
+          { from: "Còi Buzzer (+)", to: "GPIO 23", note: "Âm lượng > 85dB hú dồn dập" },
+          { from: "LED ĐỎ (+)", to: "GPIO 19", note: "Sáng khi Oxy < 18% hoặc có độc" },
+          { from: "LED VÀNG (+)", to: "GPIO 5", note: "Sáng khi tiệm cận ngưỡng chú ý" },
+          { from: "LED XANH (+)", to: "GPIO 18", note: "Sáng khi môi trường an toàn" },
+          { from: "GND (Mass)", to: "GND Chung Master", note: "Cực âm chung" }
+        ],
+        codeSnippet: `// Kích hoạt còi hú ngắt quãng dồn dập (250ms bật / 250ms tắt)
+if (isDanger) {
+  digitalWrite(BUZZER_PIN, (millis() / 250) % 2 == 0 ? HIGH : LOW);
+}`,
+        why: "TẠI SAO CÒI HÚ VÀ ĐÈN PHẢI NỐI VÀO CÁC CHÂN 23, 19, 5, 18 TRÊN MIỆNG HẦM?",
+        whyContent: "Khi ESP32 Master trên bờ phát hiện có khí độc từ chân A-B gửi lên, nó lập tức kích hoạt chân GPIO 23 để còi hú vang trời và chân GPIO 19 để đèn đỏ chớp dồn dập. Đặt còi ngay miệng hầm để tạo ra 'BỨC TƯỜNG ÂM THANH' đanh thép, cảnh báo trực diện làm người trên bờ giật mình khựng lại, dứt khoát không bước xuống hầm!",
+        step1: "ESP32 Master trên mặt đất phát hiện nồng độ khí vượt ngưỡng nguy hiểm (Oxy < 18% hoặc CO >= 30 ppm hoặc Gas >= 10% LEL).",
+        step2: "Lập tức xuất lệnh điện áp cao ra chân GPIO 23 (bật còi hú ngắt quãng 250ms) và chân GPIO 19 (bật LED Đỏ).",
+        step3: "Âm thanh còi hú > 85dB vang dội ngay cửa hầm, báo động toàn khu vực và ngăn chặn tuyệt đối thảm kịch nhảy xuống cứu mù quáng.",
+        studentTip: "Hãy giải thích với thầy cô: Đây là điểm nhân văn cốt lõi cứu sống con người của dự án - cảnh báo tại chỗ trước khi con người bước vào không gian kín.",
+        physicsTip: "💡 Tiếng còi hú ngắt quãng dồn dập 250ms bật / 250ms tắt kích thích trực tiếp vào thính giác con người, tạo phản xạ dừng lại ngay lập tức."
+      }
+    ];
+
+    // =========================================================================
+    // DANH SÁCH TẤT CẢ CÁC ĐƯỜNG DÂY (KHÔNG BAO GIỜ ĐÈ LÊN CHỮ - MANHATTAN CHUẨN)
+    // =========================================================================
+    const WIRE_DEFINITIONS = [
+      // 1. KHỐI SLAVE: ĐẤU NỐI BUS NGUỒN VCC (5V) & MASS GND
+      { fromPort: "port-cat5-pwr-left", toPort: "port-rail-vcc-feed", gutterX: 1130, color: "var(--w-vcc)", stroke: 4.5, fromComponent: "cable_cat5e", toComponent: "esp32_slave", group: "cable_cat5e" },
+      { fromPort: "port-cat5-gnd-left", toPort: "port-rail-gnd-feed", gutterX: 1110, color: "var(--w-gnd)", stroke: 4.5, fromComponent: "cable_cat5e", toComponent: "esp32_slave", group: "cable_cat5e" },
+
+      // Bus Nguồn cấp cho ESP32 Slave VIN & GND (phía trái ESP32)
+      { fromPort: "port-rail-vcc-feed", toPort: "port-esp32s-vin", gutterX: 430, color: "var(--w-vcc)", stroke: 3.5, fromComponent: "esp32_slave", toComponent: "esp32_slave", group: "esp32_slave" },
+      { fromPort: "port-rail-gnd-feed", toPort: "port-esp32s-gnd", gutterX: 440, color: "var(--w-gnd)", stroke: 3.5, fromComponent: "esp32_slave", toComponent: "esp32_slave", group: "esp32_slave" },
+
+      // CẢM BIẾN OXY DFROBOT
+      { fromPort: "port-o2-vcc", toPort: "port-rail-vcc-o2", gutterX: 310, color: "var(--w-vcc)", stroke: 2.8, fromComponent: "o2_sensor", toComponent: "esp32_slave", group: "o2_sensor" },
+      { fromPort: "port-o2-gnd", toPort: "port-rail-gnd-o2", gutterX: 375, color: "var(--w-gnd)", stroke: 2.8, fromComponent: "o2_sensor", toComponent: "esp32_slave", group: "o2_sensor" },
+      { fromPort: "port-o2-sda", toPort: "port-esp32s-d21", gutterX: 425, color: "var(--w-i2c-sda)", stroke: 3.0, fromComponent: "o2_sensor", toComponent: "esp32_slave", group: "o2_sensor" },
+      { fromPort: "port-o2-scl", toPort: "port-esp32s-d22", gutterX: 440, color: "var(--w-i2c-scl)", stroke: 3.0, fromComponent: "o2_sensor", toComponent: "esp32_slave", group: "o2_sensor" },
+
+      // CẢM BIẾN MQ-7 KHÍ CO
+      { fromPort: "port-mq7-vcc", toPort: "port-rail-vcc-mq7", gutterX: 310, color: "var(--w-vcc)", stroke: 2.8, fromComponent: "mq7_sensor", toComponent: "esp32_slave", group: "mq7_sensor" },
+      { fromPort: "port-mq7-gnd", toPort: "port-rail-gnd-mq7", gutterX: 375, color: "var(--w-gnd)", stroke: 2.8, fromComponent: "mq7_sensor", toComponent: "esp32_slave", group: "mq7_sensor" },
+      { fromPort: "port-mq7-a0", toPort: "port-esp32s-gpio35", gutterX: 425, color: "var(--w-mq7)", stroke: 3.2, fromComponent: "mq7_sensor", toComponent: "esp32_slave", group: "mq7_sensor" },
+
+      // CẢM BIẾN MQ-4 KHÍ METAN
+      { fromPort: "port-mq4-vcc", toPort: "port-rail-vcc-mq4", gutterX: 310, color: "var(--w-vcc)", stroke: 2.8, fromComponent: "mq4_sensor", toComponent: "esp32_slave", group: "mq4_sensor" },
+      { fromPort: "port-mq4-gnd", toPort: "port-rail-gnd-mq4", gutterX: 375, color: "var(--w-gnd)", stroke: 2.8, fromComponent: "mq4_sensor", toComponent: "esp32_slave", group: "mq4_sensor" },
+      { fromPort: "port-mq4-a0", toPort: "port-esp32s-gpio34", gutterX: 425, color: "var(--w-mq4)", stroke: 3.2, fromComponent: "mq4_sensor", toComponent: "esp32_slave", group: "mq4_sensor" },
+
+      // CẢM BIẾN DHT22
+      { fromPort: "port-dht22-vcc", toPort: "port-rail-vcc-dht22", gutterX: 310, color: "var(--w-vcc)", stroke: 2.8, fromComponent: "dht22_sensor", toComponent: "esp32_slave", group: "dht22_sensor" },
+      { fromPort: "port-dht22-gnd", toPort: "port-rail-gnd-dht22", gutterX: 375, color: "var(--w-gnd)", stroke: 2.8, fromComponent: "dht22_sensor", toComponent: "esp32_slave", group: "dht22_sensor" },
+      { fromPort: "port-dht22-data", toPort: "port-esp32s-d4", gutterX: 425, color: "var(--w-dht)", stroke: 3.2, fromComponent: "dht22_sensor", toComponent: "esp32_slave", group: "dht22_sensor" },
+
+      // ESP32 SLAVE SANG MAX485 (PHÍA PHẢI ESP32 -> TRÁI MAX485, ZERO CROSSING)
+      { fromPort: "port-esp32s-tx2", toPort: "port-max485s-di", gutterX: 790, color: "var(--w-uart)", stroke: 3.2, fromComponent: "max485_slave", toComponent: "esp32_slave", group: "max485_slave" },
+      { fromPort: "port-esp32s-rx2", toPort: "port-max485s-ro", gutterX: 805, color: "var(--w-uart)", stroke: 3.2, fromComponent: "max485_slave", toComponent: "esp32_slave", group: "max485_slave" },
+      { fromPort: "port-esp32s-vcc-out", toPort: "port-max485s-vcc", gutterX: 775, color: "var(--w-vcc)", stroke: 2.8, fromComponent: "max485_slave", toComponent: "esp32_slave", group: "max485_slave" },
+      { fromPort: "port-esp32s-gnd-out", toPort: "port-max485s-gnd", gutterX: 760, color: "var(--w-gnd)", stroke: 2.8, fromComponent: "max485_slave", toComponent: "esp32_slave", group: "max485_slave" },
+
+      // MAX485 SLAVE -> CÁP CAT5E
+      { fromPort: "port-max485s-a", toPort: "port-cat5-rs485-left", gutterX: 1145, color: "var(--w-rs485-a)", stroke: 3.6, fromComponent: "max485_slave", toComponent: "cable_cat5e", group: "cable_cat5e" },
+      { fromPort: "port-max485s-b", toPort: "port-cat5-rs485-left", gutterX: 1160, color: "var(--w-rs485-b)", stroke: 3.6, fromComponent: "max485_slave", toComponent: "cable_cat5e", group: "cable_cat5e" },
+
+      // 2. KHỐI MASTER: CỤC PIN 12V -> NGUỒN GIẢM ÁP LM2596 (DÂY NGUỒN 12V ĐỘC LẬP)
+      { fromPort: "port-battery-pos", toPort: "port-lm2596-in-pos", gutterX: 1540, color: "var(--w-vcc)", stroke: 4.2, fromComponent: "battery_pack", toComponent: "lm2596", group: "battery_pack" },
+      { fromPort: "port-battery-neg", toPort: "port-lm2596-in-neg", gutterX: 1525, color: "var(--w-gnd)", stroke: 4.2, fromComponent: "battery_pack", toComponent: "lm2596", group: "battery_pack" },
+
+      // NGUỒN GIẢM ÁP LM2596 (5.2V) -> CÁP CAT5E (BƠM DÒNG XUỐNG ĐÁY)
+      { fromPort: "port-lm2596-out-cat5-pos", toPort: "port-cat5-pwr-right", gutterX: 1475, color: "var(--w-vcc)", stroke: 4.5, fromComponent: "lm2596", toComponent: "cable_cat5e", group: "cable_cat5e" },
+      { fromPort: "port-lm2596-out-cat5-neg", toPort: "port-cat5-gnd-right", gutterX: 1490, color: "var(--w-gnd)", stroke: 4.5, fromComponent: "lm2596", toComponent: "cable_cat5e", group: "cable_cat5e" },
+
+      // NGUỒN GIẢM ÁP LM2596 (5.2V) -> ESP32 MASTER (NUÔI BỘ NÃO & WEB SERVER)
+      { fromPort: "port-lm2596-out-esp-pos", toPort: "port-esp32m-vin-in", gutterX: 1855, color: "var(--w-vcc)", stroke: 3.2, fromComponent: "lm2596", toComponent: "esp32_master", group: "esp32_master" },
+      { fromPort: "port-lm2596-out-esp-neg", toPort: "port-esp32m-gnd-in", gutterX: 1870, color: "var(--w-gnd)", stroke: 3.0, fromComponent: "lm2596", toComponent: "esp32_master", group: "esp32_master" },
+
+      // Cáp Cat5e -> MAX485 Master (TÍN HIỆU VI SAI A - B ĐI LÊN TỪ ĐÁY)
+      { fromPort: "port-cat5-rs485-right", toPort: "port-max485m-a", gutterX: 1545, color: "var(--w-rs485-a)", stroke: 3.6, fromComponent: "cable_cat5e", toComponent: "max485_master", group: "cable_cat5e" },
+      { fromPort: "port-cat5-rs485-right", toPort: "port-max485m-b", gutterX: 1530, color: "var(--w-rs485-b)", stroke: 3.6, fromComponent: "cable_cat5e", toComponent: "max485_master", group: "cable_cat5e" },
+
+      // MAX485 Master -> ESP32 Master RX2 & Nguồn
+      { fromPort: "port-max485m-ro", toPort: "port-esp32m-rx2", gutterX: 1885, color: "var(--w-uart)", stroke: 3.2, fromComponent: "max485_master", toComponent: "esp32_master", group: "max485_master" },
+      { fromPort: "port-esp32m-vin-in", toPort: "port-max485m-vcc", gutterX: 1845, color: "var(--w-vcc)", stroke: 2.6, fromComponent: "max485_master", toComponent: "esp32_master", group: "max485_master" },
+      { fromPort: "port-esp32m-gnd-in", toPort: "port-max485m-gnd", gutterX: 1835, color: "var(--w-gnd)", stroke: 2.6, fromComponent: "max485_master", toComponent: "esp32_master", group: "max485_master" },
+
+      // ESP32 MASTER RA OLED (XUẤT TỪ BÊN PHẢI SANG BÊN PHẢI - ZERO CROSSING)
+      { fromPort: "port-esp32m-d21", toPort: "port-oled-sda", gutterX: 2245, color: "var(--w-i2c-sda)", stroke: 3.0, fromComponent: "esp32_master", toComponent: "oled_display", group: "oled_display" },
+      { fromPort: "port-esp32m-d22", toPort: "port-oled-scl", gutterX: 2260, color: "var(--w-i2c-scl)", stroke: 3.0, fromComponent: "esp32_master", toComponent: "oled_display", group: "oled_display" },
+      { fromPort: "port-esp32m-3v3-out", toPort: "port-oled-vcc", gutterX: 2275, color: "var(--w-vcc)", stroke: 2.8, fromComponent: "esp32_master", toComponent: "oled_display", group: "oled_display" },
+      { fromPort: "port-esp32m-gnd-out", toPort: "port-oled-gnd", gutterX: 2290, color: "var(--w-gnd)", stroke: 2.8, fromComponent: "esp32_master", toComponent: "oled_display", group: "oled_display" },
+
+      // ESP32 MASTER RA CÒI BUZZER & 3 ĐÈN LED (XUẤT TỪ PHÍA PHẢI - ZERO CROSSING)
+      { fromPort: "port-esp32m-d23", toPort: "port-alarm-buzz", gutterX: 2245, color: "var(--w-buzz)", stroke: 3.5, fromComponent: "esp32_master", toComponent: "alarm_system", group: "alarm_system" },
+      { fromPort: "port-esp32m-d19", toPort: "port-alarm-red", gutterX: 2260, color: "var(--w-led-r)", stroke: 3.2, fromComponent: "esp32_master", toComponent: "alarm_system", group: "alarm_system" },
+      { fromPort: "port-esp32m-d5", toPort: "port-alarm-yel", gutterX: 2275, color: "var(--w-led-y)", stroke: 3.2, fromComponent: "esp32_master", toComponent: "alarm_system", group: "alarm_system" },
+      { fromPort: "port-esp32m-d18", toPort: "port-alarm-grn", gutterX: 2290, color: "var(--w-led-g)", stroke: 3.2, fromComponent: "esp32_master", toComponent: "alarm_system", group: "alarm_system" },
+      { fromPort: "port-esp32m-gnd-out", toPort: "port-alarm-gnd", gutterX: 2305, color: "var(--w-gnd)", stroke: 2.8, fromComponent: "esp32_master", toComponent: "alarm_system", group: "alarm_system" }
+    ];
+
+    // HỆ THỐNG VẼ ĐƯỜNG DÂY VUÔNG GÓC MANHATTAN ROUTING
+    const wireGroup = document.getElementById("wire-group");
+    const particlesGroup = document.getElementById("particles-group");
+    const stage = document.getElementById("pan-zoom-stage");
+    const container = document.getElementById("workspace-container");
+
+    let currentFilter = "all";
+    let isIsolateMode = true;
+    let selectedCompId = "o2_sensor";
+    let activeWires = [];
+
+    function getPortCoordinates(portId) {
+      const portEl = document.getElementById(portId);
+      if (!portEl) return null;
+      const stageRect = stage.getBoundingClientRect();
+      const r = portEl.getBoundingClientRect();
+      return {
+        x: (r.left + r.width / 2 - stageRect.left) / scale,
+        y: (r.top + r.height / 2 - stageRect.top) / scale
+      };
+    }
+
+    function buildManhattanPath(p1, p2, gutterX, radius = 10) {
+      const x1 = p1.x, y1 = p1.y;
+      const x2 = p2.x, y2 = p2.y;
+
+      const dirX1 = gutterX >= x1 ? 1 : -1;
+      const dirX2 = x2 >= gutterX ? 1 : -1;
+      const dirY = y2 >= y1 ? 1 : -1;
+
+      if (Math.abs(y1 - y2) < 4) {
+        return `M ${x1} ${y1} L ${x2} ${y2}`;
+      }
+
+      const r = Math.min(radius, Math.abs(gutterX - x1) / 2, Math.abs(x2 - gutterX) / 2, Math.abs(y2 - y1) / 2);
+
+      return `
+        M ${x1} ${y1}
+        L ${gutterX - dirX1 * r} ${y1}
+        Q ${gutterX} ${y1} ${gutterX} ${y1 + dirY * r}
+        L ${gutterX} ${y2 - dirY * r}
+        Q ${gutterX} ${y2} ${gutterX + dirX2 * r} ${y2}
+        L ${x2} ${y2}
+      `;
+    }
+
+    function renderAllWires() {
+      wireGroup.innerHTML = "";
+      particlesGroup.innerHTML = "";
+      activeWires.length = 0;
+
+      WIRE_DEFINITIONS.forEach((wDef, index) => {
+        const p1 = getPortCoordinates(wDef.fromPort);
+        const p2 = getPortCoordinates(wDef.toPort);
+        if (!p1 || !p2) return;
+
+        let gutterX = wDef.gutterX;
+        const pathD = buildManhattanPath(p1, p2, gutterX, 10);
+
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", pathD);
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", wDef.color);
+        path.setAttribute("stroke-width", wDef.stroke);
+        path.setAttribute("stroke-linecap", "round");
+        path.setAttribute("stroke-linejoin", "round");
+        path.id = `wire-${index}`;
+        wireGroup.appendChild(path);
+
+        // Hạt electron dòng điện chạy trên dây
+        const particles = [];
+        for (let p = 0; p < 2; p++) {
+          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circle.setAttribute("r", wDef.stroke >= 4 ? 4 : 3);
+          circle.setAttribute("fill", "#ffffff");
+          circle.setAttribute("stroke", "#0f172a");
+          circle.setAttribute("stroke-width", "1");
+          circle.style.display = "none";
+          particlesGroup.appendChild(circle);
+          particles.push({ circle, progress: p * 0.5 });
+        }
+
+        activeWires.push({
+          path,
+          totalLength: path.getTotalLength(),
+          particles,
+          wDef
+        });
+      });
+
+      applyWireVisibility();
+    }
+
+    function applyWireVisibility() {
+      if (activeWires.length === 0) {
+        renderAllWires();
+        return;
+      }
+      activeWires.forEach(w => {
+        if (currentFilter === "all" || selectedCompId === "all") {
+          // HIỆN LÊN TẤT CẢ 100% RÕ NÉT CẢ 43 ĐƯỜNG DÂY!
+          w.path.setAttribute("stroke-width", w.wDef.stroke);
+          w.path.setAttribute("opacity", "1");
+        } else {
+          const isHighlighted = (
+            w.wDef.group === currentFilter ||
+            w.wDef.fromComponent === currentFilter ||
+            w.wDef.toComponent === currentFilter ||
+            w.wDef.group === selectedCompId ||
+            w.wDef.fromComponent === selectedCompId ||
+            w.wDef.toComponent === selectedCompId
+          );
+
+          if (isHighlighted) {
+            w.path.setAttribute("stroke-width", w.wDef.stroke + 2.0);
+            w.path.setAttribute("opacity", "1");
+          } else {
+            w.path.setAttribute("stroke-width", Math.max(w.wDef.stroke - 0.6, 1.8));
+            w.path.setAttribute("opacity", "0.22");
+          }
+        }
+      });
+    }
+
+    function filterCircuit(groupId, btnElement) {
+      currentFilter = groupId;
+      selectedCompId = groupId;
+
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      if (btnElement) {
+        btnElement.classList.add("active");
+      } else {
+        const b = document.querySelector(`.filter-btn[data-filter="${groupId}"]`);
+        if (b) b.classList.add("active");
+      }
+
+      if (groupId === "all") {
+        selectComponent("all");
+      } else {
+        selectComponent(groupId);
+      }
+    }
+
+    const btnToggleIsolate = document.getElementById("btn-toggle-isolate");
+    const isolateText = document.getElementById("isolate-text");
+    if (btnToggleIsolate && isolateText) {
+      btnToggleIsolate.onclick = () => {
+        isIsolateMode = !isIsolateMode;
+        isolateText.textContent = isIsolateMode ? "Làm Mờ Dây Khác: BẬT" : "Làm Mờ Dây Khác: TẮT";
+        btnToggleIsolate.classList.toggle("active", isIsolateMode);
+        applyWireVisibility();
+      };
+    }
+
+    // PAN & ZOOM BÀN LÀM VIỆC (MẶC ĐỊNH VIEW TOÀN CẢNH ĐẸP MẮT)
+    let scale = 0.52;
+    let panX = 260;
+    let panY = 25;
+    let isDragging = false;
+    let startX = 0, startY = 0;
+
+    let transformRaf = null;
+    function updateTransform(immediate = false) {
+      if (immediate) {
+        if (transformRaf) {
+          cancelAnimationFrame(transformRaf);
+          transformRaf = null;
+        }
+        stage.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${scale})`;
+        return;
+      }
+      if (transformRaf) return;
+      transformRaf = requestAnimationFrame(() => {
+        stage.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${scale})`;
+        transformRaf = null;
+      });
+    }
+
+    container.addEventListener("mousedown", (e) => {
+      if (e.target.closest(".comp-card") || e.target.closest("button") || e.target.closest(".sidebar-left") || e.target.closest(".sidebar-right") || e.target.closest(".filter-bar")) return;
+      isDragging = true;
+      startX = e.clientX - panX;
+      startY = e.clientY - panY;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      panX = e.clientX - startX;
+      panY = e.clientY - startY;
+      updateTransform();
+    });
+
+    window.addEventListener("mouseup", () => isDragging = false);
+
+    container.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+      scale = Math.min(Math.max(scale * zoomFactor, 0.28), 1.8);
+      updateTransform();
+    }, { passive: false });
+
+    const btnResetView = document.getElementById("btn-reset-view");
+    if (btnResetView) {
+      btnResetView.onclick = () => fitViewToScreen();
+    }
+
+    // RENDER DANH SÁCH THIẾT BỊ VÀ CHỌN CHI TIẾT
+    const compListContainer = document.getElementById("comp-list");
+    const detailBody = document.getElementById("detail-body");
+    const detailCategory = document.getElementById("detail-category");
+
+    // MỤC "TẤT CẢ (HIỆN TOÀN BỘ DÂY)" ĐẶT ĐẦU DANH SÁCH
+    const allItem = document.createElement("div");
+    allItem.className = "comp-item active";
+    allItem.id = "item-all";
+    allItem.innerHTML = `
+      <div class="comp-icon" style="color: #0284c7;">
+        <i class="fa-solid fa-network-wired"></i>
+      </div>
+      <div class="comp-info">
+        <div class="comp-name" style="color: #0284c7; font-weight: 800;">Toàn Bộ Hệ Thống (Tất Cả Dây)</div>
+        <div class="comp-sub">Sáng 100% toàn bộ 43 đường dây kết nối</div>
+      </div>
+    `;
+    allItem.onclick = () => filterCircuit("all");
+    compListContainer.appendChild(allItem);
+
+    let curGroup = "";
+    COMPONENTS.forEach(comp => {
+      if (comp.group !== curGroup) {
+        curGroup = comp.group;
+        const gLabel = document.createElement("div");
+        gLabel.className = "group-label";
+        gLabel.textContent = curGroup;
+        compListContainer.appendChild(gLabel);
+      }
+
+      const item = document.createElement("div");
+      item.className = "comp-item";
+      item.id = `item-${comp.id}`;
+      item.innerHTML = `
+        <div class="comp-icon" style="color: ${comp.color};">
+          <i class="fa-solid ${comp.icon}"></i>
+        </div>
+        <div class="comp-info">
+          <div class="comp-name">${comp.name}</div>
+          <div class="comp-sub">${comp.sub}</div>
+        </div>
+      `;
+      item.onclick = () => selectComponent(comp.id);
+      compListContainer.appendChild(item);
+    });
+
+    // HÀM CHỌN THIẾT BỊ: TUYỆT ĐỐI KHÔNG LÀM NHẢY MÀN HÌNH (NO SCREEN JUMP!)
+    function selectComponent(compId) {
+      selectedCompId = compId;
+
+      if (compId === "all") {
+        currentFilter = "all";
+        document.querySelectorAll(".comp-item").forEach(el => el.classList.remove("active"));
+        const allItemEl = document.getElementById("item-all");
+        if (allItemEl) allItemEl.classList.add("active");
+
+        document.querySelectorAll(".comp-card").forEach(el => {
+          el.classList.remove("active");
+          el.style.removeProperty("--active-color");
+        });
+
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        const btnAll = document.querySelector(".filter-btn[data-filter='all']");
+        if (btnAll) btnAll.classList.add("active");
+
+        applyWireVisibility();
+
+        // Render nội dung tổng quan toàn hệ thống
+        detailCategory.textContent = "TOÀN HỆ THỐNG";
+        detailCategory.style.color = "#0284c7";
+        detailBody.innerHTML = `
+          <div class="comp-badge" style="color: #0284c7; border-color: #0284c7; background: #e0f2fe;">
+            <i class="fa-solid fa-network-wired"></i> Đang hiển thị 100% tất cả 43 đường dây
+          </div>
+          <div class="comp-title-large">Toàn Bộ Sơ Đồ Đi Dây Kỹ Thuật</div>
+          <div style="font-size: 0.82rem; color: var(--text-muted); font-weight: 500; margin-bottom: 12px;">
+            Hệ thống 13 module kết nối qua cáp Cat5e vi sai RS-485 chống nhiễu
+          </div>
+
+          <div class="pin-mapping-box" style="margin-bottom: 12px;">
+            <h4><i class="fa-solid fa-arrows-split-up-and-left"></i> Bản Đồ Đấu Nối 3 Khối Chính</h4>
+            
+            <div style="margin-top: 8px; padding: 10px; background: rgba(2, 132, 199, 0.08); border-radius: 8px; border-left: 3px solid #0284c7; margin-bottom: 8px;">
+              <div style="font-weight: 700; color: #0284c7; font-size: 0.82rem;"><i class="fa-solid fa-dungeon"></i> 1. Dưới Đáy Không Gian Kín (Slave):</div>
+              <div style="font-size: 0.74rem; color: var(--text); margin-top: 4px; line-height: 1.5;">
+                • <b>Oxy (I2C):</b> SDA &rarr; GPIO 21, SCL &rarr; GPIO 22<br>
+                • <b>Khí Độc CO (MQ-7):</b> A0 &rarr; GPIO 35 (ADC1)<br>
+                • <b>Khí Metan (MQ-4):</b> A0 &rarr; GPIO 34 (ADC1)<br>
+                • <b>Nhiệt Ẩm (DHT22):</b> DATA &rarr; GPIO 4 (1-Wire)<br>
+                • <b>ESP32 Slave &rarr; MAX485:</b> TX2 (GPIO 17) &rarr; DI, RX2 (GPIO 16) &rarr; RO<br>
+                • <b>Bus Nguồn kép:</b> Nhận 5.2V nuôi 4 cảm biến và ESP32
+              </div>
+            </div>
+
+            <div style="margin-top: 8px; padding: 10px; background: rgba(234, 88, 12, 0.08); border-radius: 8px; border-left: 3px solid #ea580c; margin-bottom: 8px;">
+              <div style="font-weight: 700; color: #ea580c; font-size: 0.82rem;"><i class="fa-solid fa-bolt"></i> 2. Cáp Cat5e 20m (Cụm 3 - 3 - 2):</div>
+              <div style="font-size: 0.74rem; color: var(--text); margin-top: 4px; line-height: 1.5;">
+                • <b>Chập 3 sợi Dương:</b> Tiết diện S tăng gấp 3 &rarr; Giảm điện trở R 3 lần (Vật lý 9)<br>
+                • <b>Chập 3 sợi Mass:</b> Đường về dòng điện giảm R 3 lần<br>
+                • <b>2 sợi Vi Sai A - B:</b> RS-485 truyền gói tin JSON chống nhiễu
+              </div>
+            </div>
+
+            <div style="margin-top: 8px; padding: 10px; background: rgba(22, 163, 74, 0.08); border-radius: 8px; border-left: 3px solid #16a34a;">
+              <div style="font-weight: 700; color: #16a34a; font-size: 0.82rem;"><i class="fa-solid fa-tower-broadcast"></i> 3. Trên Mặt Đất Cứu Hộ (Master):</div>
+              <div style="font-size: 0.74rem; color: var(--text); margin-top: 4px; line-height: 1.5;">
+                • <b>Cục Pin 3S 12V Li-ion:</b> Cấp nguồn di động dã ngoại (11.1V - 12.6V)<br>
+                • <b>Nguồn LM2596 BUCK:</b> Hạ áp 12V xuống chuẩn 5.2V bù sụt áp đường dài<br>
+                • <b>MAX485 Master:</b> Đón RS-485 chuyển UART vào RX2 (GPIO 16)<br>
+                • <b>Màn hình OLED:</b> SDA &rarr; 21, SCL &rarr; 22 (I2C phần cứng)<br>
+                • <b>Còi & 3 LED:</b> Còi (GPIO 23), Đỏ (19), Vàng (5), Xanh (18)<br>
+                • <b>Wi-Fi Web Server:</b> Tự phát sóng để điện thoại quét xem
+              </div>
+            </div>
+          </div>
+
+          <div class="explanation-card">
+            <div class="why-title"><i class="fa-solid fa-circle-info"></i> HƯỚNG DẪN TƯƠNG TÁC:</div>
+            <p class="why-desc" style="font-size: 0.78rem;">
+              • Click vào từng linh kiện trên danh sách bên trái hoặc trên sơ đồ để <b>làm nổi bật riêng đường dây của linh kiện đó</b>.<br>
+              • Bấm nút <b>"TẤT CẢ"</b> trên thanh lọc bất kỳ lúc nào để bật sáng lại toàn bộ 43 đường dây!
+            </p>
+          </div>
+        `;
+        if (typeof isMobileView === "function" && isMobileView()) {
+          toggleRightSidebar(false);
+          toggleLeftSidebar(false);
+          document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+          const schTab = document.getElementById("tab-nav-scheme");
+          if (schTab) schTab.classList.add("active");
+        }
+        return;
+      }
+
+      const comp = COMPONENTS.find(c => c.id === compId);
+      if (!comp) return;
+
+      document.querySelectorAll(".comp-item").forEach(el => el.classList.remove("active"));
+      const selectedItem = document.getElementById(`item-${comp.id}`);
+      if (selectedItem) selectedItem.classList.add("active");
+
+      document.querySelectorAll(".comp-card").forEach(el => {
+        el.classList.remove("active");
+        el.style.removeProperty("--active-color");
+      });
+
+      const cardEl = document.getElementById(`card-${comp.id}`);
+      if (cardEl) {
+        cardEl.style.setProperty("--active-color", comp.color);
+        cardEl.classList.add("active");
+        // CHÚ Ý: ĐÃ XÓA BỎ LỆNH GÂY NHẢY MÀN HÌNH (panX/panY giữ nguyên vị trí cố định)
+      }
+
+      // Cập nhật nút lọc tương ứng nếu có
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      const activeFilterBtn = document.querySelector(`.filter-btn[data-filter="${comp.id}"]`);
+      if (activeFilterBtn) activeFilterBtn.classList.add("active");
+
+      applyWireVisibility();
+
+      // Render nội dung bảng thông tin chi tiết
+      detailCategory.textContent = comp.group;
+      detailCategory.style.color = comp.color;
+      detailBody.innerHTML = `
+        <div class="comp-badge" style="color: ${comp.color}; border-color: ${comp.color};">
+          <i class="fa-solid ${comp.icon}"></i> ${comp.badge}
+        </div>
+        <div class="comp-title-large">${comp.name}</div>
+        <div style="font-size: 0.82rem; color: var(--text-muted); font-weight: 500;">${comp.sub}</div>
+
+        <a class="repo-pill" href="${comp.repoUrl}" target="_blank">
+          <i class="fa-brands fa-github"></i> <b>Repo thư viện:</b> ${comp.repo}
+        </a>
+
+        <div class="pin-mapping-box">
+          <h4><i class="fa-solid fa-arrows-split-up-and-left"></i> Sơ đồ chân kết nối đầy đủ (Tín hiệu + Nguồn + Mass)</h4>
+          ${comp.pins.map(p => `
+            <div class="pin-row">
+              <span class="pin-from"><i class="fa-solid fa-plug"></i> ${p.from}</span>
+              <span class="pin-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+              <span class="pin-to" style="color: ${comp.color}; border-color: ${comp.color}55;">${p.to}</span>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin: -2px 0 6px 12px;">• ${p.note}</div>
+          `).join('')}
+        </div>
+
+        <div class="code-snippet-box">
+          <div style="font-size: 0.7rem; color: #fbbf24; margin-bottom: 4px; font-weight: 700;">
+            <i class="fa-solid fa-code"></i> Code khởi tạo C++ (Chuẩn Repo):
+          </div>
+          <pre>${comp.codeSnippet}</pre>
+        </div>
+
+        <div class="explanation-card">
+          <div class="why-title"><i class="fa-solid fa-circle-question"></i> ${comp.why}</div>
+          <p class="why-desc">${comp.whyContent}</p>
+
+          <!-- KHỐI QUY TRÌNH HOẠT ĐỘNG THỰC TẾ 3 BƯỚC -->
+          <div class="flow-steps-box">
+            <div class="flow-steps-hdr"><i class="fa-solid fa-route"></i> QUY TRÌNH HOẠT ĐỘNG THỰC TẾ:</div>
+            <div class="flow-step-item">
+              <span class="step-badge">1</span>
+              <div><b>Dưới không gian kín:</b> ${comp.step1}</div>
+            </div>
+            <div class="flow-step-item">
+              <span class="step-badge">2</span>
+              <div><b>Đường truyền cáp Cat5e:</b> ${comp.step2}</div>
+            </div>
+            <div class="flow-step-item">
+              <span class="step-badge">3</span>
+              <div><b>Trên mặt đất cứu người:</b> ${comp.step3}</div>
+            </div>
+          </div>
+
+          <div class="highlight-tip">
+            <strong><i class="fa-solid fa-lightbulb"></i> Mẹo trả lời thầy cô:</strong> ${comp.studentTip}
+          </div>
+
+          <div class="physicsTip">
+            ${comp.physicsTip}
+          </div>
+        </div>
+      `;
+
+      if (typeof isMobileView === "function" && isMobileView()) {
+        toggleLeftSidebar(false);
+        toggleRightSidebar(true);
+        document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+        const detTab = document.getElementById("tab-nav-details");
+        if (detTab) detTab.classList.add("active");
+      }
+    }
+
+    // NÚT CHUYỂN ĐỔI CHẾ ĐỘ SÁNG / TỐI (LIGHT / DARK THEME)
+    const btnTheme = document.getElementById("btn-theme-toggle");
+    const themeText = document.getElementById("theme-text");
+    let isDarkMode = false; // Mặc định là chế độ Sáng (White Technical Mode)
+
+    btnTheme.onclick = () => {
+      isDarkMode = !isDarkMode;
+      document.body.classList.toggle("dark-mode", isDarkMode);
+      document.body.classList.toggle("light-mode", !isDarkMode);
+      if (isDarkMode) {
+        btnTheme.innerHTML = '<i class="fa-solid fa-moon"></i> <span id="theme-text">Giao Diện: Tối (Dark Tech)</span>';
+      } else {
+        btnTheme.innerHTML = '<i class="fa-solid fa-sun"></i> <span id="theme-text">Giao Diện: Sáng (Kỹ Thuật)</span>';
+      }
+      renderAllWires();
+    };
+
+    // NÚT BẬT / TẮT NGUỒN PIN VÀ DÒNG ĐIỆN
+    const btnPower = document.getElementById("btn-power");
+    const powerText = document.getElementById("power-text");
+    const flowDot = document.getElementById("flow-dot");
+    const flowStatusText = document.getElementById("flow-status-text");
+    const flowDesc = document.getElementById("flow-desc");
+    let isPowerOn = false;
+
+    btnPower.onclick = () => {
+      isPowerOn = !isPowerOn;
+      if (isPowerOn) {
+        btnPower.classList.add("active");
+        powerText.textContent = "NGUỒN ĐANG BẬT (5.2V)";
+        flowDot.classList.add("active");
+        flowStatusText.textContent = "Dòng điện đang chạy: Pin -> LM2596 (5.2V) -> Cụm 3-3-2 -> Cảm Biến";
+        flowDesc.textContent = "Hạt electron phát sáng chuyển động dọc theo cáp nguồn và tín hiệu RS-485";
+        activeWires.forEach(w => w.particles.forEach(p => p.circle.style.display = "block"));
+        updateBuzzerSound();
+      } else {
+        btnPower.classList.remove("active");
+        powerText.textContent = "BẬT NGUỒN PIN (5.2V)";
+        flowDot.classList.remove("active");
+        flowStatusText.textContent = "Nguồn đang tắt (Chưa có dòng điện)";
+        flowDesc.textContent = "Bấm 'BẬT NGUỒN PIN' để kích hoạt dòng điện và truyền nhận RS485";
+        activeWires.forEach(w => w.particles.forEach(p => p.circle.style.display = "none"));
+        updateBuzzerSound();
+      }
+    };
+
+    // 3 CẤP ĐỘ CẢNH BÁO KHÍ VÀ ĐIỀU KHIỂN WOKWI ELEMENTS
+    const btnSafe = document.getElementById("btn-lvl-safe");
+    const btnWarn = document.getElementById("btn-lvl-warn");
+    const btnDang = document.getElementById("btn-lvl-dang");
+    const ledRed = document.getElementById("wokwi-led-red");
+    const ledYellow = document.getElementById("wokwi-led-yellow");
+    const ledGreen = document.getElementById("wokwi-led-green");
+    let currentAlarmLevel = "safe";
+
+    // HỆ THỐNG ÂM THANH CÒI HÚ THỰC TẾ (WEB AUDIO API TỰ ĐỘNG PHÁT TIẾNG BÍP BÍP)
+    let audioCtx = null;
+    let isSoundEnabled = true;
+    let buzzerInterval = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+    }
+
+    function playSingleBeep(frequency, durationMs) {
+      if (!isSoundEnabled) return;
+      initAudio();
+      if (!audioCtx) return;
+
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "square"; // Sóng vuông tạo tiếng đanh đặc trưng của còi chíp piezo 5V
+        osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+        
+        gain.gain.setValueAtTime(0.14, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + durationMs / 1000);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + durationMs / 1000);
+      } catch (err) {
+        console.warn("Audio beep error:", err);
+      }
+    }
+
+    function updateBuzzerSound() {
+      if (buzzerInterval) {
+        clearInterval(buzzerInterval);
+        buzzerInterval = null;
+      }
+
+      const buzzEl = document.getElementById("wokwi-buzz");
+
+      if (currentAlarmLevel === "safe" || !isPowerOn || !isSoundEnabled) {
+        if (buzzEl) buzzEl.classList.remove("buzzing");
+        return;
+      }
+
+      if (currentAlarmLevel === "warn") {
+        // Tiếng bíp cảnh báo ngắt quãng: bíp... (1.2s) ... bíp...
+        playSingleBeep(2200, 150);
+        if (buzzEl) buzzEl.classList.add("buzzing");
+        buzzerInterval = setInterval(() => {
+          if (isPowerOn && currentAlarmLevel === "warn" && isSoundEnabled) {
+            playSingleBeep(2200, 150);
+          }
+        }, 1200);
+      } else if (currentAlarmLevel === "dang") {
+        // Tiếng còi hú khẩn cấp dồn dập: BÍP! BÍP! BÍP!
+        playSingleBeep(2800, 120);
+        if (buzzEl) buzzEl.classList.add("buzzing");
+        buzzerInterval = setInterval(() => {
+          if (isPowerOn && currentAlarmLevel === "dang" && isSoundEnabled) {
+            playSingleBeep(2800, 120);
+          }
+        }, 260);
+      }
+    }
+
+    // NÚT BẬT / TẮT ÂM THANH CÒI
+    const btnSoundToggle = document.getElementById("btn-sound-toggle");
+    if (btnSoundToggle) {
+      btnSoundToggle.onclick = () => {
+        isSoundEnabled = !isSoundEnabled;
+        if (isSoundEnabled) {
+          btnSoundToggle.innerHTML = '<i class="fa-solid fa-volume-high"></i> Còi: BẬT';
+          btnSoundToggle.style.color = "#0284c7";
+          btnSoundToggle.style.borderColor = "#0284c7";
+          updateBuzzerSound();
+        } else {
+          btnSoundToggle.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> Còi: TẮT';
+          btnSoundToggle.style.color = "var(--text-muted)";
+          btnSoundToggle.style.borderColor = "var(--row-border)";
+          if (buzzerInterval) {
+            clearInterval(buzzerInterval);
+            buzzerInterval = null;
+          }
+          const buzzEl = document.getElementById("wokwi-buzz");
+          if (buzzEl) buzzEl.classList.remove("buzzing");
+        }
+      };
+    }
+
+    function setAlarmLevel(lvl) {
+      currentAlarmLevel = lvl;
+      btnSafe.className = "btn-level" + (lvl === "safe" ? " active-safe" : "");
+      btnWarn.className = "btn-level" + (lvl === "warn" ? " active-warn" : "");
+      btnDang.className = "btn-level" + (lvl === "dang" ? " active-dang" : "");
+
+      // Tự động kích hoạt nguồn nếu người dùng muốn thử còi đèn
+      if (!isPowerOn && lvl !== "safe") {
+        btnPower.click();
+      }
+
+      if (lvl === "safe") {
+        ledGreen.value = 1;
+        ledYellow.value = 0;
+        ledRed.value = 0;
+      } else if (lvl === "warn") {
+        ledGreen.value = 0;
+        ledYellow.value = 1;
+        ledRed.value = 0;
+      } else {
+        ledGreen.value = 0;
+        ledYellow.value = 0;
+        ledRed.value = 1;
+      }
+
+      updateBuzzerSound();
+    }
+
+    btnSafe.onclick = () => setAlarmLevel("safe");
+    btnWarn.onclick = () => setAlarmLevel("warn");
+    btnDang.onclick = () => setAlarmLevel("dang");
+
+    // ANIMATION LOOP: DI CHUYỂN ELECTRON DÒNG ĐIỆN VÀ CHỚP NHÁY BÁO ĐỘNG (TỐI ƯU SIÊU MƯỢT 60FPS)
+    let lastTime = performance.now();
+    let blinkTimer = 0;
+
+    function animate(time) {
+      requestAnimationFrame(animate);
+      const dt = (time - lastTime) / 1000;
+      lastTime = time;
+
+      if (isPowerOn) {
+        // Chỉ animate các đường dây đang sáng rõ để giảm 80% tính toán CPU
+        for (let i = 0; i < activeWires.length; i++) {
+          const w = activeWires[i];
+          if (w.path.getAttribute("opacity") === "0.22") continue;
+          for (let j = 0; j < w.particles.length; j++) {
+            const p = w.particles[j];
+            p.progress = (p.progress + dt * 0.45) % 1.0;
+            const pt = w.path.getPointAtLength(p.progress * w.totalLength);
+            p.circle.setAttribute("cx", pt.x);
+            p.circle.setAttribute("cy", pt.y);
+          }
+        }
+
+        if (currentAlarmLevel === "dang") {
+          blinkTimer += dt;
+          if (blinkTimer > 0.22) {
+            blinkTimer = 0;
+            const isRedOn = ledRed.value === 1;
+            ledRed.value = isRedOn ? 0 : 1;
+          }
+        }
+      }
+    }
+
+    
+    // ĐIỀU KHIỂN MODAL GIẢI THÍCH DỄ HIỂU LỚP 9
+    const guideModal = document.getElementById("guide-modal");
+    const btnOpenGuide = document.getElementById("btn-open-guide");
+    const btnCloseGuide = document.getElementById("btn-close-guide");
+
+    if (btnOpenGuide && guideModal) {
+      btnOpenGuide.onclick = () => guideModal.classList.add("open");
+    }
+    if (btnCloseGuide && guideModal) {
+      btnCloseGuide.onclick = () => guideModal.classList.remove("open");
+    }
+    window.addEventListener("click", (e) => {
+      if (e.target === guideModal) guideModal.classList.remove("open");
+    });
+
+    
+    // ==========================================================================
+    // ĐIỀU KHIỂN RESPONSIVE & MOBILE GESTURES CHO MỌI THIẾT BỊ
+    // ==========================================================================
+    const sidebarLeft = document.getElementById("sidebar-left");
+    const sidebarRight = document.getElementById("sidebar-right");
+    const mobileBackdrop = document.getElementById("mobile-backdrop");
+
+    const btnToggleLeft = document.getElementById("btn-toggle-left");
+    const btnCloseLeft = document.getElementById("btn-close-left");
+    const btnToggleRight = document.getElementById("btn-toggle-right");
+    const btnCloseRight = document.getElementById("btn-close-right");
+
+    function isMobileView() {
+      return window.innerWidth <= 900;
+    }
+
+    // Toggle Sidebar Trái (Drawer Thiết Bị)
+    function toggleLeftSidebar(openState) {
+      if (isMobileView()) {
+        const isOpen = openState !== undefined ? openState : !sidebarLeft.classList.contains("mobile-open");
+        sidebarLeft.classList.toggle("mobile-open", isOpen);
+        mobileBackdrop.classList.toggle("active", isOpen);
+        if (isOpen) {
+          sidebarRight.classList.remove("mobile-open");
+          updateActiveMobileTab("devices");
+        } else {
+          updateActiveMobileTab("scheme");
+        }
+      } else {
+        const isCollapsed = openState !== undefined ? !openState : !sidebarLeft.classList.contains("collapsed");
+        sidebarLeft.classList.toggle("collapsed", isCollapsed);
+      }
+    }
+
+    if (btnToggleLeft) btnToggleLeft.onclick = () => toggleLeftSidebar();
+    if (btnCloseLeft) btnCloseLeft.onclick = () => toggleLeftSidebar(false);
+
+    // Toggle Sidebar Phải (Bottom Sheet Chi Tiết)
+    function toggleRightSidebar(openState) {
+      if (isMobileView()) {
+        const isOpen = openState !== undefined ? openState : !sidebarRight.classList.contains("mobile-open");
+        sidebarRight.classList.toggle("mobile-open", isOpen);
+        mobileBackdrop.classList.toggle("active", isOpen);
+        if (isOpen) {
+          sidebarLeft.classList.remove("mobile-open");
+          updateActiveMobileTab("details");
+        } else {
+          updateActiveMobileTab("scheme");
+        }
+      } else {
+        const isCollapsed = openState !== undefined ? !openState : !sidebarRight.classList.contains("collapsed");
+        sidebarRight.classList.toggle("collapsed", isCollapsed);
+      }
+    }
+
+    if (btnToggleRight) btnToggleRight.onclick = () => toggleRightSidebar();
+    if (btnCloseRight) btnCloseRight.onclick = () => toggleRightSidebar(false);
+
+    // Cập nhật trạng thái tab trên thanh Mobile Navigation Bar
+    function updateActiveMobileTab(tabName) {
+      document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+      const tabEl = document.getElementById(`tab-nav-${tabName}`);
+      if (tabEl) tabEl.classList.add("active");
+    }
+
+    // Chuyển Tab Mobile App
+    function switchMobileTab(tabName) {
+      updateActiveMobileTab(tabName);
+
+      if (tabName === "scheme") {
+        toggleLeftSidebar(false);
+        toggleRightSidebar(false);
+      } else if (tabName === "devices") {
+        toggleRightSidebar(false);
+        toggleLeftSidebar(true);
+      } else if (tabName === "filters") {
+        toggleLeftSidebar(false);
+        toggleRightSidebar(false);
+        const fb = document.querySelector(".filter-bar");
+        if (fb) {
+          fb.scrollIntoView({ behavior: "smooth", inline: "center" });
+          fb.style.boxShadow = "0 0 18px rgba(2, 132, 199, 0.7)";
+          setTimeout(() => fb.style.boxShadow = "", 1400);
+        }
+      } else if (tabName === "details") {
+        toggleLeftSidebar(false);
+        toggleRightSidebar(true);
+      } else if (tabName === "guide") {
+        toggleLeftSidebar(false);
+        toggleRightSidebar(false);
+        if (guideModal) guideModal.classList.add("open");
+      }
+    }
+
+    // Click backdrop để đóng tất cả drawer/sheet trên mobile
+    if (mobileBackdrop) {
+      mobileBackdrop.onclick = () => {
+        sidebarLeft.classList.remove("mobile-open");
+        sidebarRight.classList.remove("mobile-open");
+        mobileBackdrop.classList.remove("active");
+        updateActiveMobileTab("scheme");
+      };
+    }
+
+    // Tự động căn chỉnh góc nhìn phù hợp theo kích thước màn hình thiết bị
+    function fitViewToScreen() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      if (w <= 600) {
+        // Điện thoại di động (iPhone / Android)
+        scale = 0.22;
+        panX = 8;
+        panY = 65;
+        sidebarLeft.classList.remove("mobile-open");
+        sidebarRight.classList.remove("mobile-open");
+      } else if (w <= 1024) {
+        // Máy tính bảng iPad / Màn hình nhỏ
+        scale = 0.38;
+        panX = 30;
+        panY = 45;
+        sidebarLeft.classList.add("collapsed");
+        sidebarRight.classList.add("collapsed");
+      } else if (w <= 1440) {
+        // Laptop 13-15 inch (1366x768, 1440x900)
+        scale = 0.44;
+        panX = 295;
+        panY = 20;
+      } else {
+        // Màn hình máy tính lớn (1920x1080)
+        scale = 0.52;
+        panX = 310;
+        panY = 25;
+      }
+      updateTransform(true); // Áp dụng ngay lập tức vào DOM trước khi tính toạ độ dây
+    }
+
+    // Nút Zoom Nhanh
+    const btnZoomIn = document.getElementById("btn-zoom-in");
+    const btnZoomOut = document.getElementById("btn-zoom-out");
+    const btnZoomFit = document.getElementById("btn-zoom-fit");
+    if (btnZoomIn) {
+      btnZoomIn.onclick = () => {
+        scale = Math.min(scale * 1.18, 1.8);
+        updateTransform();
+      };
+    }
+    if (btnZoomOut) {
+      btnZoomOut.onclick = () => {
+        scale = Math.max(scale * 0.82, 0.20);
+        updateTransform();
+      };
+    }
+    if (btnZoomFit) {
+      btnZoomFit.onclick = () => {
+        fitViewToScreen();
+        renderAllWires();
+      };
+    }
+
+    // HỖ TRỢ CẢM ỨNG ĐA ĐIỂM (PINCH ZOOM & TOUCH PAN CHO ĐIỆN THOẠI)
+    let initialTouchDist = 0;
+    let initialTouchScale = 1;
+
+    container.addEventListener("touchstart", (e) => {
+      if (e.target.closest(".comp-card") || e.target.closest("button") || e.target.closest(".sidebar-left") || e.target.closest(".sidebar-right") || e.target.closest(".filter-bar") || e.target.closest(".mobile-nav-bar")) return;
+      if (e.touches.length === 1) {
+        isDragging = true;
+        startX = e.touches[0].clientX - panX;
+        startY = e.touches[0].clientY - panY;
+      } else if (e.touches.length === 2) {
+        isDragging = false;
+        initialTouchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        initialTouchScale = scale;
+      }
+    }, { passive: true });
+
+    container.addEventListener("touchmove", (e) => {
+      if (e.touches.length === 1 && isDragging) {
+        panX = e.touches[0].clientX - startX;
+        panY = e.touches[0].clientY - startY;
+        updateTransform();
+      } else if (e.touches.length === 2 && initialTouchDist > 0) {
+        const currentDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const factor = currentDist / initialTouchDist;
+        scale = Math.min(Math.max(initialTouchScale * factor, 0.20), 1.8);
+        updateTransform();
+      }
+    }, { passive: true });
+
+    container.addEventListener("touchend", () => {
+      isDragging = false;
+      initialTouchDist = 0;
+    });
+
+    // Mở khoá Web Audio trên cử chỉ chạm đầu tiên trên mobile
+    window.addEventListener("touchstart", () => initAudio(), { once: true, passive: true });
+    window.addEventListener("click", () => initAudio(), { once: true, passive: true });
+
+    // KHỞI ĐỘNG HỆ THỐNG (KHÔI PHỤC 100% TOÀN BỘ ĐƯỜNG DÂY)
+    function initSystem() {
+      fitViewToScreen();
+      renderAllWires();
+      filterCircuit("all");
+      requestAnimationFrame(animate);
+
+      // Đảm bảo vẽ lại toàn bộ dây một cách an toàn sau khi custom elements và fonts tải xong
+      setTimeout(() => {
+        if (activeWires.length === 0 || wireGroup.children.length === 0) {
+          renderAllWires();
+          applyWireVisibility();
+        }
+      }, 150);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initSystem);
+    } else {
+      initSystem();
+    }
+
+    window.addEventListener("resize", () => {
+      fitViewToScreen();
+      renderAllWires();
+    });
+  </script>
+
+
+
+</body>
+</html>
