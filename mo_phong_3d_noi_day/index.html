@@ -2,7 +2,11 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0284c7">
   <title>Sơ Đồ Đi Dây Kỹ Thuật - Hệ Thống Cảnh Báo Sớm Khí Độc</title>
   <!-- Wokwi Elements Official Web Components -->
   <script src="wokwi-elements.bundle.js"></script>
@@ -101,13 +105,16 @@
       user-select: none;
     }
 
-    body {
+    html, body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       overflow: hidden;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
+      max-width: 100vw;
+      max-height: 100vh;
+      position: fixed;
       transition: background 0.25s, color 0.25s;
     }
 
@@ -210,21 +217,29 @@
       box-shadow: 0 0 16px rgba(22, 163, 74, 0.45);
     }
 
-    /* FILTER BAR */
+    /* FILTER BAR TRUNG TÂM */
     .filter-bar {
       position: absolute;
-      top: 85px;
-      left: 320px;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 45;
       display: flex;
       gap: 6px;
       background: var(--panel-bg);
       border: 1px solid var(--panel-border);
-      padding: 6px 12px;
-      border-radius: 10px;
+      padding: 6px 14px;
+      border-radius: 24px;
       backdrop-filter: blur(14px);
       box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+      width: max-content;
+      max-width: calc(100vw - 32px);
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
+    .filter-bar::-webkit-scrollbar { display: none; }
 
     .filter-btn {
       background: transparent;
@@ -1223,23 +1238,21 @@
       margin-top: 1px;
     }
 
-    /* HIỆU ỨNG THU GỌN SIDEBAR MƯỢT MÀ */
-    .sidebar-left {
+    /* HIỆU ỨNG THU GỌN SIDEBAR MƯỢT MÀ (CHỈ TRÊN DESKTOP) */
+    .sidebar-left, .sidebar-right {
       transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
     }
-    .sidebar-left.collapsed {
-      transform: translateX(-310px) !important;
-      pointer-events: none !important;
-      opacity: 0 !important;
-    }
-
-    .sidebar-right {
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
-    }
-    .sidebar-right.collapsed {
-      transform: translateX(450px) !important;
-      pointer-events: none !important;
-      opacity: 0 !important;
+    @media (min-width: 901px) {
+      .sidebar-left.collapsed {
+        transform: translateX(-310px) !important;
+        pointer-events: none !important;
+        opacity: 0 !important;
+      }
+      .sidebar-right.collapsed {
+        transform: translateX(460px) !important;
+        pointer-events: none !important;
+        opacity: 0 !important;
+      }
     }
 
     /* ĐỊNH DẠNG FILTER BAR KHÔNG BAO GIỜ BỊ ĐÈ */
@@ -1263,7 +1276,6 @@
       left: 50% !important;
       right: auto !important;
       transform: translateX(-50%) !important;
-      min-width: 580px !important;
       max-width: 90vw !important;
       z-index: 45 !important;
     }
@@ -1288,107 +1300,240 @@
     }
 
     /* ==========================================================================
+       THANH ĐIỀU HƯỚNG DƯỚI ĐÁY DÀNH CHO MOBILE (BOTTOM NAVIGATION BAR)
+       ========================================================================== */
+    .mobile-nav-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--panel-bg);
+      border-top: 1px solid var(--panel-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 95;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-tab {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 5px 1px;
+      transition: all 0.18s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-tab span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      font-size: 0.64rem;
+    }
+
+    .nav-tab i {
+      font-size: 1.05rem;
+      transition: transform 0.18s ease, color 0.18s ease;
+    }
+
+    .nav-tab.active {
+      color: #0284c7;
+    }
+
+    body.dark-mode .nav-tab.active {
+      color: #38bdf8;
+    }
+
+    .nav-tab.active i {
+      transform: translateY(-2px) scale(1.12);
+    }
+
+    .show-mobile { display: none; }
+
+    /* ==========================================================================
        MEDIA QUERIES TỐI ƯU HÓA HOÀN TOÀN CHO MOBILE & TABLET (DƯỚI 900px)
        ========================================================================== */
     @media (max-width: 900px) {
+      .hide-mobile { display: none !important; }
+      .show-mobile { display: inline !important; }
+
+      .mobile-nav-bar {
+        display: flex !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
       /* HEADER GỌN GÀNG TRÊN ĐIỆN THOẠI */
       header {
-        top: 8px !important;
-        left: 10px !important;
-        right: 10px !important;
+        top: 6px !important;
+        left: 6px !important;
+        right: 6px !important;
+        width: auto !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
       }
       .header-title {
-        padding: 6px 12px !important;
+        padding: 5px 10px !important;
+        border-radius: 18px !important;
+        flex-shrink: 0 !important;
       }
       .brand-title {
-        font-size: 0.88rem !important;
+        font-size: 0.78rem !important;
+        white-space: nowrap !important;
       }
       .brand-sub {
         display: none !important;
       }
       .header-actions {
-        gap: 6px !important;
+        display: flex !important;
+        gap: 5px !important;
+        flex-shrink: 0 !important;
+        align-items: center !important;
       }
-      .btn {
-        padding: 7px 10px !important;
-        font-size: 0.78rem !important;
-      }
-      .hide-sm {
+      /* Ẩn các nút dài trên header mobile vì đã có Bottom Navigation */
+      #btn-toggle-left, #btn-toggle-right, #btn-open-guide, .hide-sm {
         display: none !important;
       }
-
-      /* FILTER BAR CO DÃN */
-      .filter-bar {
-        top: 60px !important;
-        padding: 4px 8px !important;
-        font-size: 0.7rem !important;
+      .btn {
+        padding: 5px 8px !important;
+        font-size: 0.72rem !important;
+        border-radius: 16px !important;
+        gap: 4px !important;
+        height: 32px !important;
       }
 
-      /* SIDEBAR TRÁI: BIẾN THÀNH MOBILE DRAWER TRƯỢT TỪ BÊN TRÁI */
-      .sidebar-left {
+      /* FILTER BAR CO DÃN NẰM DƯỚI HEADER */
+      .filter-bar {
+        top: 52px !important;
+        left: 8px !important;
+        right: 8px !important;
+        transform: none !important;
+        margin: 0 auto !important;
+        padding: 4px 10px !important;
+        font-size: 0.7rem !important;
+        width: max-content !important;
+        max-width: calc(100% - 16px) !important;
+        height: 38px !important;
+        box-sizing: border-box !important;
+      }
+
+      /* SIDEBAR TRÁI: MOBILE DRAWER TRƯỢT TỪ BÊN TRÁI */
+      .sidebar-left,
+      .sidebar-left.collapsed {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
         bottom: 0 !important;
-        width: 82vw !important;
+        width: 85vw !important;
         max-width: 320px !important;
-        border-radius: 0 16px 16px 0 !important;
-        z-index: 90 !important;
-        box-shadow: 10px 0 35px rgba(0,0,0,0.3) !important;
+        border-radius: 0 20px 20px 0 !important;
+        z-index: 100 !important;
+        box-shadow: 10px 0 40px rgba(0,0,0,0.4) !important;
         transform: translateX(-105%) !important;
+        opacity: 1 !important;
+        pointer-events: none !important;
       }
       .sidebar-left.mobile-open {
         transform: translateX(0) !important;
-        opacity: 1 !important;
         pointer-events: auto !important;
       }
 
-      /* SIDEBAR PHẢI: BIẾN THÀNH BOTTOM SHEET TRƯỢT TỪ DƯỚI LÊN (CHUẨN APP DI ĐỘNG) */
-      .sidebar-right {
+      /* SIDEBAR PHẢI: BOTTOM SHEET TRƯỢT TỪ DƯỚI LÊN (CHUẨN APP DI ĐỘNG NATIVE) */
+      .sidebar-right,
+      .sidebar-right.collapsed {
         position: fixed !important;
         left: 0 !important;
         right: 0 !important;
         bottom: 0 !important;
         top: auto !important;
-        width: 100vw !important;
-        height: 78vh !important;
-        border-radius: 20px 20px 0 0 !important;
-        z-index: 90 !important;
-        box-shadow: 0 -10px 40px rgba(0,0,0,0.35) !important;
+        width: 100% !important;
+        height: 75vh !important;
+        max-height: 80vh !important;
+        border-radius: 24px 24px 0 0 !important;
+        z-index: 100 !important;
+        box-shadow: 0 -10px 45px rgba(0,0,0,0.4) !important;
         transform: translateY(105%) !important;
+        opacity: 1 !important;
+        pointer-events: none !important;
       }
       .sidebar-right.mobile-open {
         transform: translateY(0) !important;
-        opacity: 1 !important;
         pointer-events: auto !important;
       }
       .sheet-handle-bar {
         display: block !important;
       }
 
-      /* BOTTOM BAR TRÊN MOBILE */
+      /* FLOATING SIMULATION BAR NẰM TRÊN BOTTOM NAVIGATION BAR */
       .bottom-bar {
-        bottom: 10px !important;
-        width: 95vw !important;
-        height: 48px !important;
-        padding: 0 10px !important;
-        font-size: 0.72rem !important;
+        position: fixed !important;
+        bottom: 68px !important;
+        left: 8px !important;
+        right: 8px !important;
+        transform: none !important;
+        margin: 0 auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: 440px !important;
+        height: 44px !important;
+        border-radius: 22px !important;
+        padding: 0 6px !important;
+        z-index: 85 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.18) !important;
+        box-sizing: border-box !important;
       }
-      .flow-desc {
+      .flow-status {
         display: none !important;
       }
       .sim-levels {
+        display: flex !important;
+        width: 100% !important;
+        justify-content: space-between !important;
         gap: 4px !important;
       }
       .btn-level {
-        padding: 4px 8px !important;
-        font-size: 0.72rem !important;
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        padding: 5px 3px !important;
+        font-size: 0.65rem !important;
+        border-radius: 14px !important;
+        white-space: nowrap !important;
+        text-align: center !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
       }
 
-      /* NÚT ZOOM TRÊN MOBILE */
+      /* NÚT ZOOM FLOATING TRÊN MOBILE */
       .canvas-quick-controls {
-        bottom: 68px !important;
+        bottom: 122px !important;
         right: 12px !important;
+        z-index: 80 !important;
       }
     }
 
@@ -1402,21 +1547,16 @@
     <div class="header-title">
       <div class="brand-box">
         <div class="brand-title">
-          <i class="fa-solid fa-microchip"></i> SƠ ĐỒ ĐI DÂY KỸ THUẬT
+          <i class="fa-solid fa-microchip"></i> <span class="hide-mobile">SƠ ĐỒ ĐI DÂY KỸ THUẬT</span><span class="show-mobile">SƠ ĐỒ ĐI DÂY</span>
         </div>
         <div class="brand-sub">Hệ Thống Cảnh Báo Sớm Khí Độc Trong Không Gian Kín</div>
       </div>
     </div>
     
     <div class="header-actions">
-      <!-- Nút mở danh sách thiết bị -->
-      <button class="btn" id="btn-toggle-left" title="Danh Sách 13 Thiết Bị">
-        <i class="fa-solid fa-bars-staggered"></i> <span class="hide-sm">Thiết Bị (13)</span>
-      </button>
-
-      <!-- Nút mở cẩm nang dễ hiểu lớp 9 -->
-      <button class="btn btn-guide" id="btn-open-guide" style="background: #16a34a; color: #ffffff; border-color: #15803d; font-weight: 700;">
-        <i class="fa-solid fa-book-open-reader"></i> <span class="hide-sm">Giải Thích Lớp 9</span>
+      <!-- Nút Bật / Tắt Nguồn Pin -->
+      <button class="btn btn-power" id="btn-power" title="Bật Nguồn Hệ Thống">
+        <i class="fa-solid fa-power-off"></i> <span id="power-text">5.2V</span>
       </button>
 
       <!-- Nút đổi nền Sáng / Tối -->
@@ -1424,19 +1564,24 @@
         <i class="fa-solid fa-sun"></i> <span class="hide-md" id="theme-text">Sáng</span>
       </button>
 
-      <!-- Nút Bật / Tắt Nguồn Pin -->
-      <button class="btn btn-power" id="btn-power" title="Bật Nguồn Hệ Thống">
-        <i class="fa-solid fa-power-off"></i> <span class="hide-sm" id="power-text">Nguồn (5.2V)</span>
-      </button>
-
       <!-- Nút Reset Vị Trí Căn Giữa -->
       <button class="btn" id="btn-reset-view" title="Căn chỉnh toàn cảnh">
         <i class="fa-solid fa-arrows-rotate"></i> <span class="hide-md">Căn Giữa</span>
       </button>
 
-      <!-- Nút mở bảng chi tiết bên phải -->
-      <button class="btn" id="btn-toggle-right" title="Xem Chi Tiết & Quy Trình">
-        <i class="fa-solid fa-circle-info"></i> <span class="hide-sm">Chi Tiết</span>
+      <!-- Nút mở danh sách thiết bị (Desktop) -->
+      <button class="btn hide-sm" id="btn-toggle-left" title="Danh Sách 13 Thiết Bị">
+        <i class="fa-solid fa-bars-staggered"></i> Thiết Bị (13)
+      </button>
+
+      <!-- Nút mở cẩm nang dễ hiểu lớp 9 (Desktop) -->
+      <button class="btn btn-guide hide-sm" id="btn-open-guide" style="background: #16a34a; color: #ffffff; border-color: #15803d; font-weight: 700;">
+        <i class="fa-solid fa-book-open-reader"></i> Giải Thích Lớp 9
+      </button>
+
+      <!-- Nút mở bảng chi tiết bên phải (Desktop) -->
+      <button class="btn hide-sm" id="btn-toggle-right" title="Xem Chi Tiết & Quy Trình">
+        <i class="fa-solid fa-circle-info"></i> Chi Tiết
       </button>
     </div>
   </header>
@@ -1911,9 +2056,9 @@ ho \cdot rac{l}{S} \)
       </div>
     </div>
     <div class="sim-levels">
-      <button class="btn-level active-safe" id="btn-lvl-safe"><i class="fa-solid fa-shield-halved"></i> Mức An Toàn</button>
-      <button class="btn-level" id="btn-lvl-warn"><i class="fa-solid fa-triangle-exclamation"></i> Mức Cảnh Báo</button>
-      <button class="btn-level" id="btn-lvl-dang"><i class="fa-solid fa-radiation"></i> Mức Nguy Hiểm</button>
+      <button class="btn-level active-safe" id="btn-lvl-safe"><i class="fa-solid fa-shield-halved"></i> <span class="hide-mobile">Mức </span>An Toàn</button>
+      <button class="btn-level" id="btn-lvl-warn"><i class="fa-solid fa-triangle-exclamation"></i> <span class="hide-mobile">Mức </span>Cảnh Báo</button>
+      <button class="btn-level" id="btn-lvl-dang"><i class="fa-solid fa-radiation"></i> <span class="hide-mobile">Mức </span>Nguy Hiểm</button>
       <button class="btn-level" id="btn-sound-toggle" title="Bật/Tắt âm thanh còi chip"><i class="fa-solid fa-volume-high"></i> Còi: BẬT</button>
     </div>
   </div>
@@ -1942,6 +2087,30 @@ ho \cdot rac{l}{S} \)
     <button class="quick-zoom-btn" id="btn-zoom-out" title="Thu nhỏ (-)"><i class="fa-solid fa-minus"></i></button>
     <button class="quick-zoom-btn" id="btn-zoom-fit" title="Vừa màn hình"><i class="fa-solid fa-expand"></i></button>
   </div>
+
+  <!-- THANH ĐIỀU HƯỚNG DƯỚI ĐÁY CHO MOBILE (BOTTOM NAVIGATION BAR) -->
+  <nav class="mobile-nav-bar" id="mobile-nav-bar">
+    <button class="nav-tab active" id="tab-nav-scheme" onclick="switchMobileTab('scheme')">
+      <i class="fa-solid fa-microchip"></i>
+      <span>Sơ Đồ</span>
+    </button>
+    <button class="nav-tab" id="tab-nav-devices" onclick="switchMobileTab('devices')">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>Thiết Bị</span>
+    </button>
+    <button class="nav-tab" id="tab-nav-filters" onclick="switchMobileTab('filters')">
+      <i class="fa-solid fa-filter"></i>
+      <span>Lọc Mạch</span>
+    </button>
+    <button class="nav-tab" id="tab-nav-details" onclick="switchMobileTab('details')">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Chi Tiết</span>
+    </button>
+    <button class="nav-tab" id="tab-nav-guide" onclick="switchMobileTab('guide')">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <span>Lớp 9</span>
+    </button>
+  </nav>
 
   <!-- JAVASCRIPT ĐI DÂY KỸ THUẬT VÀ TƯƠNG TÁC -->
   <script>
@@ -2555,6 +2724,10 @@ if (isDanger) {
     }
 
     function applyWireVisibility() {
+      if (activeWires.length === 0) {
+        renderAllWires();
+        return;
+      }
       activeWires.forEach(w => {
         if (currentFilter === "all" || selectedCompId === "all") {
           // HIỆN LÊN TẤT CẢ 100% RÕ NÉT CẢ 43 ĐƯỜNG DÂY!
@@ -2619,7 +2792,15 @@ if (isDanger) {
     let startX = 0, startY = 0;
 
     let transformRaf = null;
-    function updateTransform() {
+    function updateTransform(immediate = false) {
+      if (immediate) {
+        if (transformRaf) {
+          cancelAnimationFrame(transformRaf);
+          transformRaf = null;
+        }
+        stage.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${scale})`;
+        return;
+      }
       if (transformRaf) return;
       transformRaf = requestAnimationFrame(() => {
         stage.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${scale})`;
@@ -2780,6 +2961,13 @@ if (isDanger) {
             </p>
           </div>
         `;
+        if (typeof isMobileView === "function" && isMobileView()) {
+          toggleRightSidebar(false);
+          toggleLeftSidebar(false);
+          document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+          const schTab = document.getElementById("tab-nav-scheme");
+          if (schTab) schTab.classList.add("active");
+        }
         return;
       }
 
@@ -2872,6 +3060,14 @@ if (isDanger) {
           </div>
         </div>
       `;
+
+      if (typeof isMobileView === "function" && isMobileView()) {
+        toggleLeftSidebar(false);
+        toggleRightSidebar(true);
+        document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+        const detTab = document.getElementById("tab-nav-details");
+        if (detTab) detTab.classList.add("active");
+      }
     }
 
     // NÚT CHUYỂN ĐỔI CHẾ ĐỘ SÁNG / TỐI (LIGHT / DARK THEME)
@@ -3127,13 +3323,18 @@ if (isDanger) {
       return window.innerWidth <= 900;
     }
 
-    // Toggle Sidebar Trái
+    // Toggle Sidebar Trái (Drawer Thiết Bị)
     function toggleLeftSidebar(openState) {
       if (isMobileView()) {
         const isOpen = openState !== undefined ? openState : !sidebarLeft.classList.contains("mobile-open");
         sidebarLeft.classList.toggle("mobile-open", isOpen);
         mobileBackdrop.classList.toggle("active", isOpen);
-        if (isOpen) sidebarRight.classList.remove("mobile-open");
+        if (isOpen) {
+          sidebarRight.classList.remove("mobile-open");
+          updateActiveMobileTab("devices");
+        } else {
+          updateActiveMobileTab("scheme");
+        }
       } else {
         const isCollapsed = openState !== undefined ? !openState : !sidebarLeft.classList.contains("collapsed");
         sidebarLeft.classList.toggle("collapsed", isCollapsed);
@@ -3143,13 +3344,18 @@ if (isDanger) {
     if (btnToggleLeft) btnToggleLeft.onclick = () => toggleLeftSidebar();
     if (btnCloseLeft) btnCloseLeft.onclick = () => toggleLeftSidebar(false);
 
-    // Toggle Sidebar Phải
+    // Toggle Sidebar Phải (Bottom Sheet Chi Tiết)
     function toggleRightSidebar(openState) {
       if (isMobileView()) {
         const isOpen = openState !== undefined ? openState : !sidebarRight.classList.contains("mobile-open");
         sidebarRight.classList.toggle("mobile-open", isOpen);
         mobileBackdrop.classList.toggle("active", isOpen);
-        if (isOpen) sidebarLeft.classList.remove("mobile-open");
+        if (isOpen) {
+          sidebarLeft.classList.remove("mobile-open");
+          updateActiveMobileTab("details");
+        } else {
+          updateActiveMobileTab("scheme");
+        }
       } else {
         const isCollapsed = openState !== undefined ? !openState : !sidebarRight.classList.contains("collapsed");
         sidebarRight.classList.toggle("collapsed", isCollapsed);
@@ -3159,12 +3365,49 @@ if (isDanger) {
     if (btnToggleRight) btnToggleRight.onclick = () => toggleRightSidebar();
     if (btnCloseRight) btnCloseRight.onclick = () => toggleRightSidebar(false);
 
-    // Click backdrop để đóng tất cả drawer trên mobile
+    // Cập nhật trạng thái tab trên thanh Mobile Navigation Bar
+    function updateActiveMobileTab(tabName) {
+      document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+      const tabEl = document.getElementById(`tab-nav-${tabName}`);
+      if (tabEl) tabEl.classList.add("active");
+    }
+
+    // Chuyển Tab Mobile App
+    function switchMobileTab(tabName) {
+      updateActiveMobileTab(tabName);
+
+      if (tabName === "scheme") {
+        toggleLeftSidebar(false);
+        toggleRightSidebar(false);
+      } else if (tabName === "devices") {
+        toggleRightSidebar(false);
+        toggleLeftSidebar(true);
+      } else if (tabName === "filters") {
+        toggleLeftSidebar(false);
+        toggleRightSidebar(false);
+        const fb = document.querySelector(".filter-bar");
+        if (fb) {
+          fb.scrollIntoView({ behavior: "smooth", inline: "center" });
+          fb.style.boxShadow = "0 0 18px rgba(2, 132, 199, 0.7)";
+          setTimeout(() => fb.style.boxShadow = "", 1400);
+        }
+      } else if (tabName === "details") {
+        toggleLeftSidebar(false);
+        toggleRightSidebar(true);
+      } else if (tabName === "guide") {
+        toggleLeftSidebar(false);
+        toggleRightSidebar(false);
+        if (guideModal) guideModal.classList.add("open");
+      }
+    }
+
+    // Click backdrop để đóng tất cả drawer/sheet trên mobile
     if (mobileBackdrop) {
       mobileBackdrop.onclick = () => {
         sidebarLeft.classList.remove("mobile-open");
         sidebarRight.classList.remove("mobile-open");
         mobileBackdrop.classList.remove("active");
+        updateActiveMobileTab("scheme");
       };
     }
 
@@ -3174,31 +3417,31 @@ if (isDanger) {
       const h = window.innerHeight;
 
       if (w <= 600) {
-        // Điện thoại di động
-        scale = 0.35;
-        panX = 20;
-        panY = 60;
-        sidebarLeft.classList.add("collapsed");
-        sidebarRight.classList.add("collapsed");
+        // Điện thoại di động (iPhone / Android)
+        scale = 0.22;
+        panX = 8;
+        panY = 65;
+        sidebarLeft.classList.remove("mobile-open");
+        sidebarRight.classList.remove("mobile-open");
       } else if (w <= 1024) {
         // Máy tính bảng iPad / Màn hình nhỏ
-        scale = 0.40;
-        panX = 40;
-        panY = 40;
+        scale = 0.38;
+        panX = 30;
+        panY = 45;
         sidebarLeft.classList.add("collapsed");
         sidebarRight.classList.add("collapsed");
       } else if (w <= 1440) {
         // Laptop 13-15 inch (1366x768, 1440x900)
-        scale = 0.42;
+        scale = 0.44;
         panX = 295;
         panY = 20;
       } else {
         // Màn hình máy tính lớn (1920x1080)
-        scale = 0.50;
+        scale = 0.52;
         panX = 310;
         panY = 25;
       }
-      updateTransform();
+      updateTransform(true); // Áp dụng ngay lập tức vào DOM trước khi tính toạ độ dây
     }
 
     // Nút Zoom Nhanh
@@ -3207,19 +3450,20 @@ if (isDanger) {
     const btnZoomFit = document.getElementById("btn-zoom-fit");
     if (btnZoomIn) {
       btnZoomIn.onclick = () => {
-        scale = Math.min(scale * 1.15, 1.8);
+        scale = Math.min(scale * 1.18, 1.8);
         updateTransform();
       };
     }
     if (btnZoomOut) {
       btnZoomOut.onclick = () => {
-        scale = Math.max(scale * 0.85, 0.28);
+        scale = Math.max(scale * 0.82, 0.20);
         updateTransform();
       };
     }
     if (btnZoomFit) {
       btnZoomFit.onclick = () => {
         fitViewToScreen();
+        renderAllWires();
       };
     }
 
@@ -3228,7 +3472,7 @@ if (isDanger) {
     let initialTouchScale = 1;
 
     container.addEventListener("touchstart", (e) => {
-      if (e.target.closest(".comp-card") || e.target.closest("button") || e.target.closest(".sidebar-left") || e.target.closest(".sidebar-right") || e.target.closest(".filter-bar")) return;
+      if (e.target.closest(".comp-card") || e.target.closest("button") || e.target.closest(".sidebar-left") || e.target.closest(".sidebar-right") || e.target.closest(".filter-bar") || e.target.closest(".mobile-nav-bar")) return;
       if (e.touches.length === 1) {
         isDragging = true;
         startX = e.touches[0].clientX - panX;
@@ -3254,7 +3498,7 @@ if (isDanger) {
           e.touches[0].clientY - e.touches[1].clientY
         );
         const factor = currentDist / initialTouchDist;
-        scale = Math.min(Math.max(initialTouchScale * factor, 0.28), 1.8);
+        scale = Math.min(Math.max(initialTouchScale * factor, 0.20), 1.8);
         updateTransform();
       }
     }, { passive: true });
@@ -3264,11 +3508,24 @@ if (isDanger) {
       initialTouchDist = 0;
     });
 
-    // KHỞI ĐỘNG HỆ THỐNG (KHÔNG JUMP, GIỮ VỊ TRÍ VIEW CHUẨN)
+    // Mở khoá Web Audio trên cử chỉ chạm đầu tiên trên mobile
+    window.addEventListener("touchstart", () => initAudio(), { once: true, passive: true });
+    window.addEventListener("click", () => initAudio(), { once: true, passive: true });
+
+    // KHỞI ĐỘNG HỆ THỐNG (KHÔI PHỤC 100% TOÀN BỘ ĐƯỜNG DÂY)
     function initSystem() {
       fitViewToScreen();
+      renderAllWires();
       filterCircuit("all");
       requestAnimationFrame(animate);
+
+      // Đảm bảo vẽ lại toàn bộ dây một cách an toàn sau khi custom elements và fonts tải xong
+      setTimeout(() => {
+        if (activeWires.length === 0 || wireGroup.children.length === 0) {
+          renderAllWires();
+          applyWireVisibility();
+        }
+      }, 150);
     }
 
     if (document.readyState === "loading") {
@@ -3278,7 +3535,8 @@ if (isDanger) {
     }
 
     window.addEventListener("resize", () => {
-      updateTransform();
+      fitViewToScreen();
+      renderAllWires();
     });
   </script>
 
