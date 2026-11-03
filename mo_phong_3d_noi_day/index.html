@@ -1700,8 +1700,8 @@ ho \cdot rac{l}{S} \)
 
         <!-- PHẦN 5: TRÊN MẶT ĐẤT LÀM GÌ ĐỂ CỨU MẠNG NGƯỜI -->
         <div class="guide-section">
-          <h3><i class="fa-solid fa-bullhorn" style="color: #dc2626;"></i> 5. KHỐI CẢNH BÁO BÊN NGOÀI, ESP32 MASTER LÀM GÌ ĐỂ CỨU MẠNG NGƯỜI?</h3>
-          <p>Khi chip MAX485 trên bờ đón lấy bức thư gửi từ dưới đáy, nó chuyển vào chân <b>GPIO 16 (RX2)</b> của ESP32 Master trên mặt đất. Đội trưởng Master lập tức làm 3 việc:</p>
+          <h3><i class="fa-solid fa-bullhorn" style="color: #dc2626;"></i> 5. KHỐI CẢNH BÁO BÊN NGOÀI, ESP32 LÀM GÌ ĐỂ CỨU MẠNG NGƯỜI?</h3>
+          <p>Khi chip MAX485 trên bờ đón lấy bức thư gửi từ dưới đáy, nó chuyển vào chân <b>GPIO 16 (RX2)</b> của ESP32 Khối cảnh báo. Bo điều khiển Khối cảnh báo lập tức làm 3 việc:</p>
           <ul style="margin-left: 20px; margin-top: 6px; font-size: 0.82rem;">
             <li><b>Chiếu lên Màn hình OLED (chân 21, 22):</b> Người chỉ huy liếc nhìn là thấy ngay nồng độ Oxy và khí độc.</li>
             <li><b>Tự phát sóng Wi-Fi:</b> Ai cầm điện thoại lại gần mở trình duyệt là xem được biểu đồ sóng thời gian thực mà <b>hoàn toàn không cần Internet hay 4G</b>.</li>
@@ -1817,7 +1817,7 @@ ho \cdot rac{l}{S} \)
 
         <!-- BO MẠCH VI ĐIỀU KHIỂN ESP32 SLAVE (CHÂN TRÁI NHẬN CẢM BIẾN, CHÂN PHẢI XUẤT MAX485) -->
         <div class="comp-card" id="card-esp32_slave" style="left: 460px; top: 520px; width: 300px;" onclick="selectComponent('esp32_slave')">
-          <div class="comp-card-hdr"><i class="fa-solid fa-microchip" style="color: #16a34a;"></i> ESP32 SLAVE (KHỐI ĐẦU DÒ)</div>
+          <div class="comp-card-hdr"><i class="fa-solid fa-microchip" style="color: #16a34a;"></i> ESP32 (KHỐI ĐẦU DÒ)</div>
           <div style="transform: scale(0.96); margin: 6px 0;">
             <wokwi-esp32-devkit-v1></wokwi-esp32-devkit-v1>
           </div>
@@ -1843,7 +1843,7 @@ ho \cdot rac{l}{S} \)
 
         <!-- MODULE MAX485 SLAVE -->
         <div class="comp-card" id="card-max485_slave" style="left: 830px; top: 580px; width: 240px;" onclick="selectComponent('max485_slave')">
-          <div class="comp-card-hdr"><i class="fa-solid fa-network-wired" style="color: #9333ea;"></i> MAX485 SLAVE (TX)</div>
+          <div class="comp-card-hdr"><i class="fa-solid fa-network-wired" style="color: #9333ea;"></i> MAX485 KHỐI ĐẦU DÒ (TX)</div>
           <div style="background: #0284c7; width: 160px; height: 95px; border-radius: 8px; border: 2px solid #0369a1; display: flex; flex-direction: column; justify-content: space-between; padding: 6px;">
             <div style="font-size: 0.72rem; font-weight: 800; color: #fff; text-align: center;">MAX485 TRANSMITTER</div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1952,14 +1952,14 @@ ho \cdot rac{l}{S} \)
             <div class="terminal-row"><span class="port-dot p-red" id="port-lm2596-out-cat5-pos"></span><span>OUT+ (5.2V Xuất Sang Cáp Cat5e)</span></div>
             <div class="terminal-row"><span class="port-dot p-green" id="port-lm2596-out-cat5-neg"></span><span>OUT- (Mass Xuất Sang Cáp Cat5e)</span></div>
             <!-- CÁC CỔNG BÊN PHẢI: XUẤT NGUỒN SANG ESP32 MASTER BÊN PHẢI -->
-            <div class="terminal-row"><span>OUT+ (5.2V Cấp ESP32 Master)</span><span class="port-dot p-red" id="port-lm2596-out-esp-pos"></span></div>
-            <div class="terminal-row"><span>OUT- (Mass Cấp ESP32 Master)</span><span class="port-dot p-green" id="port-lm2596-out-esp-neg"></span></div>
+            <div class="terminal-row"><span>OUT+ (5.2V Cấp Khối cảnh báo)</span><span class="port-dot p-red" id="port-lm2596-out-esp-pos"></span></div>
+            <div class="terminal-row"><span>OUT- (Mass Cấp Khối cảnh báo)</span><span class="port-dot p-green" id="port-lm2596-out-esp-neg"></span></div>
           </div>
         </div>
 
         <!-- MODULE MAX485 MASTER -->
         <div class="comp-card" id="card-max485_master" style="left: 50px; top: 960px; width: 260px;" onclick="selectComponent('max485_master')">
-          <div class="comp-card-hdr"><i class="fa-solid fa-network-wired" style="color: #9333ea;"></i> MAX485 MASTER (RX)</div>
+          <div class="comp-card-hdr"><i class="fa-solid fa-network-wired" style="color: #9333ea;"></i> MAX485 KHỐI CẢNH BÁO (RX)</div>
           <div style="background: #0284c7; width: 150px; height: 95px; border-radius: 8px; border: 2px solid #0369a1; display: flex; flex-direction: column; justify-content: space-between; padding: 6px;">
             <div style="font-size: 0.72rem; font-weight: 800; color: #fff; text-align: center;">MAX485 RECEIVER</div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1985,7 +1985,7 @@ ho \cdot rac{l}{S} \)
 
         <!-- BO MẠCH VI ĐIỀU KHIỂN ESP32 MASTER (CÁC CHÂN TÁCH BIỆT TRÁI - PHẢI, ZERO TRÙNG DÂY) -->
         <div class="comp-card" id="card-esp32_master" style="left: 410px; top: 540px; width: 300px;" onclick="selectComponent('esp32_master')">
-          <div class="comp-card-hdr"><i class="fa-solid fa-microchip" style="color: #2563eb;"></i> ESP32 MASTER (KHỐI CẢNH BÁO)</div>
+          <div class="comp-card-hdr"><i class="fa-solid fa-microchip" style="color: #2563eb;"></i> ESP32 (KHỐI CẢNH BÁO)</div>
           <div style="transform: scale(0.96); margin: 6px 0;">
             <wokwi-esp32-devkit-v1></wokwi-esp32-devkit-v1>
           </div>
@@ -2266,7 +2266,7 @@ void readEnv(float &temp, float &hum) {
       },
       {
         id: "esp32_slave",
-        name: "Vi Điều Khiển Dưới Đáy (Slave)",
+        name: "Vi Điều Khiển (Khối đầu dò)",
         sub: "ESP32 NodeMCU 30 Chân (Thu thập & Gom gói)",
         group: "KHỐI ĐẦU DÒ (KHÔNG GIAN KÍN)",
         badge: "Chú lính trinh sát tí hon dưới đáy",
@@ -2299,7 +2299,7 @@ void sendDataToMaster(float o2, float co, float ch4, float t, float h) {
       },
       {
         id: "max485_slave",
-        name: "Module Chuyển Đổi MAX485 (Slave)",
+        name: "Module Chuyển Đổi MAX485 (Khối đầu dò)",
         sub: "UART sang Vi Sai RS-485",
         group: "KHỐI ĐẦU DÒ (KHÔNG GIAN KÍN)",
         badge: "Chiếc loa phóng thanh chống nhiễu",
@@ -2354,7 +2354,7 @@ void setup() {
       },
       {
         id: "max485_master",
-        name: "Module Chuyển Đổi MAX485 (Master)",
+        name: "Module Chuyển Đổi MAX485 (Khối cảnh báo)",
         sub: "RS-485 sang UART Vi Điều Khiển",
         group: "KHỐI CẢNH BÁO (BÊN NGOÀI KHÔNG GIAN KÍN)",
         badge: "Bộ dịch tin (Khối cảnh báo)",
@@ -2364,7 +2364,7 @@ void setup() {
         icon: "fa-network-wired",
         pins: [
           { from: "Chân A & B", to: "Nhận từ Cáp Cat5e", note: "Đón nhận 2 luồng xung tín hiệu từ đáy hầm" },
-          { from: "RO", to: "GPIO 16 (RX2 Master)", note: "Đưa chuỗi JSON vào tai ESP32 Master" },
+          { from: "RO", to: "GPIO 16 (RX2 Master)", note: "Đưa chuỗi JSON vào tai ESP32 Khối cảnh báo" },
           { from: "VCC & GND", to: "5V & GND Nguồn", note: "Nguồn nuôi module" }
         ],
         codeSnippet: `// Nhận chuỗi JSON từ Slave
@@ -2375,10 +2375,10 @@ void loop() {
   }
 }`,
         why: "TẠI SAO CẦN CON MAX485 THỨ HAI TRÊN MẶT ĐẤT?",
-        whyContent: "Bức thư từ dưới hầm được phóng lên qua 2 chân tín hiệu A và B. Con chip MAX485 trên mặt đất đóng vai trò như 'người đón thư': nó nhận cặp dây A-B, dịch ngược lại thành dòng chữ ban đầu rồi đẩy qua chân RO vào tai chú lính ESP32 Master trên mặt đất để ESP32 Master xử lý lên Web, OLED và còi đèn.",
+        whyContent: "Bức thư từ dưới hầm được phóng lên qua 2 chân tín hiệu A và B. Con chip MAX485 trên mặt đất đóng vai trò như 'người đón thư': nó nhận cặp dây A-B, dịch ngược lại thành dòng chữ ban đầu rồi đẩy qua chân RO vào tai chú lính ESP32 Khối cảnh báo trên mặt đất để ESP32 Khối cảnh báo xử lý lên Web, OLED và còi đèn.",
         step1: "Đón nhận 2 luồng tín hiệu A và B chạy từ dưới đáy hầm lên qua cáp mạng Cat5e.",
         step2: "Dịch ngược tín hiệu vi sai thành chuỗi chữ báo cáo JSON chuẩn và đưa qua chân RO.",
-        step3: "Chân RO cắm thẳng vào chân GPIO 16 (RX2) của ESP32 Master trên mặt đất để bắt đầu kích hoạt Web, OLED và còi báo động!",
+        step3: "Chân RO cắm thẳng vào chân GPIO 16 (RX2) của ESP32 Khối cảnh báo trên mặt đất để bắt đầu kích hoạt Web, OLED và còi báo động!",
         studentTip: "Hãy giải thích với thầy cô: Cần một cặp MAX485 ở hai đầu - một con đóng gói phát tin ở đáy hầm và một con đón nhận dịch tin trên mặt đất.",
         physicsTip: "💡 Chuẩn RS-485 cho phép truyền tín hiệu xa tới 1.200 mét với độ bền bỉ chống sét lan truyền cao."
       },
@@ -2428,8 +2428,8 @@ float readBatteryVoltage() {
           { from: "IN- (Mass 12V)", to: "Cực Âm (-) Cục Pin 3S", note: "Đường hồi tiếp dòng điện nguồn Pin" },
           { from: "OUT+ (5.2V Cáp)", to: "3 Dây Dương Cáp Cat5e", note: "Bơm dòng 5.2V xuống tận đáy hầm kín" },
           { from: "OUT- (Mass Cáp)", to: "3 Dây Mass Cáp Cat5e", note: "Đường về cực âm dòng điện 5.2V" },
-          { from: "OUT+ (5.2V ESP)", to: "Chân VIN (ESP32 Master)", note: "Nuôi bộ não xử lý và trạm phát Wi-Fi" },
-          { from: "OUT- (Mass ESP)", to: "Chân GND (ESP32 Master)", note: "Mass chung hệ thống trên bờ" }
+          { from: "OUT+ (5.2V ESP)", to: "Chân VIN (ESP32 Khối cảnh báo)", note: "Nuôi bộ não xử lý và trạm phát Wi-Fi" },
+          { from: "OUT- (Mass ESP)", to: "Chân GND (ESP32 Khối cảnh báo)", note: "Mass chung hệ thống trên bờ" }
         ],
         codeSnippet: `// LM2596 là linh kiện phần cứng hạ áp thuần túy (Hardware BUCK)
 // Không cần nạp code phần mềm, điều chỉnh điện áp bằng ốc vít biến trở 3296:
@@ -2440,13 +2440,13 @@ float readBatteryVoltage() {
         whyContent: "Vi điều khiển ESP32 và các cảm biến khí chỉ hoạt động ở điện áp 3.3V - 5V. Nếu cắm thẳng điện 12V của Cục Pin vào, chip sẽ nổ cháy khét lẹt ngay lập tức! Mạch hạ áp LM2596 hoạt động như một chiếc 'van điều áp': nó nhận điện áp cao 12V từ Pin rồi hạ xuống 5.2V một cách êm ái, phẳng lặng, bảo vệ linh kiện sống sót 100%.",
         step1: "Pin 12V bơm dòng điện lớn vào 2 chân IN+ và IN- của mạch giảm áp LM2596.",
         step2: "Cuộn cảm và tụ điện trên LM2596 băm xung hạ xuống 5.2V chuẩn xác, xuất ra 2 chân OUT+ và OUT-.",
-        step3: "Dòng điện 5.2V chia làm 2 ngả: một ngả nuôi ESP32 Master trên mặt đất, một ngả phóng xuống 20 mét cáp Cat5e nuôi toàn bộ dàn cảm biến dưới đáy hầm.",
+        step3: "Dòng điện 5.2V chia làm 2 ngả: một ngả nuôi ESP32 Khối cảnh báo trên mặt đất, một ngả phóng xuống 20 mét cáp Cat5e nuôi toàn bộ dàn cảm biến dưới đáy hầm.",
         studentTip: "Mẹo trả lời: Chỉnh ra 5.2V chứ không phải 5.0V là vì áp dụng Vật lý 9 ($R = \\rho \\frac{l}{S}$), dòng điện đi 20 mét cáp sẽ bị sụt áp đúng 0.2V, xuống đáy hầm vừa tròn 5.0V cực chuẩn!",
         physicsTip: "💡 Công nghệ BUCK xung có hiệu suất tới 92%, không gây nóng ran và lãng phí điện năng như các loại IC tuyến tính cũ (7805)."
       },
       {
         id: "esp32_master",
-        name: "Bộ Não Xử Lý & Web Server (Master)",
+        name: "Bộ Não Xử Lý & Web Server (Khối cảnh báo)",
         sub: "Trung Tâm Phân Tích, Báo Động & Web SCADA",
         group: "KHỐI CẢNH BÁO (BÊN NGOÀI KHÔNG GIAN KÍN)",
         badge: "Bộ não trung tâm (Khối cảnh báo)",
@@ -2480,11 +2480,11 @@ void handleAlarm(float o2, float co, float ch4) {
   }
 }`,
         why: "ESP32 TRÊN MẶT ĐẤT LÀM GÌ ĐỂ LÊN WEB, MÀN HÌNH VÀ BÁO CÒI ĐÈN?",
-        whyContent: "Sau khi ESP32 dưới không gian kín gửi bức thư lên qua 2 chân tín hiệu A và B, con ESP32 Master trên mặt đất nhận được qua chân RX2 (GPIO 16). Nó lập tức làm 3 việc thực tế: 1. Đưa số liệu lên Web Server Wi-Fi; 2. Đưa số liệu ra màn hình OLED để người đứng trên bờ đọc; 3. Nếu phát hiện có khí độc hoặc thiếu Oxy thì kích hoạt còi hú vang trời và bật đèn đỏ báo động!",
+        whyContent: "Sau khi ESP32 dưới không gian kín gửi bức thư lên qua 2 chân tín hiệu A và B, con ESP32 Khối cảnh báo trên mặt đất nhận được qua chân RX2 (GPIO 16). Nó lập tức làm 3 việc thực tế: 1. Đưa số liệu lên Web Server Wi-Fi; 2. Đưa số liệu ra màn hình OLED để người đứng trên bờ đọc; 3. Nếu phát hiện có khí độc hoặc thiếu Oxy thì kích hoạt còi hú vang trời và bật đèn đỏ báo động!",
         step1: "Nhận bức thư 5 thông số từ dưới đáy hầm đưa vào chân GPIO 16 (RX2).",
         step2: "Kiểm tra mức độ an toàn: Oxy có < 18% không, CO có >= 30 ppm không, Gas có >= 10% LEL không.",
         step3: "Chiếu ngay số lên OLED (chân 21, 22), phát Wi-Fi cho điện thoại xung quanh mở Web xem biểu đồ không cần 4G, và bật còi hú (chân 23) + đèn đỏ (chân 19) báo động khẩn cấp!",
-        studentTip: "Hãy giải thích với thầy cô: ESP32 Master là bộ não trung tâm trên mặt đất, phối hợp cả Web Server không dây, màn hình hiển thị tại chỗ và hệ thống còi đèn đa tầng.",
+        studentTip: "Hãy giải thích với thầy cô: ESP32 Khối cảnh báo là bộ não trung tâm trên mặt đất, phối hợp cả Web Server không dây, màn hình hiển thị tại chỗ và hệ thống còi đèn đa tầng.",
         physicsTip: "💡 ESP32 tự tạo trạm phát Wi-Fi Access Point tên 'GIAM_SAT_KHONG_GIAN_KIN' (IP: 192.168.4.1), mở trình duyệt điện thoại là xem được biểu đồ sóng mà hoàn toàn không cần Internet hay 4G!"
       },
       {
@@ -2500,7 +2500,7 @@ void handleAlarm(float o2, float co, float ch4) {
         pins: [
           { from: "SDA (Data)", to: "GPIO 21 (D21 Master)", note: "Chân nhận dữ liệu hiển thị số" },
           { from: "SCL (Clock)", to: "GPIO 22 (D22 Master)", note: "Chân nhận xung nhịp đồng hồ" },
-          { from: "VCC & GND", to: "3.3V & GND (ESP32 Master)", note: "Nguồn nuôi màn hình" }
+          { from: "VCC & GND", to: "3.3V & GND (ESP32 Khối cảnh báo)", note: "Nguồn nuôi màn hình" }
         ],
         codeSnippet: `// Hiển thị 5 thông số lên OLED SSD1306
 #include <Adafruit_SSD1306.h>
@@ -2514,8 +2514,8 @@ void updateOLED() {
   display.display();
 }`,
         why: "TẠI SAO ESP32 PHẢI NỐI RA MÀN HÌNH OLED?",
-        whyContent: "Khi ESP32 Master trên mặt đất nhận được bức thư từ dưới đáy đưa lên, nó gửi ngay qua 2 chân SDA (GPIO 21) và SCL (GPIO 22) để hiển thị 5 con số lên màn hình OLED. Người chỉ huy đứng trên bờ không cần cầm điện thoại, chỉ cần liếc mắt nhìn vào hộp máy là biết ngay dưới hầm an toàn hay nguy hiểm.",
-        step1: "Nhận tín hiệu hiển thị số từ chân GPIO 21 và GPIO 22 của ESP32 Master trên bờ.",
+        whyContent: "Khi ESP32 Khối cảnh báo trên mặt đất nhận được bức thư từ dưới đáy đưa lên, nó gửi ngay qua 2 chân SDA (GPIO 21) và SCL (GPIO 22) để hiển thị 5 con số lên màn hình OLED. Người chỉ huy đứng trên bờ không cần cầm điện thoại, chỉ cần liếc mắt nhìn vào hộp máy là biết ngay dưới hầm an toàn hay nguy hiểm.",
+        step1: "Nhận tín hiệu hiển thị số từ chân GPIO 21 và GPIO 22 của ESP32 Khối cảnh báo trên bờ.",
         step2: "Màn hình tự phát sáng từng điểm ảnh hiển thị rõ ràng 5 dòng: Oxy (%), Khí than CO (ppm), Khí Gas (%LEL), Nhiệt độ và Độ ẩm.",
         step3: "Giúp người giám sát tại chỗ nắm bắt tình hình tức khắc mà không bị phụ thuộc vào điện thoại hay kết nối mạng.",
         studentTip: "Hãy giải thích với thầy cô: Dùng chuẩn I2C chỉ tốn đúng 2 sợi dây nhưng truyền được toàn bộ đồ họa và văn bản với tốc độ cao.",
@@ -2543,8 +2543,8 @@ if (isDanger) {
   digitalWrite(BUZZER_PIN, (millis() / 250) % 2 == 0 ? HIGH : LOW);
 }`,
         why: "TẠI SAO CÒI HÚ VÀ ĐÈN PHẢI NỐI VÀO CÁC CHÂN 23, 19, 5, 18 TRÊN MIỆNG HẦM?",
-        whyContent: "Khi ESP32 Master trên bờ phát hiện có khí độc từ chân A-B gửi lên, nó lập tức kích hoạt chân GPIO 23 để còi hú vang trời và chân GPIO 19 để đèn đỏ chớp dồn dập. Đặt còi ngay miệng hầm để tạo ra 'BỨC TƯỜNG ÂM THANH' đanh thép, cảnh báo trực diện làm người trên bờ giật mình khựng lại, dứt khoát không bước xuống hầm!",
-        step1: "ESP32 Master trên mặt đất phát hiện nồng độ khí vượt ngưỡng nguy hiểm (Oxy < 18% hoặc CO >= 30 ppm hoặc Gas >= 10% LEL).",
+        whyContent: "Khi ESP32 Khối cảnh báo trên bờ phát hiện có khí độc từ chân A-B gửi lên, nó lập tức kích hoạt chân GPIO 23 để còi hú vang trời và chân GPIO 19 để đèn đỏ chớp dồn dập. Đặt còi ngay miệng hầm để tạo ra 'BỨC TƯỜNG ÂM THANH' đanh thép, cảnh báo trực diện làm người trên bờ giật mình khựng lại, dứt khoát không bước xuống hầm!",
+        step1: "ESP32 Khối cảnh báo trên mặt đất phát hiện nồng độ khí vượt ngưỡng nguy hiểm (Oxy < 18% hoặc CO >= 30 ppm hoặc Gas >= 10% LEL).",
         step2: "Lập tức xuất lệnh điện áp cao ra chân GPIO 23 (bật còi hú ngắt quãng 250ms) và chân GPIO 19 (bật LED Đỏ).",
         step3: "Âm thanh còi hú > 85dB vang dội ngay cửa hầm, báo động toàn khu vực và ngăn chặn tuyệt đối thảm kịch nhảy xuống cứu mù quáng.",
         studentTip: "Hãy giải thích với thầy cô: Đây là điểm nhân văn cốt lõi cứu sống con người của dự án - cảnh báo tại chỗ trước khi con người bước vào không gian kín.",
@@ -2560,7 +2560,7 @@ if (isDanger) {
       { fromPort: "port-cat5-pwr-left", toPort: "port-rail-vcc-feed", gutterX: 1130, color: "var(--w-vcc)", stroke: 4.5, fromComponent: "cable_cat5e", toComponent: "esp32_slave", group: "cable_cat5e" },
       { fromPort: "port-cat5-gnd-left", toPort: "port-rail-gnd-feed", gutterX: 1110, color: "var(--w-gnd)", stroke: 4.5, fromComponent: "cable_cat5e", toComponent: "esp32_slave", group: "cable_cat5e" },
 
-      // Bus Nguồn cấp cho ESP32 Slave VIN & GND (phía trái ESP32)
+      // Bus Nguồn cấp cho ESP32 Khối đầu dò VIN & GND (phía trái ESP32)
       { fromPort: "port-rail-vcc-feed", toPort: "port-esp32s-vin", gutterX: 430, color: "var(--w-vcc)", stroke: 3.5, fromComponent: "esp32_slave", toComponent: "esp32_slave", group: "esp32_slave" },
       { fromPort: "port-rail-gnd-feed", toPort: "port-esp32s-gnd", gutterX: 440, color: "var(--w-gnd)", stroke: 3.5, fromComponent: "esp32_slave", toComponent: "esp32_slave", group: "esp32_slave" },
 
@@ -2611,7 +2611,7 @@ if (isDanger) {
       { fromPort: "port-cat5-rs485-right", toPort: "port-max485m-a", gutterX: 1545, color: "var(--w-rs485-a)", stroke: 3.6, fromComponent: "cable_cat5e", toComponent: "max485_master", group: "cable_cat5e" },
       { fromPort: "port-cat5-rs485-right", toPort: "port-max485m-b", gutterX: 1530, color: "var(--w-rs485-b)", stroke: 3.6, fromComponent: "cable_cat5e", toComponent: "max485_master", group: "cable_cat5e" },
 
-      // MAX485 Master -> ESP32 Master RX2 & Nguồn
+      // MAX485 Master -> ESP32 Khối cảnh báo RX2 & Nguồn
       { fromPort: "port-max485m-ro", toPort: "port-esp32m-rx2", gutterX: 1885, color: "var(--w-uart)", stroke: 3.2, fromComponent: "max485_master", toComponent: "esp32_master", group: "max485_master" },
       { fromPort: "port-esp32m-vin-in", toPort: "port-max485m-vcc", gutterX: 1845, color: "var(--w-vcc)", stroke: 2.6, fromComponent: "max485_master", toComponent: "esp32_master", group: "max485_master" },
       { fromPort: "port-esp32m-gnd-in", toPort: "port-max485m-gnd", gutterX: 1835, color: "var(--w-gnd)", stroke: 2.6, fromComponent: "max485_master", toComponent: "esp32_master", group: "max485_master" },
@@ -2926,7 +2926,7 @@ if (isDanger) {
                 • <b>Khí Độc CO (MQ-7):</b> A0 &rarr; GPIO 35 (ADC1)<br>
                 • <b>Khí Metan (MQ-4):</b> A0 &rarr; GPIO 34 (ADC1)<br>
                 • <b>Nhiệt Ẩm (DHT22):</b> DATA &rarr; GPIO 4 (1-Wire)<br>
-                • <b>ESP32 Slave &rarr; MAX485:</b> TX2 (GPIO 17) &rarr; DI, RX2 (GPIO 16) &rarr; RO<br>
+                • <b>ESP32 Khối đầu dò &rarr; MAX485:</b> TX2 (GPIO 17) &rarr; DI, RX2 (GPIO 16) &rarr; RO<br>
                 • <b>Bus Nguồn kép:</b> Nhận 5.2V nuôi 4 cảm biến và ESP32
               </div>
             </div>
@@ -2945,7 +2945,7 @@ if (isDanger) {
               <div style="font-size: 0.74rem; color: var(--text); margin-top: 4px; line-height: 1.5;">
                 • <b>Cục Pin 3S 12V Li-ion:</b> Cấp nguồn di động dã ngoại (11.1V - 12.6V)<br>
                 • <b>Nguồn LM2596 BUCK:</b> Hạ áp 12V xuống chuẩn 5.2V bù sụt áp đường dài<br>
-                • <b>MAX485 Master:</b> Đón RS-485 chuyển UART vào RX2 (GPIO 16)<br>
+                • <b>MAX485 Khối cảnh báo:</b> Đón RS-485 chuyển UART vào RX2 (GPIO 16)<br>
                 • <b>Màn hình OLED:</b> SDA &rarr; 21, SCL &rarr; 22 (I2C phần cứng)<br>
                 • <b>Còi & 3 LED:</b> Còi (GPIO 23), Đỏ (19), Vàng (5), Xanh (18)<br>
                 • <b>Wi-Fi Web Server:</b> Tự phát sóng để điện thoại quét xem
