@@ -1700,7 +1700,7 @@ ho \cdot rac{l}{S} \)
 
         <!-- PHẦN 5: TRÊN MẶT ĐẤT LÀM GÌ ĐỂ CỨU MẠNG NGƯỜI -->
         <div class="guide-section">
-          <h3><i class="fa-solid fa-bullhorn" style="color: #dc2626;"></i> 5. TRÊN MẶT ĐẤT, ESP32 MASTER LÀM GÌ ĐỂ CỨU MẠNG NGƯỜI?</h3>
+          <h3><i class="fa-solid fa-bullhorn" style="color: #dc2626;"></i> 5. KHỐI CẢNH BÁO BÊN NGOÀI, ESP32 MASTER LÀM GÌ ĐỂ CỨU MẠNG NGƯỜI?</h3>
           <p>Khi chip MAX485 trên bờ đón lấy bức thư gửi từ dưới đáy, nó chuyển vào chân <b>GPIO 16 (RX2)</b> của ESP32 Master trên mặt đất. Đội trưởng Master lập tức làm 3 việc:</p>
           <ul style="margin-left: 20px; margin-top: 6px; font-size: 0.82rem;">
             <li><b>Chiếu lên Màn hình OLED (chân 21, 22):</b> Người chỉ huy liếc nhìn là thấy ngay nồng độ Oxy và khí độc.</li>
@@ -1735,7 +1735,7 @@ ho \cdot rac{l}{S} \)
       <!-- 1. BỆ ĐỠ KHỐI KHÔNG GIAN KÍN (SLAVE) - KHOẢNG CÁCH RỘNG RÃI 1620px -->
       <div class="bench-mat" style="left: 50px; top: 100px; width: 1100px; height: 1620px;">
         <div class="bench-mat-title">
-          <i class="fa-solid fa-dungeon"></i> KHỐI DƯỚI ĐÁY KHÔNG GIAN KÍN (SLAVE)
+          <i class="fa-solid fa-dungeon"></i> KHỐI ĐẦU DÒ (KHÔNG GIAN KÍN)
           <span class="bench-mat-badge">Thu thập 5 thông số khí & Gom gói JSON</span>
         </div>
 
@@ -1817,7 +1817,7 @@ ho \cdot rac{l}{S} \)
 
         <!-- BO MẠCH VI ĐIỀU KHIỂN ESP32 SLAVE (CHÂN TRÁI NHẬN CẢM BIẾN, CHÂN PHẢI XUẤT MAX485) -->
         <div class="comp-card" id="card-esp32_slave" style="left: 460px; top: 520px; width: 300px;" onclick="selectComponent('esp32_slave')">
-          <div class="comp-card-hdr"><i class="fa-solid fa-microchip" style="color: #16a34a;"></i> ESP32 SLAVE (DƯỚI ĐÁY)</div>
+          <div class="comp-card-hdr"><i class="fa-solid fa-microchip" style="color: #16a34a;"></i> ESP32 SLAVE (KHỐI ĐẦU DÒ)</div>
           <div style="transform: scale(0.96); margin: 6px 0;">
             <wokwi-esp32-devkit-v1></wokwi-esp32-devkit-v1>
           </div>
@@ -1890,10 +1890,10 @@ ho \cdot rac{l}{S} \)
         <div style="font-size: 0.68rem; color: #d97706; margin-top: 8px; text-align: center; font-weight: 700;">Vật lý 9: R = &rho;&middot;(l / S) &rarr; Tăng S gấp 3, giảm R 3 lần</div>
       </div>
 
-      <!-- 3. BỆ ĐỠ KHỐI TRÊN MẶT ĐẤT (MASTER) -->
+      <!-- 3. BỆ ĐỠ KHỐI CẢNH BÁO (BÊN NGOÀI KHÔNG GIAN KÍN) -->
       <div class="bench-mat" style="left: 1510px; top: 100px; width: 1140px; height: 1620px;">
         <div class="bench-mat-title">
-          <i class="fa-solid fa-tower-broadcast"></i> KHỐI TRÊN MẶT ĐẤT (MASTER)
+          <i class="fa-solid fa-tower-broadcast"></i> KHỐI CẢNH BÁO (BÊN NGOÀI KHÔNG GIAN KÍN)
           <span class="bench-mat-badge">Phân tích nồng độ, Phát Wi-Fi Web Server & Báo động</span>
         </div>
 
@@ -1985,7 +1985,7 @@ ho \cdot rac{l}{S} \)
 
         <!-- BO MẠCH VI ĐIỀU KHIỂN ESP32 MASTER (CÁC CHÂN TÁCH BIỆT TRÁI - PHẢI, ZERO TRÙNG DÂY) -->
         <div class="comp-card" id="card-esp32_master" style="left: 410px; top: 540px; width: 300px;" onclick="selectComponent('esp32_master')">
-          <div class="comp-card-hdr"><i class="fa-solid fa-microchip" style="color: #2563eb;"></i> ESP32 MASTER (MẶT ĐẤT)</div>
+          <div class="comp-card-hdr"><i class="fa-solid fa-microchip" style="color: #2563eb;"></i> ESP32 MASTER (KHỐI CẢNH BÁO)</div>
           <div style="transform: scale(0.96); margin: 6px 0;">
             <wokwi-esp32-devkit-v1></wokwi-esp32-devkit-v1>
           </div>
@@ -2119,7 +2119,7 @@ ho \cdot rac{l}{S} \)
         id: "o2_sensor",
         name: "Cảm Biến Oxygen (O2)",
         sub: "DFRobot Gravity I2C (SEN0496 / SEN0322)",
-        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        group: "KHỐI ĐẦU DÒ (KHÔNG GIAN KÍN)",
         badge: "Chiếc mũi ngửi dưỡng khí Oxy",
         repo: "DFRobot/DFRobot_OxygenSensor",
         repoUrl: "https://github.com/DFRobot/DFRobot_OxygenSensor",
@@ -2157,7 +2157,7 @@ float readO2() {
         id: "mq7_sensor",
         name: "Cảm Biến Khí Than Độc (CO)",
         sub: "Winsen MQ-7 (AO Analog Output)",
-        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        group: "KHỐI ĐẦU DÒ (KHÔNG GIAN KÍN)",
         badge: "Chiếc mũi ngửi khí than độc CO",
         repo: "miguel5612/MQSensorsLib",
         repoUrl: "https://github.com/miguel5612/MQSensorsLib",
@@ -2194,7 +2194,7 @@ float readCO() {
         id: "mq4_sensor",
         name: "Cảm Biến Khí Gas/Metan (CH4)",
         sub: "Winsen MQ-4 (AO Analog Output)",
-        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        group: "KHỐI ĐẦU DÒ (KHÔNG GIAN KÍN)",
         badge: "Chiếc mũi ngửi khí Gas cháy nổ",
         repo: "miguel5612/MQSensorsLib",
         repoUrl: "https://github.com/miguel5612/MQSensorsLib",
@@ -2232,7 +2232,7 @@ float readCH4_LEL() {
         id: "dht22_sensor",
         name: "Cảm Biến Nhiệt Độ - Độ Ẩm",
         sub: "Aosong AM2302 (DHT22)",
-        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        group: "KHỐI ĐẦU DÒ (KHÔNG GIAN KÍN)",
         badge: "Nhiệt ẩm kế bù trừ sai số",
         repo: "adafruit/DHT-sensor-library",
         repoUrl: "https://github.com/adafruit/DHT-sensor-library",
@@ -2268,7 +2268,7 @@ void readEnv(float &temp, float &hum) {
         id: "esp32_slave",
         name: "Vi Điều Khiển Dưới Đáy (Slave)",
         sub: "ESP32 NodeMCU 30 Chân (Thu thập & Gom gói)",
-        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        group: "KHỐI ĐẦU DÒ (KHÔNG GIAN KÍN)",
         badge: "Chú lính trinh sát tí hon dưới đáy",
         repo: "kike-canaries/canairio_sensorlib",
         repoUrl: "https://github.com/kike-canaries/canairio_sensorlib",
@@ -2301,7 +2301,7 @@ void sendDataToMaster(float o2, float co, float ch4, float t, float h) {
         id: "max485_slave",
         name: "Module Chuyển Đổi MAX485 (Slave)",
         sub: "UART sang Vi Sai RS-485",
-        group: "KHỐI KHÔNG GIAN KÍN (SLAVE)",
+        group: "KHỐI ĐẦU DÒ (KHÔNG GIAN KÍN)",
         badge: "Chiếc loa phóng thanh chống nhiễu",
         repo: "HardwareSerial RS-485",
         repoUrl: "https://github.com/kike-canaries/canairio_sensorlib",
@@ -2356,8 +2356,8 @@ void setup() {
         id: "max485_master",
         name: "Module Chuyển Đổi MAX485 (Master)",
         sub: "RS-485 sang UART Vi Điều Khiển",
-        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
-        badge: "Người dịch tin trên mặt đất",
+        group: "KHỐI CẢNH BÁO (BÊN NGOÀI KHÔNG GIAN KÍN)",
+        badge: "Bộ dịch tin (Khối cảnh báo)",
         repo: "HardwareSerial RS-485",
         repoUrl: "https://github.com",
         color: "#9333ea",
@@ -2386,7 +2386,7 @@ void loop() {
         id: "battery_pack",
         name: "Cục Pin Nguồn 3S Li-ion (12V)",
         sub: "Khối Pin 3S 18650 11.1V - 12.6V có mạch bảo vệ BMS",
-        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
+        group: "KHỐI CẢNH BÁO (BÊN NGOÀI KHÔNG GIAN KÍN)",
         badge: "Trạm phát điện di động nuôi toàn mạch",
         repo: "Khối Pin 3S 18650 (Phần Cứng Độc Lập)",
         repoUrl: "https://github.com",
@@ -2417,7 +2417,7 @@ float readBatteryVoltage() {
         id: "lm2596",
         name: "Nguồn Giảm Áp DC-DC LM2596 BUCK (5.2V)",
         sub: "Mạch hạ áp biến tần BUCK hiệu suất cao 92%",
-        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
+        group: "KHỐI CẢNH BÁO (BÊN NGOÀI KHÔNG GIAN KÍN)",
         badge: "Chiếc van điều áp bảo vệ chip khỏi cháy nổ",
         repo: "Texas Instruments LM2596 (Hardware BUCK)",
         repoUrl: "https://ti.com",
@@ -2448,8 +2448,8 @@ float readBatteryVoltage() {
         id: "esp32_master",
         name: "Bộ Não Xử Lý & Web Server (Master)",
         sub: "Trung Tâm Phân Tích, Báo Động & Web SCADA",
-        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
-        badge: "Đội trưởng chỉ huy trên mặt đất",
+        group: "KHỐI CẢNH BÁO (BÊN NGOÀI KHÔNG GIAN KÍN)",
+        badge: "Bộ não trung tâm (Khối cảnh báo)",
         repo: "kike-canaries/canairio_sensorlib",
         repoUrl: "https://github.com/kike-canaries/canairio_sensorlib",
         color: "#2563eb",
@@ -2491,7 +2491,7 @@ void handleAlarm(float o2, float co, float ch4) {
         id: "oled_display",
         name: "Màn Hình OLED 0.96 inch",
         sub: "Hiển Thị SSD1306 I2C (0x3C)",
-        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
+        group: "KHỐI CẢNH BÁO (BÊN NGOÀI KHÔNG GIAN KÍN)",
         badge: "Bảng hiển thị số đo tại chỗ",
         repo: "adafruit/Adafruit_SSD1306",
         repoUrl: "https://github.com",
@@ -2525,7 +2525,7 @@ void updateOLED() {
         id: "alarm_system",
         name: "Hệ Thống Đèn 3 Màu & Còi Hú",
         sub: "Còi Buzzer & LED Đỏ - Vàng - Xanh",
-        group: "KHỐI TRÊN MẶT ĐẤT (MASTER)",
+        group: "KHỐI CẢNH BÁO (BÊN NGOÀI KHÔNG GIAN KÍN)",
         badge: "Bức tường âm thanh cứu mạng người",
         repo: "GPIO Digital Output",
         repoUrl: "https://github.com",
@@ -2920,7 +2920,7 @@ if (isDanger) {
             <h4><i class="fa-solid fa-arrows-split-up-and-left"></i> Bản Đồ Đấu Nối 3 Khối Chính</h4>
             
             <div style="margin-top: 8px; padding: 10px; background: rgba(2, 132, 199, 0.08); border-radius: 8px; border-left: 3px solid #0284c7; margin-bottom: 8px;">
-              <div style="font-weight: 700; color: #0284c7; font-size: 0.82rem;"><i class="fa-solid fa-dungeon"></i> 1. Dưới Đáy Không Gian Kín (Slave):</div>
+              <div style="font-weight: 700; color: #0284c7; font-size: 0.82rem;"><i class="fa-solid fa-dungeon"></i> 1. Khối Đầu Dò (Không Gian Kín):</div>
               <div style="font-size: 0.74rem; color: var(--text); margin-top: 4px; line-height: 1.5;">
                 • <b>Oxy (I2C):</b> SDA &rarr; GPIO 21, SCL &rarr; GPIO 22<br>
                 • <b>Khí Độc CO (MQ-7):</b> A0 &rarr; GPIO 35 (ADC1)<br>
@@ -2941,7 +2941,7 @@ if (isDanger) {
             </div>
 
             <div style="margin-top: 8px; padding: 10px; background: rgba(22, 163, 74, 0.08); border-radius: 8px; border-left: 3px solid #16a34a;">
-              <div style="font-weight: 700; color: #16a34a; font-size: 0.82rem;"><i class="fa-solid fa-tower-broadcast"></i> 3. Trên Mặt Đất Cứu Hộ (Master):</div>
+              <div style="font-weight: 700; color: #16a34a; font-size: 0.82rem;"><i class="fa-solid fa-tower-broadcast"></i> 3. Khối Cảnh Báo (Bên Ngoài Không Gian Kín):</div>
               <div style="font-size: 0.74rem; color: var(--text); margin-top: 4px; line-height: 1.5;">
                 • <b>Cục Pin 3S 12V Li-ion:</b> Cấp nguồn di động dã ngoại (11.1V - 12.6V)<br>
                 • <b>Nguồn LM2596 BUCK:</b> Hạ áp 12V xuống chuẩn 5.2V bù sụt áp đường dài<br>
@@ -3047,7 +3047,7 @@ if (isDanger) {
             </div>
             <div class="flow-step-item">
               <span class="step-badge">3</span>
-              <div><b>Trên mặt đất cứu người:</b> ${comp.step3}</div>
+              <div><b>Khối cảnh báo bên ngoài:</b> ${comp.step3}</div>
             </div>
           </div>
 
